@@ -1,5 +1,5 @@
-#ifndef TMPC_CONNECTION_H
-#define TMPC_CONNECTION_H
+#ifndef MPDPP_CONNECTION_H
+#define MPDPP_CONNECTION_H
 
 #include <vector>
 #include <memory>
@@ -10,7 +10,7 @@
 
 struct mpd_connection;
 
-namespace tmpc
+namespace mpdpp
 {
 
 /**
@@ -30,7 +30,7 @@ class mpd
 public:
 	/**
 	 * Creates a connection to a MPD server, effectively connecting to it.
-	 * @throws tmpc::exception if the connection fails.
+	 * @throws mpdpp::exception if the connection fails.
 	 */
 	mpd();
 

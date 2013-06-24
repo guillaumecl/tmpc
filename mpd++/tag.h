@@ -1,7 +1,7 @@
-#ifndef TMPC_TAG_H
-#define TMPC_TAG_H
+#ifndef MPDPP_TAG_H
+#define MPDPP_TAG_H
 
-namespace tmpc
+namespace mpdpp
 {
 
 

@@ -4,25 +4,25 @@
 
 #include <iostream>
 
-#include "mpd.h"
+#include "mpd++/mpd.h"
 
 int main(int /*argc*/, char **/*argv*/)
 {
-	tmpc::mpd connection;
+	mpdpp::mpd connection;
 
 	connection.play();
 
-	tmpc::song_ptr_vector v = connection.search_queue() << tmpc::tag_contains(tmpc::tag::comment, "zelda") << tmpc::commit();
+	mpdpp::song_ptr_vector v = connection.search_queue() << mpdpp::tag_contains(mpdpp::tag::comment, "zelda") << mpdpp::commit();
 
 	for (auto song : v)
 	{
-		std::cout << song->id() << " " <<  *song << " --> " << song->tag(tmpc::tag::comment) << std::endl;
+		std::cout << song->id() << " " <<  *song << " --> " << song->tag(mpdpp::tag::comment) << std::endl;
 		connection.play(*song);
 	}
 
 	std::cout << std::endl;
 
-	tmpc::song_ptr cur = connection.current_song();
+	mpdpp::song_ptr cur = connection.current_song();
 
 	std::cout << "Current song : " << *cur << std::endl;
 

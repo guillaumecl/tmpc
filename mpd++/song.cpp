@@ -2,7 +2,7 @@
 
 #include <mpd/client.h>
 
-namespace tmpc
+namespace mpdpp
 {
 
 song::song(mpd_song *s) :
@@ -20,7 +20,7 @@ const char * song::uri() const
 	return mpd_song_get_uri(song_);
 }
 
-const char * song::tag(tmpc::tag t) const
+const char * song::tag(mpdpp::tag t) const
 {
 	return mpd_song_get_tag(song_, static_cast<mpd_tag_type>(t), 0);
 }

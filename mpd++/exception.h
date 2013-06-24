@@ -1,11 +1,11 @@
-#ifndef TMPC_EXCEPTION_H
-#define TMPC_EXCEPTION_H
+#ifndef MPDPP_EXCEPTION_H
+#define MPDPP_EXCEPTION_H
 
 #include <exception>
 #include <string>
 
 
-namespace tmpc
+namespace mpdpp
 {
 
 class mpd;

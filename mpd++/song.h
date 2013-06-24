@@ -1,5 +1,5 @@
-#ifndef TMPC_SONG_H
-#define TMPC_SONG_H
+#ifndef MPDPP_SONG_H
+#define MPDPP_SONG_H
 
 #include <memory>
 #include <vector>
@@ -9,7 +9,7 @@
 
 struct mpd_song;
 
-namespace tmpc
+namespace mpdpp
 {
 
 class song;
@@ -42,7 +42,7 @@ public:
     /*
 	 * Retrieves a specific tag from the file.
 	 */
-	const char * tag(tmpc::tag tag) const;
+	const char * tag(mpdpp::tag tag) const;
 
 	/**
 	 * Duration of the song in seconds. 0 for unknown size.
@@ -92,7 +92,7 @@ public:
 	/**
 	 * Operator[] will return the corresponding tag.
 	 */
-	const char * operator[] (tmpc::tag tag) const { return this->tag(tag); }
+	const char * operator[] (mpdpp::tag tag) const { return this->tag(tag); }
 
 private:
 	song(const song& s) = delete;
@@ -106,7 +106,7 @@ private:
 
 inline std::ostream& operator<<(std::ostream& out, const song & s)
 {
-	const char * title = s[tmpc::tag::title];
+	const char * title = s[mpdpp::tag::title];
 	if (title)
 	{
 		out << title;
@@ -116,13 +116,13 @@ inline std::ostream& operator<<(std::ostream& out, const song & s)
 		out << s.uri();
 	}
 
-	const char *artist = s[tmpc::tag::artist];
+	const char *artist = s[mpdpp::tag::artist];
 	if (artist)
 	{
 		out << " by " << artist;
 	}
 
-	const char * album = s[tmpc::tag::album];
+	const char * album = s[mpdpp::tag::album];
 	if (album)
 	{
 		out << " (" << album << ")";

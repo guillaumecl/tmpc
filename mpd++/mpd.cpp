@@ -2,7 +2,7 @@
 
 #include "mpd.h"
 
-using namespace tmpc;
+using namespace mpdpp;
 
 
 
