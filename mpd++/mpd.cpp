@@ -38,13 +38,17 @@ void mpd::play() const
 	throw_if_error();
 }
 
-void mpd::play(const song& song) const
+void mpd::play(unsigned int song_id) const
 {
-	mpd_run_play_id(connection_, song.id());
+	mpd_run_play_id(connection_, song_id);
 	throw_if_error();
 
 	mpd_response_finish(connection_);
 	throw_if_error();
+}
+void mpd::play(const song& song) const
+{
+	play(song.id());
 }
 
 song_ptr mpd::add(const char *uri)

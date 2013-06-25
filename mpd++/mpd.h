@@ -75,6 +75,7 @@ public:
 
 	song_ptr current_song() const;
 
+	void play(unsigned int song_id) const;
 	void play(const song& song) const;
 
 	song_ptr add(const char *uri);
