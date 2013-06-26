@@ -19,7 +19,8 @@ main_window::main_window() :
 	setAttribute(Qt::WA_QuitOnClose);
 	setAttribute(Qt::WA_DeleteOnClose);
 
-	QWidget *screen = QApplication::desktop()->screen();
+    QDesktopWidget *desktop = QApplication::desktop();
+    QRect screen = desktop->screenGeometry(desktop->screenNumber(QCursor::pos()));
 
 	QVBoxLayout *layout = new QVBoxLayout;
 	layout->setContentsMargins(0, 0, 0, 0);
@@ -30,7 +31,7 @@ main_window::main_window() :
 	text_->setFrame(false);
 	layout->addWidget(text_);
 
-	text_->setMinimumWidth(screen->width() / 2);
+	text_->setMinimumWidth(screen.width() / 2);
 
 	list_ = new QListWidget;
 	list_->setVisible(false);
@@ -40,7 +41,7 @@ main_window::main_window() :
 	centralWidget()->setLayout(layout);
 
 	resize(text_->sizeHint());
-	move((screen->width() - text_->width()) / 2, (screen->height() - height()) / 4);
+	move((screen.width() - text_->width()) / 2, (screen.height() - height()) / 4);
 
 	connect(text_, SIGNAL(textChanged(const QString&)), this, SLOT(search(const QString&)));
 }
@@ -88,7 +89,7 @@ void main_window::search(const QString& str)
 		{
 			std::ostringstream stream;
 			stream << *song;
-			QListWidgetItem *item = new QListWidgetItem(stream.str().c_str(), list_);
+			QListWidgetItem *item = new QListWidgetItem(QString::fromUtf8(stream.str().c_str()), list_);
 
 			item->setData(Qt::UserRole, song->id());
 		}
@@ -110,8 +111,9 @@ void main_window::search(const QString& str)
 		resize(text_->sizeHint());
 	}
 
-	QWidget *screen = QApplication::desktop()->screen();
-	move((screen->width() - width()) / 2, (screen->height() - height()) / 4);
+    QDesktopWidget *desktop = QApplication::desktop();
+    QRect screen = desktop->screenGeometry(desktop->screenNumber(QCursor::pos()));
+	move(screen.x() + (screen.width() - width()) / 2, screen.y() + (screen.height() - height()) / 4);
 }
 
 }
