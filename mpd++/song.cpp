@@ -63,7 +63,11 @@ unsigned int song::id() const
 
 unsigned int song::priority() const
 {
+#if ((LIBMPDCLIENT_MAJOR_VERSION == 2 && LIBMPDCLIENT_MINOR_VERSION > 7) || LIBMPDCLIENT_MAJOR_VERSION > 2)
 	return mpd_song_get_prio(song_);
+#else
+return 0;
+#endif
 }
 
 }
