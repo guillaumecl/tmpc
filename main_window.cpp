@@ -81,19 +81,34 @@ void main_window::keyPressEvent(QKeyEvent *event)
 void main_window::search(const QString& str)
 {
 	list_->clear();
-	if (str.size() > 2)
-	{
-		mpd_.search_queue() << mpdpp::any_tag_contains(str.toLatin1());
 
-		for (mpdpp::song_ptr song : mpd_.commit_search())
-		{
-			std::ostringstream stream;
-			stream << *song;
-			QListWidgetItem *item = new QListWidgetItem(QString::fromUtf8(stream.str().c_str()), list_);
+    bool search_empty = true;
 
-			item->setData(Qt::UserRole, song->id());
-		}
-	}
+    for(QString const& it : str.split(','))
+    {
+        if (it.size() > 2)
+        {
+            if (search_empty)
+            {
+                mpd_.search_queue();
+                search_empty = false;
+            }
+            mpd_ << mpdpp::any_tag_contains(it.toUtf8());
+        }
+    }
+
+    if (not search_empty)
+    {
+        for (mpdpp::song_ptr song : mpd_.commit_search())
+        {
+            std::ostringstream stream;
+            stream << *song;
+            QListWidgetItem *item = new QListWidgetItem(QString::fromUtf8(stream.str().c_str()), list_);
+
+            item->setData(Qt::UserRole, song->id());
+        }
+    }
+
 	if (list_->count() > 0)
 	{
 		list_->setVisible(true);
