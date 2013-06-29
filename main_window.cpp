@@ -1,4 +1,5 @@
 #include "main_window.h"
+#include "song_widget.h"
 
 #include <QApplication>
 #include <QMainWindow>
@@ -32,7 +33,7 @@ main_window::main_window() :
 
 	text_->setMinimumWidth(screen.width() / 2);
 
-	list_ = new QListWidget;
+	list_ = new song_widget;
 	layout->addWidget(list_);
 
 	setCentralWidget(new QWidget);
@@ -52,12 +53,9 @@ void main_window::keyPressEvent(QKeyEvent *event)
 		close();
 	}
 	else if (event->key() == Qt::Key_Return
-			 and list_->currentItem())
+			 and list_->selection())
 	{
-		unsigned int id = list_->currentItem()->data(Qt::UserRole).toInt();
-
-		mpd_.play(id);
-		qDebug("Playing song %d", id);
+		mpd_.play(*list_->selection());
 		event->accept();
 		close();
 	}
@@ -80,9 +78,9 @@ void main_window::search(const QString& str)
 {
 	list_->clear();
 
-	mpdpp::search search = mpd_.search_queue();
+	mpdpp::search search = mpd_.search_queue(false);
 
-    for(QString const& it : str.split(' '))
+    for(QString const& it : str.split(','))
     {
         if (it.size() >= 2)
         {
@@ -90,14 +88,7 @@ void main_window::search(const QString& str)
         }
     }
 
-	for (mpdpp::song const& song : search)
-	{
-		std::ostringstream stream;
-		stream << song;
-		QListWidgetItem *item = new QListWidgetItem(QString::fromUtf8(stream.str().c_str()), list_);
-
-		item->setData(Qt::UserRole, song.id());
-	}
+	list_->fill(search);
 
 	QSize textHint = text_->sizeHint();
 	QSize listHint = list_->sizeHint();
@@ -105,7 +96,6 @@ void main_window::search(const QString& str)
 	QSize hint(qMax(textHint.width(), listHint.width()), textHint.height() + listHint.height());
 
 	resize(hint);
-	list_->sortItems();
 
     QDesktopWidget *desktop = QApplication::desktop();
     QRect screen = desktop->screenGeometry(desktop->screenNumber(QCursor::pos()));

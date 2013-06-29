@@ -23,6 +23,8 @@ public:
 	song_ptr operator->();
 
 	song& operator*();
+
+	song_ptr steal_ptr();
 private:
 	song_iterator(mpd& mpd, bool reuse_song_ptr);
 

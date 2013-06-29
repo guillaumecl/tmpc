@@ -39,6 +39,14 @@ song_ptr song_iterator::operator->()
 	return current_song_;
 }
 
+song_ptr song_iterator::steal_ptr()
+{
+	song_ptr result = current_song_;
+
+	current_song_ = nullptr;
+	return result;
+}
+
 song& song_iterator::operator*()
 {
 	return *current_song_;

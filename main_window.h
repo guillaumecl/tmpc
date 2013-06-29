@@ -8,6 +8,8 @@
 namespace tmpc
 {
 
+class song_widget;
+
 class main_window: public QMainWindow
 {
 	Q_OBJECT
@@ -23,7 +25,7 @@ private slots:
 private:
 	mpdpp::mpd mpd_;
 	QLineEdit *text_;
-	QListWidget *list_;
+	song_widget *list_;
 };
 
 }

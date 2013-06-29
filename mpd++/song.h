@@ -1,8 +1,8 @@
 #ifndef MPDPP_SONG_H
 #define MPDPP_SONG_H
 
-#include <memory>
-#include <vector>
+#include "forward.h"
+
 #include <ostream>
 
 #include "tag.h"
@@ -13,8 +13,6 @@ namespace mpdpp
 {
 
 class song;
-typedef std::shared_ptr<song> song_ptr;
-typedef std::vector<song_ptr> song_ptr_vector;
 
 
 /**
