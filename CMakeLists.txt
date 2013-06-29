@@ -12,7 +12,7 @@ add_definitions(${QT_DEFINITIONS})
 
 
 QT4_WRAP_CPP(TMPC_HEADERS_MOC
-  main_window.h
+  search_queue_window.h
   song_widget.h
 )
 
@@ -23,7 +23,7 @@ QT4_WRAP_UI(TMPC_FORMS_HEADERS
 
 add_executable(tmpc
   tmpc.cpp
-  main_window.cpp
+  search_queue_window.cpp
   song_widget.cpp
   ${TMPC_HEADERS_MOC}
   ${TMPC_FORMS_HEADERS}

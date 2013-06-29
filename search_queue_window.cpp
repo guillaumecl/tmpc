@@ -1,4 +1,4 @@
-#include "main_window.h"
+#include "search_queue_window.h"
 #include "song_widget.h"
 
 #include <QApplication>
@@ -14,7 +14,7 @@
 namespace tmpc
 {
 
-main_window::main_window() :
+search_queue_window::search_queue_window() :
 	QMainWindow(nullptr, Qt::Tool | Qt::WindowStaysOnTopHint)
 {
 	setAttribute(Qt::WA_QuitOnClose);
@@ -45,7 +45,7 @@ main_window::main_window() :
 	connect(text_, SIGNAL(textChanged(const QString&)), this, SLOT(search(const QString&)));
 }
 
-void main_window::keyPressEvent(QKeyEvent *event)
+void search_queue_window::keyPressEvent(QKeyEvent *event)
 {
 	if (event->key() == Qt::Key_Escape)
 	{
@@ -74,7 +74,7 @@ void main_window::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-void main_window::search(const QString& str)
+void search_queue_window::search(const QString& str)
 {
 	list_->clear();
 

@@ -7,14 +7,14 @@
 #include "mpd++/mpd.h"
 
 #include <QApplication>
-#include "main_window.h"
+#include "search_queue_window.h"
 
 
 
 int main(int argc, char **argv)
 {
 	QApplication app (argc, argv);
-	tmpc::main_window window;
+	tmpc::search_queue_window window;
 	window.show();
 
 	return app.exec();

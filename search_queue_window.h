@@ -1,5 +1,5 @@
-#ifndef TMPC_MAIN_WINDOW_H
-#define TMPC_MAIN_WINDOW_H
+#ifndef TMPC_SEARCH_QUEUE_WINDOW_H
+#define TMPC_SEARCH_QUEUE_WINDOW_H
 
 #include <QMainWindow>
 #include <QListWidget>
@@ -10,11 +10,11 @@ namespace tmpc
 
 class song_widget;
 
-class main_window: public QMainWindow
+class search_queue_window: public QMainWindow
 {
 	Q_OBJECT
 public:
-	main_window();
+	search_queue_window();
 
 protected:
 	void keyPressEvent(QKeyEvent *event);
