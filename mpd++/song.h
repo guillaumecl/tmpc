@@ -28,6 +28,12 @@ public:
 	 */
 	song(mpd_song *s);
 
+	/**
+	 * Creates a song from another pointer.
+	 */
+	song(song &&reused_song);
+
+	song& operator=(song &&s);
 
 	~song();
 

@@ -14,8 +14,8 @@
 int main(int argc, char **argv)
 {
 	QApplication app (argc, argv);
-	tmpc::main_window *window = new tmpc::main_window;
-	window->show();
+	tmpc::main_window window;
+	window.show();
 
 	return app.exec();
 }

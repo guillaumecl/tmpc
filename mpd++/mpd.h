@@ -13,14 +13,8 @@ struct mpd_connection;
 namespace mpdpp
 {
 
-/**
- * Pass this to operator<< of mpd to commit the current search and retrieve the results.
- */
-struct commit
-{
-};
 
-
+class search;
 
 /**
  * Connection to a MPD server.
@@ -53,34 +47,44 @@ public:
 	/**
 	 * The current queue of songs.
 	 */
-	song_ptr_vector queue() const;
+	search queue(bool reuse_song_ptr = true);
 
 	/**
-	 * Adds a search constraint to the current operation.
-	 * Equivalent to the << operator.
+	 * Initiates a search insides the database.
 	 */
-	void add_search_constraint(tag t, const char *value);
+	search search_db(bool reuse_song_ptr = true);
 
 	/**
-	 * Adds a search constraint to the current operation.
-	 * Equivalent to the << operator.
+	 * Initiates a search inside the queue.
 	 */
-	void add_search_constraint(const char *value);
+	search search_queue(bool reuse_song_ptr = true);
 
-
-	mpd& search_db();
-	mpd& search_queue();
-
-	song_ptr_vector commit_search() const;
-
+	/**
+	 * Returns the current song.
+	 */
 	song_ptr current_song() const;
 
+	/**
+	 * Returns the next song in the search.
+	 * Fills the song if specified, instantiate a new song otherwise.
+	 */
+	song_ptr next_song(song_ptr song);
+
+	/**
+	 * Play the specified song inside the queue.
+	 */
 	void play(unsigned int song_id) const;
+
+	/**
+	 * Play the specified song inside the queue.
+	 */
 	void play(const song& song) const;
 
+	/**
+	 * Adds the specified song to the queue.
+	 * @returns the added song.
+	 */
 	song_ptr add(const char *uri);
-
-	song_ptr_vector operator<<(const commit & );
 
 private:
 	/**
@@ -99,12 +103,6 @@ private:
 	 */
 	void throw_if_error() const;
 
-	/**
-	 * After a request that should send songs, call this to fill in a song_ptr_vector..
-	 */
-	void build_song_response(song_ptr_vector & fill_me) const;
-
-
 	mpd(mpd const& c) = delete;
 	mpd& operator=(mpd const& c) = delete;
 
@@ -113,19 +111,59 @@ private:
 	 */
 	mpd_connection * connection_;
 
+	friend class search;
 };
 
-inline mpd& operator<<(mpd &out, const tag_contains & tag)
-{
-	out.add_search_constraint(tag.tag_, tag.value_);
-	return out;
-}
 
-inline mpd& operator<<(mpd &out, const any_tag_contains & tag)
+/**
+ * Iterator for songs.
+ */
+class song_iterator: public std::iterator<std::forward_iterator_tag, song>
 {
-	out.add_search_constraint(tag.value_);
-	return out;
-}
+public:
+	song_iterator& operator++();
+
+	bool operator==(song_iterator const& rhs) const;
+
+	bool operator!=(song_iterator const& rhs) const;
+
+	song_ptr operator->();
+
+	song& operator*();
+private:
+	song_iterator(mpd& mpd, bool reuse_song_ptr);
+
+	mpd& mpd_;
+	song_ptr current_song_;
+	bool reuse_song_ptr_;
+	friend class search;
+};
+
+/**
+ * A search in the database or queue.
+ */
+class search
+{
+public:
+	typedef song_iterator iterator;
+	~search();
+
+	iterator begin();
+	iterator end();
+
+	search& operator<<(const tag_contains& tag);
+	search& operator<<(const any_tag_contains& tag);
+
+	bool empty() const;
+
+private:
+	search(mpd& mpd, bool reuse_song_ptr);
+
+	mpd &mpd_;
+	bool empty_;
+	bool reuse_song_ptr_;
+	friend class mpd;
+};
 
 }
 

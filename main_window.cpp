@@ -17,7 +17,6 @@ main_window::main_window() :
 	QMainWindow(nullptr, Qt::Tool | Qt::WindowStaysOnTopHint)
 {
 	setAttribute(Qt::WA_QuitOnClose);
-	setAttribute(Qt::WA_DeleteOnClose);
 
     QDesktopWidget *desktop = QApplication::desktop();
     QRect screen = desktop->screenGeometry(desktop->screenNumber(QCursor::pos()));
@@ -34,7 +33,6 @@ main_window::main_window() :
 	text_->setMinimumWidth(screen.width() / 2);
 
 	list_ = new QListWidget;
-	list_->setVisible(false);
 	layout->addWidget(list_);
 
 	setCentralWidget(new QWidget);
@@ -82,49 +80,32 @@ void main_window::search(const QString& str)
 {
 	list_->clear();
 
-    bool search_empty = true;
+	mpdpp::search search = mpd_.search_queue();
 
     for(QString const& it : str.split(','))
     {
         if (it.size() > 2)
         {
-            if (search_empty)
-            {
-                mpd_.search_queue();
-                search_empty = false;
-            }
-            mpd_ << mpdpp::any_tag_contains(it.toUtf8());
+            search << mpdpp::any_tag_contains(it.toUtf8());
         }
     }
 
-    if (not search_empty)
-    {
-        for (mpdpp::song_ptr song : mpd_.commit_search())
-        {
-            std::ostringstream stream;
-            stream << *song;
-            QListWidgetItem *item = new QListWidgetItem(QString::fromUtf8(stream.str().c_str()), list_);
-
-            item->setData(Qt::UserRole, song->id());
-        }
-    }
-
-	if (list_->count() > 0)
+	for (mpdpp::song const& song : search)
 	{
-		list_->setVisible(true);
-		list_->sortItems();
-		QSize textHint = text_->sizeHint();
-		QSize listHint = list_->sizeHint();
+		std::ostringstream stream;
+		stream << song;
+		QListWidgetItem *item = new QListWidgetItem(QString::fromUtf8(stream.str().c_str()), list_);
 
-		QSize hint(qMax(textHint.width(), listHint.width()), textHint.height() + listHint.height());
+		item->setData(Qt::UserRole, song.id());
+	}
 
-		resize(hint);
-	}
-	else
-	{
-		list_->setVisible(false);
-		resize(text_->sizeHint());
-	}
+	QSize textHint = text_->sizeHint();
+	QSize listHint = list_->sizeHint();
+
+	QSize hint(qMax(textHint.width(), listHint.width()), textHint.height() + listHint.height());
+
+	resize(hint);
+	list_->sortItems();
 
     QDesktopWidget *desktop = QApplication::desktop();
     QRect screen = desktop->screenGeometry(desktop->screenNumber(QCursor::pos()));

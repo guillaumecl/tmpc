@@ -4,9 +4,6 @@
 
 using namespace mpdpp;
 
-
-
-
 mpd::mpd()
 {
 	connection_ = mpd_connection_new(nullptr, 0, 0);
@@ -46,6 +43,7 @@ void mpd::play(unsigned int song_id) const
 	mpd_response_finish(connection_);
 	throw_if_error();
 }
+
 void mpd::play(const song& song) const
 {
 	play(song.id());
@@ -72,85 +70,30 @@ std::string mpd::error_message() const
 	return std::string(mpd_connection_get_error_message(connection_));
 }
 
-song_ptr_vector mpd::queue() const
-{
-	std::vector<std::shared_ptr<song> > result;
-
-	mpd_send_list_queue_meta(connection_);
-	throw_if_error();
-
-	build_song_response(result);
-
-	return result;
-}
-
-void mpd::build_song_response(song_ptr_vector& fill_me) const
-{
-	mpd_song *new_song;
-	while((new_song = mpd_recv_song(connection_)))
-	{
-		throw_if_error();
-		fill_me.emplace_back(std::make_shared<song>(new_song));
-	}
-	throw_if_error();
-
-	mpd_response_finish(connection_);
-	throw_if_error();
-}
-
 mpd_connection * mpd::internal_connection() const
 {
 	return connection_;
 }
 
-void mpd::add_search_constraint(tag t, const char *value)
+search mpd::queue(bool reuse_song_ptr)
 {
-	mpd_search_add_tag_constraint(connection_, MPD_OPERATOR_DEFAULT, static_cast<mpd_tag_type>(t), value);
+	mpd_send_list_queue_meta(connection_);
 	throw_if_error();
+	return search(*this, reuse_song_ptr);
 }
 
-void mpd::add_search_constraint(const char *value)
-{
-	mpd_search_add_any_tag_constraint(connection_, MPD_OPERATOR_DEFAULT, value);
-	throw_if_error();
-}
-
-song_ptr_vector mpd::operator<<(const commit & /*unused*/)
-{
-	song_ptr_vector result;
-
-	mpd_search_commit(connection_);
-	throw_if_error();
-
-	build_song_response(result);
-
-	return result;
-}
-
-song_ptr_vector mpd::commit_search() const
-{
-	song_ptr_vector result;
-
-	mpd_search_commit(connection_);
-	throw_if_error();
-
-	build_song_response(result);
-
-	return result;
-}
-
-mpd& mpd::search_queue()
+search mpd::search_queue(bool reuse_song_ptr)
 {
 	mpd_search_queue_songs(connection_, false);
 	throw_if_error();
-	return *this;
+	return search(*this, reuse_song_ptr);
 }
 
-mpd& mpd::search_db()
+search mpd::search_db(bool reuse_song_ptr)
 {
 	mpd_search_db_songs(connection_, false);
 	throw_if_error();
-	return *this;
+	return search(*this, reuse_song_ptr);
 }
 
 song_ptr mpd::current_song() const
@@ -162,4 +105,127 @@ song_ptr mpd::current_song() const
 		return std::make_shared<song>(s);
 	}
 	return nullptr;
+}
+
+song_ptr mpd::next_song(song_ptr existing_song)
+{
+	mpd_song *s = mpd_recv_song(connection_);
+	throw_if_error();
+	if (!s)
+	{
+		return nullptr;
+	}
+	if (existing_song)
+	{
+		*existing_song = song(s);
+		return existing_song;
+	}
+	return std::make_shared<song>(s);
+}
+
+
+
+song_iterator::song_iterator(mpd& mpd, bool reuse_song_ptr) :
+	mpd_(mpd),
+	current_song_(nullptr),
+	reuse_song_ptr_(reuse_song_ptr)
+{
+}
+
+song_iterator& song_iterator::operator++()
+{
+	if (reuse_song_ptr_)
+	{
+		current_song_ = mpd_.next_song(current_song_);
+	}
+	else
+	{
+		current_song_ = mpd_.next_song(nullptr);
+	}
+	return *this;
+}
+
+bool song_iterator::operator==(song_iterator const& rhs) const
+{
+	return current_song_ == rhs.current_song_;
+}
+
+bool song_iterator::operator!=(song_iterator const& rhs) const
+{
+	return current_song_ != rhs.current_song_;
+}
+
+song_ptr song_iterator::operator->()
+{
+	return current_song_;
+}
+
+song& song_iterator::operator*()
+{
+	return *current_song_;
+}
+
+
+
+search::search(mpd& mpd, bool reuse_song_ptr) :
+	mpd_(mpd),
+	empty_(true),
+	reuse_song_ptr_(reuse_song_ptr)
+{
+}
+
+search::~search()
+{
+	if (empty_)
+	{
+		mpd_search_cancel(mpd_.connection_);
+		mpd_.throw_if_error();
+	}
+	mpd_response_finish(mpd_.connection_);
+	mpd_.throw_if_error();
+}
+
+search::iterator search::begin()
+{
+	if (empty_)
+	{
+		return end();
+	}
+	else
+	{
+		mpd_search_commit(mpd_.connection_);
+		mpd_.throw_if_error();
+
+		return ++iterator(mpd_, reuse_song_ptr_);
+	}
+}
+
+bool search::empty() const
+{
+	return empty_;
+}
+
+search::iterator search::end()
+{
+	return iterator(mpd_, reuse_song_ptr_);
+}
+
+search& search::operator<<(const tag_contains & tag)
+{
+	empty_ = false;
+	mpd_search_add_tag_constraint(mpd_.connection_,
+								  MPD_OPERATOR_DEFAULT,
+								  static_cast<mpd_tag_type>(tag.tag_), tag.value_);
+	mpd_.throw_if_error();
+	return *this;
+}
+
+search& search::operator<<(const any_tag_contains & tag)
+{
+	empty_ = false;
+	mpd_search_add_any_tag_constraint(mpd_.connection_,
+									  MPD_OPERATOR_DEFAULT,
+									  tag.value_);
+	mpd_.throw_if_error();
+	return *this;
 }
