@@ -8,10 +8,16 @@ using namespace tmpc;
 song_widget::song_widget(QWidget *parent)
 	: QTreeWidget(parent)
 {
+	QStringList labels;
+
 	qRegisterMetaType<mpdpp::song_ptr>("mpdpp::song_ptr");
-	setHeaderHidden(true);
 	setRootIsDecorated(false);
 	setColumnCount(3);
+
+	labels << "Title" << "Artist" << "Album";
+	setHeaderLabels(labels);
+
+	setColumnWidth(0, 400);
 }
 
 void song_widget::fill(mpdpp::search& search)
