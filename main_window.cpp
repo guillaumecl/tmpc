@@ -82,9 +82,9 @@ void main_window::search(const QString& str)
 
 	mpdpp::search search = mpd_.search_queue();
 
-    for(QString const& it : str.split(','))
+    for(QString const& it : str.split(' '))
     {
-        if (it.size() > 2)
+        if (it.size() >= 2)
         {
             search << mpdpp::any_tag_contains(it.toUtf8());
         }
