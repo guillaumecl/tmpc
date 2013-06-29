@@ -46,16 +46,19 @@ public:
 
 	/**
 	 * The current queue of songs.
+	 * @param reuse_song_ptr if true, don't allocate a new song at each iteration.
 	 */
 	search queue(bool reuse_song_ptr = true);
 
 	/**
 	 * Initiates a search insides the database.
+	 * @param reuse_song_ptr if true, don't allocate a new song at each iteration.
 	 */
 	search search_db(bool reuse_song_ptr = true);
 
 	/**
 	 * Initiates a search inside the queue.
+	 * @param reuse_song_ptr if true, don't allocate a new song at each iteration.
 	 */
 	search search_queue(bool reuse_song_ptr = true);
 
@@ -67,21 +70,26 @@ public:
 	/**
 	 * Returns the next song in the search.
 	 * Fills the song if specified, instantiate a new song otherwise.
+	 * @param song to fill if specified and not nullptr
+	 * @returns song if not nullptr, the allocated song otherwise.
 	 */
 	song_ptr next_song(song_ptr song);
 
 	/**
 	 * Play the specified song inside the queue.
+	 * @param song_id song id the play
 	 */
 	void play(unsigned int song_id) const;
 
 	/**
 	 * Play the specified song inside the queue.
+	 * @param song the song to play
 	 */
 	void play(const song& song) const;
 
 	/**
 	 * Adds the specified song to the queue.
+	 * @param uri the URI to add.
 	 * @returns the added song.
 	 */
 	song_ptr add(const char *uri);

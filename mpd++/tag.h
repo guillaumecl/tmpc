@@ -5,6 +5,9 @@ namespace mpdpp
 {
 
 
+/**
+ * The different tags that can be retrieved from the songs.
+ */
 enum class tag
 {
 	unknown=-1,
@@ -26,22 +29,36 @@ enum class tag
 	musicbrainz_track_id,
 };
 
-
+/**
+ * Pass this into a search to search a specific tag value.
+ */
 struct tag_contains
 {
-	tag_contains(tag t, const char *v) :
-		tag_(t),
-		value_(v)
+	/**
+	 * Search for a value for a specific tag.
+	 * @param tag the tag to search
+	 * @param value the value to search for
+	 */
+	tag_contains(tag tag, const char *value) :
+		tag_(tag),
+		value_(value)
 	{}
 
 	tag tag_;
 	const char *value_;
 };
 
+/**
+ * Pass this into a search to search for a value in any tag.
+ */
 struct any_tag_contains
 {
-	any_tag_contains(const char *v) :
-		value_(v)
+	/**
+	 * Search for a value in any tag.
+	 * @param value the value to search for
+	 */
+	any_tag_contains(const char *value) :
+		value_(value)
 	{}
 
 	const char * value_;

@@ -31,8 +31,14 @@ public:
 	 */
 	song(song &&reused_song);
 
+	/**
+	 * Steal another song's data.
+	 */
 	song& operator=(song &&s);
 
+	/**
+	 * Destructor.
+	 */
 	~song();
 
 	/**
@@ -108,6 +114,9 @@ private:
 	mpd_song *song_;
 };
 
+/**
+ * Print the content of the song into the specified stream.
+ */
 std::ostream& operator<<(std::ostream& out, const song & s);
 
 }

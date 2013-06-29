@@ -78,7 +78,7 @@ void search_queue_window::search(const QString& str)
 {
 	list_->clear();
 
-	mpdpp::search search = mpd_.search_queue(false);
+	mpdpp::search search = mpd_.search_queue();
 
     for(QString const& it : str.split(','))
     {
