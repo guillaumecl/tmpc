@@ -87,4 +87,30 @@ return 0;
 #endif
 }
 
+std::ostream& operator<<(std::ostream& out, const song & s)
+{
+	const char * title = s[mpdpp::tag::title];
+	if (title)
+	{
+		out << title;
+	}
+	else
+	{
+		out << s.uri();
+	}
+
+	const char *artist = s[mpdpp::tag::artist];
+	if (artist)
+	{
+		out << " by " << artist;
+	}
+
+	const char * album = s[mpdpp::tag::album];
+	if (album)
+	{
+		out << " (" << album << ")";
+	}
+	return out;
+}
+
 }
