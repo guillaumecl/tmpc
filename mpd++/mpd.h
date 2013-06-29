@@ -114,59 +114,8 @@ private:
 	friend class search;
 };
 
-
-/**
- * Iterator for songs.
- */
-class song_iterator: public std::iterator<std::forward_iterator_tag, song>
-{
-public:
-	song_iterator& operator++();
-
-	bool operator==(song_iterator const& rhs) const;
-
-	bool operator!=(song_iterator const& rhs) const;
-
-	song_ptr operator->();
-
-	song& operator*();
-private:
-	song_iterator(mpd& mpd, bool reuse_song_ptr);
-
-	mpd& mpd_;
-	song_ptr current_song_;
-	bool reuse_song_ptr_;
-	friend class search;
-};
-
-/**
- * A search in the database or queue.
- */
-class search
-{
-public:
-	typedef song_iterator iterator;
-	~search();
-
-	iterator begin();
-	iterator end();
-
-	search& operator<<(const tag_contains& tag);
-	search& operator<<(const any_tag_contains& tag);
-
-	bool empty() const;
-
-private:
-	search(mpd& mpd, bool queue_search, bool reuse_song_ptr);
-
-	mpd &mpd_;
-	bool empty_;
-	bool reuse_song_ptr_;
-	bool queue_search_;
-	friend class mpd;
-};
-
 }
 
+#include "search.h"
 
 #endif
