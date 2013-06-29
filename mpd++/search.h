@@ -13,6 +13,12 @@ namespace mpdpp
 class search
 {
 public:
+	/**
+	 * A search is valid if at least a search criteria was added to it or
+	 * if it references a whole collection (with no criteria)
+	 */
+	bool valid() const;
+
 	typedef song_iterator iterator;
 	~search();
 
@@ -21,8 +27,6 @@ public:
 
 	search& operator<<(const tag_contains& tag);
 	search& operator<<(const any_tag_contains& tag);
-
-	bool empty() const;
 
 private:
 	search(mpd& mpd, bool queue_search, bool reuse_song_ptr);

@@ -43,9 +43,9 @@ search::iterator search::begin()
 }
 
 
-bool search::empty() const
+bool search::valid() const
 {
-	return empty_;
+	return queue_search_ or not empty_;
 }
 
 search::iterator search::end()
