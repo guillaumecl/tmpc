@@ -79,21 +79,21 @@ search mpd::queue(bool reuse_song_ptr)
 {
 	mpd_send_list_queue_meta(connection_);
 	throw_if_error();
-	return search(*this, reuse_song_ptr);
+	return search(*this, true, reuse_song_ptr);
 }
 
 search mpd::search_queue(bool reuse_song_ptr)
 {
 	mpd_search_queue_songs(connection_, false);
 	throw_if_error();
-	return search(*this, reuse_song_ptr);
+	return search(*this, false, reuse_song_ptr);
 }
 
 search mpd::search_db(bool reuse_song_ptr)
 {
 	mpd_search_db_songs(connection_, false);
 	throw_if_error();
-	return search(*this, reuse_song_ptr);
+	return search(*this, false, reuse_song_ptr);
 }
 
 song_ptr mpd::current_song() const
@@ -167,16 +167,17 @@ song& song_iterator::operator*()
 
 
 
-search::search(mpd& mpd, bool reuse_song_ptr) :
+search::search(mpd& mpd, bool queue_search, bool reuse_song_ptr) :
 	mpd_(mpd),
 	empty_(true),
-	reuse_song_ptr_(reuse_song_ptr)
+	reuse_song_ptr_(reuse_song_ptr),
+	queue_search_(queue_search)
 {
 }
 
 search::~search()
 {
-	if (empty_)
+	if (not queue_search_ and empty_)
 	{
 		mpd_search_cancel(mpd_.connection_);
 		mpd_.throw_if_error();
@@ -187,18 +188,21 @@ search::~search()
 
 search::iterator search::begin()
 {
-	if (empty_)
+	if (not queue_search_)
 	{
-		return end();
+		if(empty_)
+		{
+			return end();
+		}
+		else
+		{
+			mpd_search_commit(mpd_.connection_);
+			mpd_.throw_if_error();
+		}
 	}
-	else
-	{
-		mpd_search_commit(mpd_.connection_);
-		mpd_.throw_if_error();
-
-		return ++iterator(mpd_, reuse_song_ptr_);
-	}
+	return ++iterator(mpd_, reuse_song_ptr_);
 }
+
 
 bool search::empty() const
 {

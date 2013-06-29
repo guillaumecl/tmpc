@@ -157,11 +157,12 @@ public:
 	bool empty() const;
 
 private:
-	search(mpd& mpd, bool reuse_song_ptr);
+	search(mpd& mpd, bool queue_search, bool reuse_song_ptr);
 
 	mpd &mpd_;
 	bool empty_;
 	bool reuse_song_ptr_;
+	bool queue_search_;
 	friend class mpd;
 };
 
