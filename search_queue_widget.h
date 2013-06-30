@@ -1,5 +1,5 @@
-#ifndef TMPC_SEARCH_QUEUE_WINDOW_H
-#define TMPC_SEARCH_QUEUE_WINDOW_H
+#ifndef TMPC_SEARCH_QUEUE_WIDGET_H
+#define TMPC_SEARCH_QUEUE_WIDGET_H
 
 #include <QMainWindow>
 #include <QListWidget>
@@ -10,11 +10,11 @@ namespace tmpc
 
 class song_widget;
 
-class search_queue_window: public QMainWindow
+class search_queue_widget: public QWidget
 {
 	Q_OBJECT
 public:
-	search_queue_window();
+	search_queue_widget(mpdpp::mpd& mpd);
 
 protected:
 	void keyPressEvent(QKeyEvent *event);
@@ -22,8 +22,12 @@ protected:
 private slots:
 	void search(const QString& str);
 
+signals:
+	void needResize();
+	void quit();
+
 private:
-	mpdpp::mpd mpd_;
+	mpdpp::mpd &mpd_;
 	QLineEdit *text_;
 	song_widget *list_;
 };
