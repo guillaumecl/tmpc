@@ -15,6 +15,8 @@ search::search(mpd& mpd, bool queue_search, bool reuse_song_ptr, bool add_search
 {
 }
 
+search::search(search&&) = default;
+
 search::~search()
 {
 	if (not queue_search_ and empty_)

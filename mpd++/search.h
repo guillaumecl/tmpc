@@ -15,6 +15,8 @@ class search
 public:
 	typedef song_iterator iterator;
 
+	search(search&& other);
+
 	/**
 	 * Destructor.
 	 */

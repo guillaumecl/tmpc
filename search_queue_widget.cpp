@@ -92,17 +92,28 @@ void search_queue_widget::build_search(const QString& search_terms, mpdpp::searc
 	}
 }
 
+mpdpp::search search_queue_widget::search_type()
+{
+	if (text_->text() == "@")
+	{
+		return mpd_.queue();
+	}
+	if (queue_search())
+	{
+		return mpd_.search_queue();
+	}
+	else
+	{
+		return mpd_.search_db();
+	}
+}
+
 void search_queue_widget::search(const QString& str)
 {
 	list_->clear();
 	QString search_str = str;
 
-	bool db_search = search_str.startsWith('!');
-
-	mpdpp::search search = db_search
-		? mpd_.search_db()
-		: mpd_.search_queue();
-
+	mpdpp::search search = search_type();
 	build_search(search_str, search);
 
 	list_->fill(search);
@@ -125,11 +136,23 @@ QSize search_queue_widget::sizeHint() const
 
 void search_queue_widget::play(mpdpp::song_ptr song)
 {
-	if (song and song->queued())
+	if (song)
 	{
-		mpd_.play(*song);
-		emit quit();
+		if (queue_search())
+		{
+			mpd_.play(*song);
+			emit quit();
+		}
+		else
+		{
+			mpd_.play(*mpd_.add(song->uri()));
+		}
 	}
+}
+
+bool search_queue_widget::queue_search() const
+{
+	return not text_->text().startsWith('!');
 }
 
 }
