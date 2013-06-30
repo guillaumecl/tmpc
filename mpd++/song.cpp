@@ -67,7 +67,7 @@ void song::set_pos(unsigned int new_pos)
 	return mpd_song_set_pos(song_, new_pos);
 }
 
-unsigned int song::get_pos() const
+unsigned int song::position() const
 {
 	return mpd_song_get_pos(song_);
 }

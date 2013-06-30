@@ -53,7 +53,7 @@ private:
 	 * @param queue_search if true, the search is actually a pointer to the queue.
 	 * @param reuse_song_ptr if true, there will be only one pointer to a song for all iterators.
 	 */
-	search(mpd& mpd, bool queue_search, bool reuse_song_ptr);
+	search(mpd& mpd, bool queue_search, bool reuse_song_ptr, bool add_search);
 
 	/**
 	 * Connection to the mpd server.
@@ -75,6 +75,11 @@ private:
 	 * If true, the search is actually a pointer to the queue.
 	 */
 	bool queue_search_;
+
+	/**
+	 * If true, this is a non iterable search that adds its results into the queue.
+	 */
+	bool add_search_;
 
 	friend class mpd;
 };

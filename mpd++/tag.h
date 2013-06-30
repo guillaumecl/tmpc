@@ -29,6 +29,10 @@ enum class tag
 	musicbrainz_track_id,
 };
 
+tag tag_from_string(const char *string);
+
+const char * tag_to_string(tag tag);
+
 /**
  * Pass this into a search to search a specific tag value.
  */

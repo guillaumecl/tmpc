@@ -79,21 +79,34 @@ search mpd::queue(bool reuse_song_ptr)
 {
 	mpd_send_list_queue_meta(connection_);
 	throw_if_error();
-	return search(*this, true, reuse_song_ptr);
+	return search(*this, true, reuse_song_ptr, false);
+}
+
+void mpd::clear_queue()
+{
+	mpd_run_clear(connection_);
+	throw_if_error();
 }
 
 search mpd::search_queue(bool reuse_song_ptr)
 {
 	mpd_search_queue_songs(connection_, false);
 	throw_if_error();
-	return search(*this, false, reuse_song_ptr);
+	return search(*this, false, reuse_song_ptr, false);
 }
 
 search mpd::search_db(bool reuse_song_ptr)
 {
 	mpd_search_db_songs(connection_, false);
 	throw_if_error();
-	return search(*this, false, reuse_song_ptr);
+	return search(*this, false, reuse_song_ptr, false);
+}
+
+search mpd::add_from_db()
+{
+	mpd_search_add_db_songs(connection_, false);
+	throw_if_error();
+	return search(*this, false, false, true);
 }
 
 song_ptr mpd::current_song() const

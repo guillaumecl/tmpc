@@ -34,14 +34,14 @@ int main(int argc, char **argv)
 		str << *current;
 
 		QLabel *label = new QLabel(QString::fromUtf8(str.str().c_str()));
-		tmpc::main_window *window = new tmpc::main_window(label);
+		tmpc::main_window *window = new tmpc::main_window(mpd, label);
 
 		window->show();
 	}
 	else
 	{
 		tmpc::search_queue_widget *song_widget = new tmpc::search_queue_widget(mpd);
-		tmpc::main_window *window = new tmpc::main_window(song_widget);
+		tmpc::main_window *window = new tmpc::main_window(mpd, song_widget);
 
 		window->connect(song_widget, SIGNAL(quit()), SLOT(close()));
 		window->connect(song_widget, SIGNAL(needResize()), SLOT(resizeToFit()));

@@ -6,11 +6,12 @@ using namespace mpdpp;
 
 
 
-search::search(mpd& mpd, bool queue_search, bool reuse_song_ptr) :
+search::search(mpd& mpd, bool queue_search, bool reuse_song_ptr, bool add_search) :
 	mpd_(mpd),
 	empty_(true),
 	reuse_song_ptr_(reuse_song_ptr),
-	queue_search_(queue_search)
+	queue_search_(queue_search),
+	add_search_(add_search)
 {
 }
 
@@ -19,6 +20,11 @@ search::~search()
 	if (not queue_search_ and empty_)
 	{
 		mpd_search_cancel(mpd_.connection_);
+		mpd_.throw_if_error();
+	}
+	else if (add_search_ and not empty_)
+	{
+		mpd_search_commit(mpd_.connection_);
 		mpd_.throw_if_error();
 	}
 	mpd_response_finish(mpd_.connection_);

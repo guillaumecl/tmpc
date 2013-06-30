@@ -5,10 +5,13 @@
 
 #include <QKeyEvent>
 
+#include "mpd++/mpd.h"
+
 using namespace tmpc;
 
-main_window::main_window(QWidget *centralWidget) :
-	QMainWindow(nullptr, Qt::Tool | Qt::WindowStaysOnTopHint)
+main_window::main_window(mpdpp::mpd& mpd, QWidget *centralWidget) :
+	QMainWindow(nullptr, Qt::Tool | Qt::WindowStaysOnTopHint),
+	mpd_(mpd)
 {
 	setAttribute(Qt::WA_QuitOnClose);
 
@@ -40,6 +43,14 @@ void main_window::keyPressEvent(QKeyEvent *event)
 	{
 		event->accept();
 		close();
+	}
+	else if(event->modifiers() & Qt::ControlModifier)
+	{
+		if (event->key() == Qt::Key_P)
+		{
+			mpd_.clear_queue();
+			event->accept();
+		}
 	}
 	else
 	{

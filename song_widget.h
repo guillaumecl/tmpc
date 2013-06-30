@@ -21,18 +21,18 @@ public:
 	typedef QTreeWidgetItem item_type;
 	song_widget(QWidget *parent = 0);
 
-	void add_song(mpdpp::song_ptr song);
-
 	mpdpp::song_ptr selection() const;
 
 public slots:
 	void fill(mpdpp::search& search);
+	void fill(mpdpp::search&& search);
 
 signals:
 	void song_selected(mpdpp::song_ptr song);
 
 private slots:
 	void item_double_clicked();
+	void add_song(mpdpp::song_ptr song);
 
 protected:
 	virtual void keyPressEvent(QKeyEvent *event);

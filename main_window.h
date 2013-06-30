@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "mpd++/forward.h"
+
 namespace tmpc
 {
 
@@ -10,7 +12,7 @@ class main_window: public QMainWindow
 {
 	Q_OBJECT
 public:
-	main_window(QWidget *centralWidget);
+	main_window(mpdpp::mpd& mpd, QWidget *centralWidget);
 
 public slots:
 	void resizeToFit();
@@ -20,6 +22,7 @@ protected:
 
 private:
 	QWidget *main_widget_;
+	mpdpp::mpd& mpd_;
 };
 
 

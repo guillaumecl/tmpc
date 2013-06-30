@@ -27,36 +27,47 @@ song_widget::song_widget(QWidget *parent)
 			this, SLOT(item_double_clicked()));
 }
 
+void song_widget::add_song(mpdpp::song_ptr song)
+{
+	item_type *item = new item_type(this);
+
+	if (song->queued())
+	{
+		item->setIcon(0, queue_icon_);
+	}
+	else
+	{
+		item->setIcon(0, db_icon_);
+	}
+
+	const char *title = song->tag(mpdpp::tag::title);
+	if (title)
+	{
+		item->setText(0, QString::fromUtf8(title));
+	}
+	else
+	{
+		item->setText(0, QString::fromUtf8(song->uri()));
+	}
+	item->setText(1, QString::fromUtf8(song->tag(mpdpp::tag::artist)));
+	item->setText(2, QString::fromUtf8(song->tag(mpdpp::tag::album)));
+	item->setData(Qt::UserRole, 0, QVariant::fromValue(song));
+}
+
 void song_widget::fill(mpdpp::search& search)
 {
+	clear();
 	for (auto it = search.begin(); it != search.end(); ++it)
 	{
-		mpdpp::song_ptr song = it.steal_ptr();
-		item_type *item = new item_type(this);
-
-		if (song->queued())
-		{
-			item->setIcon(0, queue_icon_);
-		}
-		else
-		{
-			item->setIcon(0, db_icon_);
-		}
-
-		const char *title = song->tag(mpdpp::tag::title);
-		if (title)
-		{
-			item->setText(0, QString::fromUtf8(title));
-		}
-		else
-		{
-			item->setText(0, QString::fromUtf8(song->uri()));
-		}
-		item->setText(1, QString::fromUtf8(song->tag(mpdpp::tag::artist)));
-		item->setText(2, QString::fromUtf8(song->tag(mpdpp::tag::album)));
-		item->setData(Qt::UserRole, 0, QVariant::fromValue(song));
+		add_song(it.steal_ptr());
 	}
 	sortItems(0, Qt::AscendingOrder);
+}
+
+void song_widget::fill(mpdpp::search&& search)
+{
+	// this is not an infinite loop, search is a lvalue so the above will be called.
+	fill(search);
 }
 
 mpdpp::song_ptr song_widget::selection() const

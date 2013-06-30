@@ -30,6 +30,9 @@ signals:
 	void quit();
 
 private:
+	void build_search(const QString& search_terms, mpdpp::search &&search);
+	void build_search(const QString& search_terms, mpdpp::search &search);
+
 	mpdpp::mpd &mpd_;
 	QLineEdit *text_;
 	song_widget *list_;

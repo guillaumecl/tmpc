@@ -85,7 +85,7 @@ public:
 	 * Position of this song in the queue.
 	 * The value is undefined if you did not obtain this song from the queue.
 	 */
-	unsigned int get_pos() const;
+	unsigned int position() const;
 
 	/**
 	 * Id of this song in the playlist.

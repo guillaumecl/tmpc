@@ -20,7 +20,6 @@ search_queue_widget::search_queue_widget(mpdpp::mpd& mpd) :
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
-
 	text_ = new QLineEdit;
 	text_->setFrame(false);
 	layout->addWidget(text_);
@@ -45,10 +44,51 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 		list_->setFocus();
 		QWidget::keyPressEvent(event);
 	}
+	else if (event->key() == Qt::Key_O
+			 and event->modifiers() & Qt::ControlModifier)
+	{
+		build_search(text_->text(), mpd_.add_from_db());
+		list_->fill(mpd_.queue());
+	}
 	else
 	{
 		text_->setFocus();
 		QWidget::keyPressEvent(event);
+	}
+}
+
+void search_queue_widget::build_search(const QString& search_terms, mpdpp::search &&search)
+{
+	build_search(search_terms, search);
+}
+
+void search_queue_widget::build_search(const QString& search_terms, mpdpp::search &search)
+{
+	QString terms = search_terms;
+	if (terms.startsWith('!'))
+	{
+		terms = terms.remove(0, 1);
+	}
+	for(QString const& it : terms.split(',', QString::SkipEmptyParts))
+	{
+		if (it.size() > 0 and it[0] == ':')
+		{
+			QStringList tag_value = it.split(':', QString::SkipEmptyParts);
+			if (tag_value.count() == 2)
+			{
+				mpdpp::tag tag = mpdpp::tag_from_string(tag_value[0].toUtf8());
+				const QString& value = tag_value[1];
+				if (tag != mpdpp::tag::unknown and value.size() >= 2)
+				{
+					search << mpdpp::tag_contains(tag,
+												  value.toUtf8());
+				}
+			}
+		}
+		else if (it.size() >= 2)
+		{
+			search << mpdpp::any_tag_contains(it.toUtf8());
+		}
 	}
 }
 
@@ -58,20 +98,12 @@ void search_queue_widget::search(const QString& str)
 	QString search_str = str;
 
 	bool db_search = search_str.startsWith('!');
-	if (db_search)
-	{
-		search_str.remove(0, 1);
-	}
 
-	mpdpp::search search = db_search ? mpd_.search_db() : mpd_.search_queue();
+	mpdpp::search search = db_search
+		? mpd_.search_db()
+		: mpd_.search_queue();
 
-    for(QString const& it : search_str.split(','))
-    {
-        if (it.size() >= 2)
-        {
-            search << mpdpp::any_tag_contains(it.toUtf8());
-        }
-    }
+	build_search(search_str, search);
 
 	list_->fill(search);
 
@@ -81,8 +113,12 @@ void search_queue_widget::search(const QString& str)
 QSize search_queue_widget::sizeHint() const
 {
 	QSize textHint = text_->sizeHint();
-	QSize listHint = list_->sizeHint();
+	QSize listHint(0,0);
 
+	if (list_->model()->rowCount() > 0)
+	{
+		listHint = list_->sizeHint();
+	}
 	QSize size = QSize(qMax(textHint.width(), listHint.width()), textHint.height() + listHint.height());
 	return size;
 }

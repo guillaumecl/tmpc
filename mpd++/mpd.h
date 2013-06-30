@@ -63,6 +63,11 @@ public:
 	search search_queue(bool reuse_song_ptr = true);
 
 	/**
+	 * Initiates a search from the db that adds all the results into the queue.
+	 */
+	search add_from_db();
+
+	/**
 	 * Returns the current song.
 	 */
 	song_ptr current_song() const;
@@ -94,6 +99,10 @@ public:
 	 */
 	song_ptr add(const char *uri);
 
+	/**
+	 * Removes all the songs from the queue.
+	 */
+	void clear_queue();
 private:
 	/**
 	 * Returns the errors that happened at the last call to mpd.
