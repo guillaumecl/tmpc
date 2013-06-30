@@ -46,11 +46,6 @@ void main_window::keyPressEvent(QKeyEvent *event)
 	}
 	else if(event->modifiers() & Qt::ControlModifier)
 	{
-		if (event->key() == Qt::Key_P)
-		{
-			mpd_.clear_queue();
-			event->accept();
-		}
 	}
 	else
 	{

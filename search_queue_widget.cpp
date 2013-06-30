@@ -45,10 +45,25 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 		QWidget::keyPressEvent(event);
 	}
 	else if (event->key() == Qt::Key_O
+			 and event->modifiers() & Qt::ControlModifier
+			 and not queue_search())
+	{
+		QString search_term = text_->text();
+
+		build_search(search_term, mpd_.add_from_db());
+
+		// Remove the ! to make the list match with the content
+		search_term.remove(0, 1);
+		text_->setText(search_term);
+	}
+	else if (event->key() == Qt::Key_P
 			 and event->modifiers() & Qt::ControlModifier)
 	{
-		build_search(text_->text(), mpd_.add_from_db());
-		list_->fill(mpd_.queue());
+		mpd_.clear_queue();
+		if (queue_search())
+		{
+			list_->clear();
+		}
 	}
 	else
 	{
@@ -57,12 +72,12 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 	}
 }
 
-void search_queue_widget::build_search(const QString& search_terms, mpdpp::search &&search)
+mpdpp::search& search_queue_widget::build_search(const QString& search_terms, mpdpp::search &&search)
 {
-	build_search(search_terms, search);
+	return build_search(search_terms, search);
 }
 
-void search_queue_widget::build_search(const QString& search_terms, mpdpp::search &search)
+mpdpp::search& search_queue_widget::build_search(const QString& search_terms, mpdpp::search &search)
 {
 	QString terms = search_terms;
 	if (terms.startsWith('!'))
@@ -90,6 +105,7 @@ void search_queue_widget::build_search(const QString& search_terms, mpdpp::searc
 			search << mpdpp::any_tag_contains(it.toUtf8());
 		}
 	}
+	return search;
 }
 
 mpdpp::search search_queue_widget::search_type()

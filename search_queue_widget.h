@@ -32,8 +32,8 @@ signals:
 
 private:
 	mpdpp::search search_type();
-	void build_search(const QString& search_terms, mpdpp::search &&search);
-	void build_search(const QString& search_terms, mpdpp::search &search);
+	mpdpp::search& build_search(const QString& search_terms, mpdpp::search &&search);
+	mpdpp::search& build_search(const QString& search_terms, mpdpp::search &search);
 
 	mpdpp::mpd &mpd_;
 	QLineEdit *text_;
