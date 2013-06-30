@@ -25,8 +25,6 @@ search_queue_widget::search_queue_widget(mpdpp::mpd& mpd) :
 	text_->setFrame(false);
 	layout->addWidget(text_);
 
-//	text_->setMinimumWidth(screen.width() / 2);
-
 	list_ = new song_widget;
 	layout->addWidget(list_);
 
@@ -57,10 +55,17 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 void search_queue_widget::search(const QString& str)
 {
 	list_->clear();
+	QString search_str = str;
 
-	mpdpp::search search = mpd_.search_queue();
+	bool db_search = search_str.startsWith('!');
+	if (db_search)
+	{
+		search_str.remove(0, 1);
+	}
 
-    for(QString const& it : str.split(','))
+	mpdpp::search search = db_search ? mpd_.search_db() : mpd_.search_queue();
+
+    for(QString const& it : search_str.split(','))
     {
         if (it.size() >= 2)
         {
