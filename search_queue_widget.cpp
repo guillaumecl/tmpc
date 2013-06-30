@@ -76,4 +76,13 @@ void search_queue_widget::search(const QString& str)
 	emit needResize();
 }
 
+QSize search_queue_widget::sizeHint() const
+{
+	QSize textHint = text_->sizeHint();
+	QSize listHint = list_->sizeHint();
+
+	QSize size = QSize(qMax(textHint.width(), listHint.width()), textHint.height() + listHint.height());
+	return size;
+}
+
 }

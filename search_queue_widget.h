@@ -16,6 +16,8 @@ class search_queue_widget: public QWidget
 public:
 	search_queue_widget(mpdpp::mpd& mpd);
 
+	virtual QSize sizeHint() const;
+
 protected:
 	void keyPressEvent(QKeyEvent *event);
 

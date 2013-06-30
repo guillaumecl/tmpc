@@ -21,8 +21,16 @@ void main_window::resizeToFit()
     QDesktopWidget *desktop = QApplication::desktop();
     QRect screen = desktop->screenGeometry(desktop->screenNumber(QCursor::pos()));
 
-	resize(centralWidget()->sizeHint());
-	move((screen.width() - width()) / 2, (screen.height() - height()) / 4);
+	QSize centralSize = centralWidget()->sizeHint();
+
+	int width = (4*screen.width()) / 5;
+	int height = centralSize.height();
+
+	setGeometry(QRect(
+				(screen.width() - width) / 2,
+				(screen.height() - height) / 4,
+				width,
+				height));
 }
 
 
