@@ -21,6 +21,9 @@ QT4_WRAP_UI(TMPC_FORMS_HEADERS
 
 )
 
+QT4_ADD_RESOURCES(TMPC_RESOURCES
+  tmpc.qrc
+)
 
 add_executable(tmpc
   tmpc.cpp
@@ -29,6 +32,7 @@ add_executable(tmpc
   song_widget.cpp
   ${TMPC_HEADERS_MOC}
   ${TMPC_FORMS_HEADERS}
+  ${TMPC_RESOURCES}
 )
 
 target_link_libraries(tmpc mpd++ ${QT_LIBRARIES})

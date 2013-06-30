@@ -1,12 +1,16 @@
 #include "song_widget.h"
 #include "mpd++/mpd.h"
 
+
+#include <QKeyEvent>
 #include <sstream>
 
 using namespace tmpc;
 
 song_widget::song_widget(QWidget *parent)
-	: QTreeWidget(parent)
+	: QTreeWidget(parent),
+	  queue_icon_(":/icons/song"),
+	  db_icon_(":/icons/db")
 {
 	QStringList labels;
 
@@ -18,6 +22,9 @@ song_widget::song_widget(QWidget *parent)
 	setHeaderLabels(labels);
 
 	setColumnWidth(0, 400);
+
+	connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
+			this, SLOT(item_double_clicked()));
 }
 
 void song_widget::fill(mpdpp::search& search)
@@ -26,6 +33,15 @@ void song_widget::fill(mpdpp::search& search)
 	{
 		mpdpp::song_ptr song = it.steal_ptr();
 		item_type *item = new item_type(this);
+
+		if (song->queued())
+		{
+			item->setIcon(0, queue_icon_);
+		}
+		else
+		{
+			item->setIcon(0, db_icon_);
+		}
 
 		const char *title = song->tag(mpdpp::tag::title);
 		if (title)
@@ -52,4 +68,29 @@ mpdpp::song_ptr song_widget::selection() const
 		return qvariant_cast<mpdpp::song_ptr>(current_item->data(Qt::UserRole, 0));
 	}
 	return nullptr;
+}
+
+void song_widget::item_double_clicked()
+{
+	mpdpp::song_ptr song = selection();
+	if (song)
+	{
+		emit song_selected(song);
+	}
+}
+
+
+void song_widget::keyPressEvent(QKeyEvent *event)
+{
+	if (event->key() == Qt::Key_Return)
+	{
+		mpdpp::song_ptr song = selection();
+		if (song)
+		{
+			event->accept();
+			emit song_selected(song);
+			return;
+		}
+	}
+	QTreeWidget::keyPressEvent(event);
 }

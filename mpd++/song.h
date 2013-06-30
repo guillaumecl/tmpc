@@ -100,6 +100,11 @@ public:
 	unsigned int priority() const;
 
 	/**
+	 * True if the song comes from the queue, false if it comes from the database.
+	 */
+	bool queued() const;
+
+	/**
 	 * Operator[] will return the corresponding tag.
 	 */
 	const char * operator[] (mpdpp::tag tag) const { return this->tag(tag); }

@@ -18,6 +18,7 @@
 int main(int argc, char **argv)
 {
 	QApplication app(argc, argv);
+	Q_INIT_RESOURCE(tmpc);
 
 	QStringList arguments = QApplication::arguments();
 	mpdpp::mpd mpd;

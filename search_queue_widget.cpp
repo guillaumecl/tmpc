@@ -30,22 +30,19 @@ search_queue_widget::search_queue_widget(mpdpp::mpd& mpd) :
 	list_ = new song_widget;
 	layout->addWidget(list_);
 
-	connect(text_, SIGNAL(textChanged(const QString&)), this, SLOT(search(const QString&)));
+	connect(text_, SIGNAL(textChanged(const QString&)),
+			this, SLOT(search(const QString&)));
+
+	connect(list_, SIGNAL(song_selected(mpdpp::song_ptr)),
+			this, SLOT(play(mpdpp::song_ptr)));
 }
 
 void search_queue_widget::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Return
-			 and list_->selection())
-	{
-		mpd_.play(*list_->selection());
-		event->accept();
-		emit quit();
-	}
-	else if (event->key() == Qt::Key_Up
-			 or event->key() == Qt::Key_Down
-			 or event->key() == Qt::Key_PageUp
-			 or event->key() == Qt::Key_PageDown)
+	if (event->key() == Qt::Key_Up
+		or event->key() == Qt::Key_Down
+		or event->key() == Qt::Key_PageUp
+		or event->key() == Qt::Key_PageDown)
 	{
 		list_->setFocus();
 		QWidget::keyPressEvent(event);
@@ -83,6 +80,15 @@ QSize search_queue_widget::sizeHint() const
 
 	QSize size = QSize(qMax(textHint.width(), listHint.width()), textHint.height() + listHint.height());
 	return size;
+}
+
+void search_queue_widget::play(mpdpp::song_ptr song)
+{
+	if (song and song->queued())
+	{
+		mpd_.play(*song);
+		emit quit();
+	}
 }
 
 }

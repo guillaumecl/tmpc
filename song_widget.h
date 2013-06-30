@@ -4,6 +4,7 @@
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <QMetaType>
+#include <QIcon>
 
 #include "mpd++/forward.h"
 
@@ -30,6 +31,15 @@ public slots:
 signals:
 	void song_selected(mpdpp::song_ptr song);
 
+private slots:
+	void item_double_clicked();
+
+protected:
+	virtual void keyPressEvent(QKeyEvent *event);
+
+private:
+	QIcon queue_icon_;
+	QIcon db_icon_;
 
 };
 

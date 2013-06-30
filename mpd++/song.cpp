@@ -87,6 +87,12 @@ return 0;
 #endif
 }
 
+bool song::queued() const
+{
+	// wrong, but whatever for now.
+	return id() != 0;
+}
+
 std::ostream& operator<<(std::ostream& out, const song & s)
 {
 	const char * title = s[mpdpp::tag::title];

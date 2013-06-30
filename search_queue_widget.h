@@ -19,10 +19,11 @@ public:
 	virtual QSize sizeHint() const;
 
 protected:
-	void keyPressEvent(QKeyEvent *event);
+	virtual void keyPressEvent(QKeyEvent *event);
 
 private slots:
 	void search(const QString& str);
+	void play(mpdpp::song_ptr song);
 
 signals:
 	void needResize();
