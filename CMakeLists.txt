@@ -12,6 +12,7 @@ add_definitions(${QT_DEFINITIONS})
 
 
 QT4_WRAP_CPP(TMPC_HEADERS_MOC
+  application.h
   search_queue_widget.h
   main_window.h
   song_widget.h
@@ -26,6 +27,7 @@ QT4_ADD_RESOURCES(TMPC_RESOURCES
 )
 
 add_executable(tmpc
+  application.cpp
   tmpc.cpp
   main_window.cpp
   search_queue_widget.cpp

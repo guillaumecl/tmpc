@@ -29,6 +29,11 @@ public:
 	mpd();
 
 	/**
+	 * Steal another mpd connection.
+	 */
+	mpd(mpd && other) = default;
+
+	/**
 	 * Destroys an mpd object, effectively closing the connection and freeing all memory.
 	 */
 	~mpd();

@@ -10,18 +10,39 @@
 #include <QLabel>
 
 #include <sstream>
+#include <QMessageBox>
 
 #include "search_queue_widget.h"
 #include "main_window.h"
+#include "application.h"
 
+mpdpp::mpd connect()
+{
+	QString message;
+	try
+	{
+		return mpdpp::mpd();
+	}
+	catch(const std::exception & e)
+	{
+		message = QString::fromUtf8(e.what());
+	}
+	catch(...)
+	{
+		message = "Unknown exception while connecting to mpd";
+	}
+	QMessageBox::critical(nullptr, "tmpc", message);
+	std::terminate();
+	return mpdpp::mpd();
+}
 
 int main(int argc, char **argv)
 {
-	QApplication app(argc, argv);
+	tmpc::application app(argc, argv);
 	Q_INIT_RESOURCE(tmpc);
 
 	QStringList arguments = QApplication::arguments();
-	mpdpp::mpd mpd;
+	mpdpp::mpd mpd = connect();
 
 	if (arguments.contains("--current"))
 	{
