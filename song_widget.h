@@ -18,16 +18,37 @@ class song_widget: public QTreeWidget
 {
 Q_OBJECT
 public:
+	/**
+	 * the item type. Use this instead of QTreeWidgetItem in case the class changes later.
+	 */
 	typedef QTreeWidgetItem item_type;
+
+	/**
+	 * Creates a song widget.
+	 * @param parent the parent widget.
+	 */
 	song_widget(QWidget *parent = 0);
 
+	/**
+	 * The current selection of the widget.
+	 */
 	mpdpp::song_ptr selection() const;
 
 public slots:
+	/**
+	 * Fills the list from a search.
+	 */
 	void fill(mpdpp::search& search);
+
+	/**
+	 * Fills the list from a search.
+	 */
 	void fill(mpdpp::search&& search);
 
 signals:
+	/**
+	 * Emitted when a song is selected.
+	 */
 	void song_selected(mpdpp::song_ptr song);
 
 private slots:
@@ -35,6 +56,9 @@ private slots:
 	void add_song(mpdpp::song_ptr song);
 
 protected:
+	/**
+	 * Respond to a key event.
+	 */
 	virtual void keyPressEvent(QKeyEvent *event);
 
 private:

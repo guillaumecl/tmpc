@@ -38,3 +38,11 @@ add_executable(tmpc
 )
 
 target_link_libraries(tmpc mpd++ ${QT_LIBRARIES})
+
+
+configure_file(${CMAKE_SOURCE_DIR}/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile @ONLY)
+
+add_custom_target(doc
+  COMMAND doxygen ${CMAKE_BINARY_DIR}/Doxyfile
+  WORKING_DIR ${CMAKE_BINARY_DIR}
+)

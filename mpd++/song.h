@@ -49,7 +49,7 @@ public:
 	 */
 	const char * uri() const;
 
-    /*
+    /**
 	 * Retrieves a specific tag from the file.
 	 */
 	const char * tag(mpdpp::tag tag) const;

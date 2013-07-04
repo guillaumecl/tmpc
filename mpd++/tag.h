@@ -48,7 +48,16 @@ struct tag_contains
 		value_(value)
 	{}
 
+	/**
+	 * The tag to search.
+	 */
 	tag tag_;
+
+	/**
+	 * Value of the tag to search.
+	 *
+	 * This will not be freed, and the pointer must remain valid until the search is done.
+	 */
 	const char *value_;
 };
 
@@ -65,6 +74,11 @@ struct any_tag_contains
 		value_(value)
 	{}
 
+	/**
+	 * Value to search.
+	 *
+	 * This will not be freed, and the pointer must remain valid until the search is done.
+	 */
 	const char * value_;
 };
 

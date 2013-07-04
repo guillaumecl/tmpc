@@ -13,8 +13,15 @@ namespace mpdpp
 class search
 {
 public:
+	/**
+	 * Iterator to the search.
+	 * For now this is a song_iterator but this might change if needed.
+	 */
 	typedef song_iterator iterator;
 
+	/**
+	 * Move constructor for searches.
+	 */
 	search(search&& other) = default;
 
 	/**
