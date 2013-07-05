@@ -16,6 +16,7 @@ QT4_WRAP_CPP(TMPC_HEADERS_MOC
   search_queue_widget.h
   main_window.h
   song_widget.h
+  history_line_edit.h
 )
 
 QT4_WRAP_UI(TMPC_FORMS_HEADERS
@@ -32,6 +33,7 @@ add_executable(tmpc
   main_window.cpp
   search_queue_widget.cpp
   song_widget.cpp
+  history_line_edit.cpp
   ${TMPC_HEADERS_MOC}
   ${TMPC_FORMS_HEADERS}
   ${TMPC_RESOURCES}

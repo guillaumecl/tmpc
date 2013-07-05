@@ -1,5 +1,6 @@
 #include "search_queue_widget.h"
 #include "song_widget.h"
+#include "history_line_edit.h"
 
 #include <QLineEdit>
 #include <QVBoxLayout>
@@ -20,11 +21,11 @@ search_queue_widget::search_queue_widget(mpdpp::mpd& mpd) :
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
-	text_ = new QLineEdit;
+	text_ = new history_line_edit("search_queue_widget", this);
 	text_->setFrame(false);
 	layout->addWidget(text_);
 
-	list_ = new song_widget;
+	list_ = new song_widget(this);
 	layout->addWidget(list_);
 
 	connect(text_, SIGNAL(textChanged(const QString&)),

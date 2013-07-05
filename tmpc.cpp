@@ -41,6 +41,9 @@ int main(int argc, char **argv)
 	tmpc::application app(argc, argv);
 	Q_INIT_RESOURCE(tmpc);
 
+    QCoreApplication::setOrganizationName("baobob");
+    QCoreApplication::setApplicationName("tmpc");
+
 	QStringList arguments = QApplication::arguments();
 	mpdpp::mpd mpd = connect();
 

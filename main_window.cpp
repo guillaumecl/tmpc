@@ -14,6 +14,7 @@ main_window::main_window(mpdpp::mpd& mpd, QWidget *centralWidget) :
 	mpd_(mpd)
 {
 	setAttribute(Qt::WA_QuitOnClose);
+	setAttribute(Qt::WA_DeleteOnClose);
 
 	setCentralWidget(centralWidget);
 	resizeToFit();

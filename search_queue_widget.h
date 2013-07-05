@@ -9,6 +9,7 @@ namespace tmpc
 {
 
 class song_widget;
+class history_line_edit;
 
 
 /**
@@ -94,7 +95,7 @@ private:
 	mpdpp::search& build_search(const QString& search_terms, mpdpp::search &search);
 
 	mpdpp::mpd &mpd_;
-	QLineEdit *text_;
+	history_line_edit *text_;
 	song_widget *list_;
 };
 
