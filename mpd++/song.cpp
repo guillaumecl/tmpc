@@ -12,10 +12,7 @@ song::song(mpd_song *s) :
 
 song::song(song && reused_song)
 {
-	mpd_song_free(song_);
-	song_ = reused_song.song_;
-
-	reused_song.song_ = nullptr;
+	std::swap(song_, reused_song.song_);
 }
 
 song& song::operator=(song && reused_song)
@@ -26,10 +23,7 @@ song& song::operator=(song && reused_song)
 
 song::~song()
 {
-	if(song_)
-	{
-		mpd_song_free(song_);
-	}
+	mpd_song_free(song_);
 }
 
 const char * song::uri() const
