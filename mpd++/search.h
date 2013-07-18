@@ -55,6 +55,11 @@ public:
 	 */
 	search& operator<<(const any_tag_contains& tag);
 
+	/**
+	 * Add a constraint to the search.
+	 */
+	search& operator<<(const uri_contains& tag);
+
 private:
 	/**
 	 * Creates a search.

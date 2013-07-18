@@ -92,12 +92,19 @@ mpdpp::search& search_queue_widget::build_search(const QString& search_terms, mp
 			QStringList tag_value = it.split(':', QString::SkipEmptyParts);
 			if (tag_value.count() == 2)
 			{
-				mpdpp::tag tag = mpdpp::tag_from_string(tag_value[0].toUtf8());
-				const QString& value = tag_value[1];
-				if (tag != mpdpp::tag::unknown and value.size() >= 2)
+				if (tag_value[0] == "uri")
 				{
-					search << mpdpp::tag_contains(tag,
-												  value.toUtf8());
+					search << mpdpp::uri_contains(tag_value[1].toUtf8());
+				}
+				else
+				{
+					mpdpp::tag tag = mpdpp::tag_from_string(tag_value[0].toUtf8());
+					const QString& value = tag_value[1];
+					if (tag != mpdpp::tag::unknown and value.size() >= 2)
+					{
+						search << mpdpp::tag_contains(tag,
+													  value.toUtf8());
+					}
 				}
 			}
 		}

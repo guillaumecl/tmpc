@@ -82,6 +82,27 @@ struct any_tag_contains
 	const char * value_;
 };
 
+/**
+ * Pass this into a search to search for a value in the uri.
+ */
+struct uri_contains
+{
+	/**
+	 * Search for a value in any tag.
+	 * @param value the value to search for
+	 */
+	uri_contains(const char *value) :
+		value_(value)
+	{}
+
+	/**
+	 * Value to search.
+	 *
+	 * This will not be freed, and the pointer must remain valid until the search is done.
+	 */
+	const char * value_;
+};
+
 
 }
 

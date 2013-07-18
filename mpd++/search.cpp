@@ -78,3 +78,13 @@ search& search::operator<<(const any_tag_contains & tag)
 	mpd_.throw_if_error();
 	return *this;
 }
+
+search& search::operator<<(const uri_contains & tag)
+{
+	empty_ = false;
+	mpd_search_add_uri_constraint(mpd_.connection_,
+								  MPD_OPERATOR_DEFAULT,
+								  tag.value_);
+	mpd_.throw_if_error();
+	return *this;
+}
