@@ -1,5 +1,87 @@
 * tmpc - Tiny mpc client
-
 This is a little frontend to mpc that allows to quickly jump to songs.
 
+** Basic usage
 
+tmpc currently has two mode of operation :
+
+- search mode : searches for songs and plays them, or adds them into the playlist
+
+- display mode : shows the currently played song
+
+
+The search mode is the default one. To launch tmpc with the display mode, the following must be typed :
+
+
+$ tmpc --current
+
+
+
+** Search mode
+
+In this mode, you're given a basic window with a text field.
+
+*** Find songs
+Text entered here allows to search inside the playlist. As soon as enough data is entered, mpd is requested for the selected text.
+
+Some modificators can be used to modify the behaviour or the search.
+
+By default, text entered is searched inside any tag, inside the current database.
+
+**** Database search versus playlist search
+
+By default, the current playlist is searched. To search inside the database, prefix the request with !
+
+**** Show the whole playlist
+
+The "magic key" @ can be used to show the whole playlist.
+
+**** Search inside a tag
+
+The construct :tag:value can be used to search value inside a tag.
+
+The list of tags is as set by mpd, i.e. currently one of :
+ artist, album, album_ artist, title, track, name, genre, date, composer, performer, comment, disc, musicbrainz_artist_id, musicbranz_album_id, musicbranz_album_artist_id, musicbranz_track_id
+
+The special value "uri" can also be used as a tag that contains the URI of the file.
+
+**** Several conditions
+
+ Two or more conditions can be set by separating them by ,
+
+**** Examples
+
+Finds all live songs from artist "red hot":
+
+!:artist:red hot,:album:live
+
+
+
+Same thing but in the current playlist:
+
+:artist:red hot,album:live
+
+Lighter to write, but might find some other things than what we search:
+
+red hot,live
+*** Operate with songs
+When a song is selected, this is what you can do with it:
+
+**** Queue and play the song
+With the Return key, the song is played. If the search operates on the database, the song is queued first.
+
+**** Add all found songs to the queue
+With Ctrl + O, all found songs are appended to the queue.
+
+**** Clear the queue
+With Ctrl + P, the current queue is cleared. This can be used before Ctrl + O to replace the queue.
+
+*** Exit
+
+Press escape at any moment to exit the application.
+
+** Display mode
+
+This simple mode allows to display the currently playing song.
+
+This can be useful if you don't recognize what song is being played.
