@@ -1,0 +1,5 @@
+* tmpc - Tiny mpc client
+
+This is a little frontend to mpc that allows to quickly jump to songs.
+
+
