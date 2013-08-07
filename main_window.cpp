@@ -10,7 +10,7 @@
 using namespace tmpc;
 
 main_window::main_window(mpdpp::mpd& mpd, QWidget *centralWidget) :
-	QMainWindow(nullptr, Qt::Tool | Qt::WindowStaysOnTopHint),
+	QMainWindow(nullptr, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint),
 	mpd_(mpd)
 {
 	setAttribute(Qt::WA_QuitOnClose);
