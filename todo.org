@@ -1,0 +1,19 @@
+* mpd++
+** TODO Add a way to wait for events
+Basically we can send mpd_send_idle_mask and then poll the fd for data (using mpd_connection_get_fd)
+Once we got data we can run mpd_recv_idle.
+
+For this, we can add these methods in the mpd class:
+  - start_idle  : starts an idle wait
+  - stop_idle   : stops the current idle wait
+  - idle_events : iterator to a list of events that occurred.
+
+That will allow to keep using only one thread. We can also use mpd_run_idle or friends to poll in another thread.
+** TODO Add playlist-oriented facilities
+* Search mode
+** TODO Add a mode to select and visualize playlists
+Playlists and queues are similar. The search window probably can run mostly unmodified for playlist requests. 
+** TODO Allow to save playlists and modify playlists
+We just need a way to save the result window to a playlist.
+* Display mode
+** TODO Wait for events and show the next song if needed.
