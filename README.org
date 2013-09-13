@@ -3,7 +3,7 @@ This is a little frontend to mpc that allows to quickly jump to songs.
 
 ** Basic usage
 
-tmpc currently has two mode of operation :
+tmpc currently has two modes of operation :
 
 - search mode : searches for songs and plays them, or adds them into the playlist
 
