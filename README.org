@@ -43,6 +43,7 @@ The construct :tag:value can be used to search value inside a tag.
 The list of tags is as set by mpd, i.e. currently one of :
  artist, album, album_ artist, title, track, name, genre, date, composer, performer, comment, disc, musicbrainz_artist_id, musicbranz_album_id, musicbranz_album_artist_id, musicbranz_track_id
 
+If no tag name is set (i.e. ::value is sent), the comment tag is used. Don't forget to enable the comment metadata in the mpd configuration file for this to work.
 The special value "uri" can also be used as a tag that contains the URI of the file.
 
 **** Several conditions

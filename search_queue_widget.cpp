@@ -89,21 +89,31 @@ mpdpp::search& search_queue_widget::build_search(const QString& search_terms, mp
 	{
 		if (it.size() > 0 and it[0] == ':')
 		{
-			QStringList tag_value = it.split(':', QString::SkipEmptyParts);
-			if (tag_value.count() == 2)
+			QStringList tag_value = it.split(':');
+			if (tag_value.count() == 3)
 			{
-				if (tag_value[0] == "uri")
+				const QString& tag_name = tag_value[1];
+				const QString& value = tag_value[2];
+
+				if (tag_name == "uri")
 				{
-					search << mpdpp::uri_contains(tag_value[1].toUtf8());
+					search << mpdpp::uri_contains(value.toUtf8());
 				}
 				else
 				{
-					mpdpp::tag tag = mpdpp::tag_from_string(tag_value[0].toUtf8());
-					const QString& value = tag_value[1];
+					mpdpp::tag tag;
+					if (tag_name.size() == 0)
+					{
+						tag = mpdpp::tag::comment;
+					}
+					else
+					{
+						tag = mpdpp::tag_from_string(tag_name.toUtf8());
+					}
+
 					if (tag != mpdpp::tag::unknown and value.size() >= 2)
 					{
-						search << mpdpp::tag_contains(tag,
-													  value.toUtf8());
+						search << mpdpp::tag_contains(tag, value.toUtf8());
 					}
 				}
 			}
