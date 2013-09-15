@@ -96,6 +96,7 @@ public:
 	/**
 	 * Priority of this song in the playlist.
 	 * The value is undefined if you did not obtain this song from the queue.
+	 * A higher priority means that it will be played first when "random" mode is enabled.
 	 */
 	unsigned int priority() const;
 
