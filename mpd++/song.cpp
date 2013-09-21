@@ -5,19 +5,22 @@
 namespace mpdpp
 {
 
-song::song(mpd_song *s) :
-	song_(s)
+song::song(mpd_song *s, bool queue) :
+	song_(s),
+	queue_(queue)
 {
 }
 
 song::song(song && reused_song)
 {
 	std::swap(song_, reused_song.song_);
+	queue_ = reused_song.queue_;
 }
 
 song& song::operator=(song && reused_song)
 {
 	std::swap(song_, reused_song.song_);
+	queue_ = reused_song.queue_;
 	return *this;
 }
 
@@ -83,8 +86,7 @@ return 0;
 
 bool song::queued() const
 {
-	// wrong, but whatever for now.
-	return id() != 0;
+	return queue_;
 }
 
 std::ostream& operator<<(std::ostream& out, const song & s)

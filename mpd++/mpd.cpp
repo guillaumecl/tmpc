@@ -57,7 +57,7 @@ song_ptr mpd::add(const char *uri)
 	mpd_song *new_song = mpd_run_get_queue_song_id(connection_, id);
 	throw_if_error();
 
-	return std::make_shared<song>(new_song);
+	return std::make_shared<song>(new_song, true);
 }
 
 unsigned int mpd::error() const
@@ -79,7 +79,7 @@ search mpd::queue(bool reuse_song_ptr)
 {
 	mpd_send_list_queue_meta(connection_);
 	throw_if_error();
-	return search(*this, true, reuse_song_ptr, false);
+	return search(*this, true, true, reuse_song_ptr, false);
 }
 
 void mpd::clear_queue()
@@ -92,21 +92,21 @@ search mpd::search_queue(bool reuse_song_ptr)
 {
 	mpd_search_queue_songs(connection_, false);
 	throw_if_error();
-	return search(*this, false, reuse_song_ptr, false);
+	return search(*this, false, true, reuse_song_ptr, false);
 }
 
 search mpd::search_db(bool reuse_song_ptr)
 {
 	mpd_search_db_songs(connection_, false);
 	throw_if_error();
-	return search(*this, false, reuse_song_ptr, false);
+	return search(*this, false, false, reuse_song_ptr, false);
 }
 
 search mpd::add_from_db()
 {
 	mpd_search_add_db_songs(connection_, false);
 	throw_if_error();
-	return search(*this, false, false, true);
+	return search(*this, false, false, false, true);
 }
 
 song_ptr mpd::current_song() const
@@ -115,12 +115,12 @@ song_ptr mpd::current_song() const
 	throw_if_error();
 	if (s)
 	{
-		return std::make_shared<song>(s);
+		return std::make_shared<song>(s, true);
 	}
 	return nullptr;
 }
 
-song_ptr mpd::next_song(song_ptr existing_song)
+song_ptr mpd::next_song(song_ptr existing_song, bool queue)
 {
 	mpd_song *s = mpd_recv_song(connection_);
 	throw_if_error();
@@ -130,10 +130,10 @@ song_ptr mpd::next_song(song_ptr existing_song)
 	}
 	if (existing_song)
 	{
-		*existing_song = song(s);
+		*existing_song = song(s, queue);
 		return existing_song;
 	}
-	return std::make_shared<song>(s);
+	return std::make_shared<song>(s, queue);
 }
 
 void mpd::set_song_priority(song_ptr song, unsigned int priority)

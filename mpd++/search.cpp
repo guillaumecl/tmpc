@@ -6,10 +6,11 @@ using namespace mpdpp;
 
 
 
-search::search(mpd& mpd, bool queue_search, bool reuse_song_ptr, bool add_search) :
+search::search(mpd& mpd, bool allow_empty_search, bool queue_search, bool reuse_song_ptr, bool add_search) :
 	mpd_(mpd),
 	empty_(true),
 	reuse_song_ptr_(reuse_song_ptr),
+	allow_empty_search_(allow_empty_search),
 	queue_search_(queue_search),
 	add_search_(add_search)
 {
@@ -17,7 +18,7 @@ search::search(mpd& mpd, bool queue_search, bool reuse_song_ptr, bool add_search
 
 search::~search()
 {
-	if (not queue_search_ and empty_)
+	if (not allow_empty_search_ and empty_)
 	{
 		mpd_search_cancel(mpd_.connection_);
 		mpd_.throw_if_error();
@@ -33,7 +34,7 @@ search::~search()
 
 search::iterator search::begin()
 {
-	if (not queue_search_)
+	if (not allow_empty_search_)
 	{
 		if(empty_)
 		{
@@ -45,18 +46,18 @@ search::iterator search::begin()
 			mpd_.throw_if_error();
 		}
 	}
-	return ++iterator(mpd_, reuse_song_ptr_);
+	return ++iterator(mpd_, reuse_song_ptr_, queue_search_);
 }
 
 
 bool search::valid() const
 {
-	return queue_search_ or not empty_;
+	return allow_empty_search_ or not empty_;
 }
 
 search::iterator search::end()
 {
-	return iterator(mpd_, reuse_song_ptr_);
+	return iterator(mpd_, reuse_song_ptr_, queue_search_);
 }
 
 search& search::operator<<(const tag_contains & tag)

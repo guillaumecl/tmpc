@@ -4,10 +4,11 @@
 using namespace mpdpp;
 
 
-song_iterator::song_iterator(mpd& mpd, bool reuse_song_ptr) :
+song_iterator::song_iterator(mpd& mpd, bool reuse_song_ptr, bool queue) :
 	mpd_(mpd),
 	current_song_(nullptr),
-	reuse_song_ptr_(reuse_song_ptr)
+	reuse_song_ptr_(reuse_song_ptr),
+	queue_(queue)
 {
 }
 
@@ -15,11 +16,11 @@ song_iterator& song_iterator::operator++()
 {
 	if (reuse_song_ptr_)
 	{
-		current_song_ = mpd_.next_song(current_song_);
+		current_song_ = mpd_.next_song(current_song_, queue_);
 	}
 	else
 	{
-		current_song_ = mpd_.next_song(nullptr);
+		current_song_ = mpd_.next_song(nullptr, queue_);
 	}
 	return *this;
 }

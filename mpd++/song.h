@@ -24,7 +24,7 @@ public:
 	/**
 	 * Constructs a song from the underlying mpd object.
 	 */
-	song(mpd_song *s);
+	song(mpd_song *s, bool queue);
 
 	/**
 	 * Creates a song from another pointer.
@@ -118,6 +118,11 @@ private:
 	 * Underlying mpd object.
 	 */
 	mpd_song *song_;
+
+	/**
+	 * True if the song references the queue.
+	 */
+	bool queue_;
 };
 
 /**

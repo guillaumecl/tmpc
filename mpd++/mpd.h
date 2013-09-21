@@ -83,7 +83,7 @@ public:
 	 * @param song to fill if specified and not nullptr
 	 * @returns song if not nullptr, the allocated song otherwise.
 	 */
-	song_ptr next_song(song_ptr song);
+	song_ptr next_song(song_ptr song, bool queue);
 
 	/**
 	 * Play the specified song inside the queue.

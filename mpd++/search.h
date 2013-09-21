@@ -64,10 +64,11 @@ private:
 	/**
 	 * Creates a search.
 	 * @param mpd the connection to the mpd server.
+	 * @param allow_empty_search if true, allow to search with no parameter.
 	 * @param queue_search if true, the search is actually a pointer to the queue.
 	 * @param reuse_song_ptr if true, there will be only one pointer to a song for all iterators.
 	 */
-	search(mpd& mpd, bool queue_search, bool reuse_song_ptr, bool add_search);
+	search(mpd& mpd, bool allow_empty_search, bool queue_search, bool reuse_song_ptr, bool add_search);
 
 	/**
 	 * Connection to the mpd server.
@@ -84,6 +85,11 @@ private:
 	 * If true, there will be only one pointer to a song for all iterators.
 	 */
 	bool reuse_song_ptr_;
+
+	/**
+	 * If true, allow to search with no parameter.
+	 */
+	bool allow_empty_search_;
 
 	/**
 	 * If true, the search is actually a pointer to the queue.
