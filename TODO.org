@@ -10,6 +10,7 @@ For this, we can add these methods in the mpd class:
 
 That will allow to keep using only one thread. We can also use mpd_run_idle or friends to poll in another thread.
 ** TODO Add playlist-oriented facilities
+** TODO Document all fields and functions using the documentation of the mpd protocol
 * Search mode
 ** TODO Add a mode to select and visualize playlists
 Playlists and queues are similar. The search window probably can run mostly unmodified for playlist requests. 
