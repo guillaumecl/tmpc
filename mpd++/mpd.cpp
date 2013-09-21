@@ -135,3 +135,9 @@ song_ptr mpd::next_song(song_ptr existing_song)
 	}
 	return std::make_shared<song>(s);
 }
+
+void mpd::set_song_priority(song_ptr song, unsigned int priority)
+{
+	mpd_run_prio_id(connection_, song->id(), priority);
+	throw_if_error();
+}

@@ -108,6 +108,13 @@ public:
 	 * Removes all the songs from the queue.
 	 */
 	void clear_queue();
+
+	/**
+	 * Changes the priority of a song.
+	 */
+	void set_song_priority(song_ptr song, unsigned int priority);
+
+
 private:
 	/**
 	 * Returns the errors that happened at the last call to mpd.
