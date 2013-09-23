@@ -103,5 +103,25 @@ void song_widget::keyPressEvent(QKeyEvent *event)
 			return;
 		}
 	}
+	else if (event->key() == Qt::Key_Plus)
+	{
+		mpdpp::song_ptr song = selection();
+		if (song and song->queued())
+		{
+			event->accept();
+			emit priority_increased(song);
+			return;
+		}
+	}
+	else if (event->key() == Qt::Key_Minus)
+	{
+		mpdpp::song_ptr song = selection();
+		if (song and song->queued())
+		{
+			event->accept();
+			emit priority_decreased(song);
+			return;
+		}
+	}
 	QTreeWidget::keyPressEvent(event);
 }

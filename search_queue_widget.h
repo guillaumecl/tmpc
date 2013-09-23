@@ -55,6 +55,18 @@ private slots:
 	 */
 	void play(mpdpp::song_ptr song);
 
+	/**
+	 * Increase the priority of the specified song.
+	 * @param song a pointer to the song to modify.
+	 */
+	void increase_priority(mpdpp::song_ptr song);
+
+	/**
+	 * Decrease the priority of the specified song.
+	 * @param song a pointer to the song to modify.
+	 */
+	void decrease_priority(mpdpp::song_ptr song);
+
 signals:
 	/**
 	 * Emitted when this widget size has changed. The parent may respond to this by resizing itself accordingly.

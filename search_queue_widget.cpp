@@ -33,6 +33,12 @@ search_queue_widget::search_queue_widget(mpdpp::mpd& mpd) :
 
 	connect(list_, SIGNAL(song_selected(mpdpp::song_ptr)),
 			this, SLOT(play(mpdpp::song_ptr)));
+
+	connect(list_, SIGNAL(priority_increased(mpdpp::song_ptr)),
+			this, SLOT(increase_priority(mpdpp::song_ptr)));
+
+	connect(list_, SIGNAL(priority_decreased(mpdpp::song_ptr)),
+			this, SLOT(decrease_priority(mpdpp::song_ptr)));
 }
 
 void search_queue_widget::keyPressEvent(QKeyEvent *event)
@@ -187,6 +193,19 @@ void search_queue_widget::play(mpdpp::song_ptr song)
 bool search_queue_widget::queue_search() const
 {
 	return not text_->text().startsWith('!');
+}
+
+void search_queue_widget::increase_priority(mpdpp::song_ptr song)
+{
+	mpd_.set_song_priority(song, song->priority() + 1);
+}
+
+void search_queue_widget::decrease_priority(mpdpp::song_ptr song)
+{
+	if (song->priority() > 0)
+	{
+		mpd_.set_song_priority(song, song->priority() - 1);
+	}
 }
 
 }

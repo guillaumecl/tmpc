@@ -51,6 +51,16 @@ signals:
 	 */
 	void song_selected(mpdpp::song_ptr song);
 
+	/**
+	 * Increase the priority of the specified song.
+	 */
+	void priority_increased(mpdpp::song_ptr song);
+
+	/**
+	 * Decrease the priority of the specified song.
+	 */
+	void priority_decreased(mpdpp::song_ptr song);
+
 private slots:
 	void item_double_clicked();
 	void add_song(mpdpp::song_ptr song);
