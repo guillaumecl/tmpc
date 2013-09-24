@@ -138,10 +138,17 @@ song_ptr mpd::next_song(song_ptr existing_song, bool queue)
 
 void mpd::set_song_priority(song_ptr song, unsigned int priority)
 {
+#if ((LIBMPDCLIENT_MAJOR_VERSION == 2 && LIBMPDCLIENT_MINOR_VERSION > 7) || LIBMPDCLIENT_MAJOR_VERSION > 2)
 	mpd_run_prio_id(connection_, priority, song->id());
 	throw_if_error();
 
 	auto ptr = mpd_run_get_queue_song_id(connection_, song->id());
 	*song = mpdpp::song(ptr, song->queued());
 	throw_if_error();
+#else
+    if (priority)
+    {
+        song = 0;
+    }
+#endif
 }
