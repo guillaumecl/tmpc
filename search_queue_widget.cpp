@@ -197,7 +197,10 @@ bool search_queue_widget::queue_search() const
 
 void search_queue_widget::increase_priority(mpdpp::song_ptr song)
 {
-	mpd_.set_song_priority(song, song->priority() + 1);
+	if (song->priority() < 255)
+	{
+		mpd_.set_song_priority(song, song->priority() + 1);
+	}
 }
 
 void search_queue_widget::decrease_priority(mpdpp::song_ptr song)

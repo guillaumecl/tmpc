@@ -60,6 +60,10 @@ public:
 	 */
 	search& operator<<(const uri_contains& tag);
 
+	/**
+	 * Returns true if this search references the queue.
+	 */
+	bool queue_search() const;
 private:
 	/**
 	 * Creates a search.

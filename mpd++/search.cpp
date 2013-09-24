@@ -60,6 +60,11 @@ search::iterator search::end()
 	return iterator(mpd_, reuse_song_ptr_, queue_search_);
 }
 
+bool search::queue_search() const
+{
+	return queue_search_;
+}
+
 search& search::operator<<(const tag_contains & tag)
 {
 	empty_ = false;

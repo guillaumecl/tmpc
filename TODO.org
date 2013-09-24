@@ -13,7 +13,7 @@ That will allow to keep using only one thread. We can also use mpd_run_idle or f
 ** TODO Document all fields and functions using the documentation of the mpd protocol
 * Search mode
 ** TODO Add a mode to select and visualize playlists
-Playlists and queues are similar. The search window probably can run mostly unmodified for playlist requests. 
+Playlists and queues are similar. The search window probably can run mostly unmodified for playlist requests.
 ** TODO Allow to save playlists and modify playlists
 We just need a way to save the result window to a playlist.
 ** TODO Allow to see in a db search if the songs are inside the current playlist
@@ -23,6 +23,8 @@ Maybe we could ask for the whole queue and remember its identifiers, but this co
 
 We can also use send_queue_changes_brief to know if some queue information changed which would probably be quite efficient.
 ** TODO Remove a song from the queue
-** TODO Allow to change the priority of a song to enable queue plays
+** DONE Allow to change the priority of a song to enable queue plays
+** DONE Allow to visualize the priority of a song
+Done but probably not satisfactory yet. Maybe a completely unrelated way to show it would be better (sort order ?)
 * Display mode
 ** TODO Wait for events and show the next song if needed.

@@ -18,7 +18,7 @@ song_widget::song_widget(QWidget *parent)
 	setRootIsDecorated(false);
 	setColumnCount(3);
 
-	labels << "Title" << "Artist" << "Album";
+	labels << "Title" << "Artist" << "Album" << "Priority";
 	setHeaderLabels(labels);
 
 	setColumnWidth(0, 400);
@@ -34,6 +34,7 @@ void song_widget::add_song(mpdpp::song_ptr song)
 	if (song->queued())
 	{
 		item->setIcon(0, queue_icon_);
+		item->setText(3, QString::number(song->priority()));
 	}
 	else
 	{
@@ -57,6 +58,14 @@ void song_widget::add_song(mpdpp::song_ptr song)
 void song_widget::fill(mpdpp::search& search)
 {
 	clear();
+	if (search.queue_search())
+	{
+		setColumnCount(4);
+	}
+	else
+	{
+		setColumnCount(3);
+	}
 	for (auto it = search.begin(); it != search.end(); ++it)
 	{
 		add_song(it.steal_ptr());
@@ -110,6 +119,7 @@ void song_widget::keyPressEvent(QKeyEvent *event)
 		{
 			event->accept();
 			emit priority_increased(song);
+			currentItem()->setText(3, QString::number(song->priority()));
 			return;
 		}
 	}
@@ -120,6 +130,7 @@ void song_widget::keyPressEvent(QKeyEvent *event)
 		{
 			event->accept();
 			emit priority_decreased(song);
+			currentItem()->setText(3, QString::number(song->priority()));
 			return;
 		}
 	}
