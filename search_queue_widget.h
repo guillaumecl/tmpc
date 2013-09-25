@@ -67,6 +67,12 @@ private slots:
 	 */
 	void decrease_priority(mpdpp::song_ptr song);
 
+	/**
+	 * Removes a song from the queue.
+	 * @param song a pointer to the song to delete.
+	 */
+	void remove_song(mpdpp::song_ptr song);
+
 signals:
 	/**
 	 * Emitted when this widget size has changed. The parent may respond to this by resizing itself accordingly.

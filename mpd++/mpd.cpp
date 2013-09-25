@@ -152,3 +152,9 @@ void mpd::set_song_priority(song_ptr song, unsigned int priority)
     }
 #endif
 }
+
+void mpd::delete_song(song_ptr song)
+{
+	mpd_run_delete_id(connection_, song->id());
+	throw_if_error();
+}

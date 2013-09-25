@@ -39,6 +39,9 @@ search_queue_widget::search_queue_widget(mpdpp::mpd& mpd) :
 
 	connect(list_, SIGNAL(priority_decreased(mpdpp::song_ptr)),
 			this, SLOT(decrease_priority(mpdpp::song_ptr)));
+
+	connect(list_, SIGNAL(song_removed(mpdpp::song_ptr)),
+			this, SLOT(remove_song(mpdpp::song_ptr)));
 }
 
 void search_queue_widget::keyPressEvent(QKeyEvent *event)
@@ -209,6 +212,11 @@ void search_queue_widget::decrease_priority(mpdpp::song_ptr song)
 	{
 		mpd_.set_song_priority(song, song->priority() - 1);
 	}
+}
+
+void search_queue_widget::remove_song(mpdpp::song_ptr song)
+{
+	mpd_.delete_song(song);
 }
 
 }

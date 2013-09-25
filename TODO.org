@@ -22,7 +22,7 @@ This is complicated since we don't have this information in the search result.
 Maybe we could ask for the whole queue and remember its identifiers, but this could be wrong if the queue changes and we're not notified. We could then make an idle event to know when the queue changes, but this small feature would get somewhat complicated and add some unneeded overload…
 
 We can also use send_queue_changes_brief to know if some queue information changed which would probably be quite efficient.
-** TODO Remove a song from the queue
+** DONE Remove a song from the queue
 ** DONE Allow to change the priority of a song to enable queue plays
 ** DONE Allow to visualize the priority of a song
 Done but probably not satisfactory yet. Maybe a completely unrelated way to show it would be better (sort order ?)

@@ -61,6 +61,11 @@ signals:
 	 */
 	void priority_decreased(mpdpp::song_ptr song);
 
+	/**
+	 * Remove the specified song from the queue.
+	 */
+	void song_removed(mpdpp::song_ptr song);
+
 private slots:
 	void item_double_clicked();
 	void add_song(mpdpp::song_ptr song);

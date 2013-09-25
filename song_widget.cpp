@@ -134,5 +134,17 @@ void song_widget::keyPressEvent(QKeyEvent *event)
 			return;
 		}
 	}
+	else if (event->key() == Qt::Key_Delete)
+	{
+		mpdpp::song_ptr song = selection();
+		if (song and song->queued())
+		{
+			event->accept();
+			emit song_removed(song);
+			QModelIndex selected = currentIndex();
+			model()->removeRow(selected.row(), selected.parent());
+			return;
+		}
+	}
 	QTreeWidget::keyPressEvent(event);
 }
