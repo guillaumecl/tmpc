@@ -28,6 +28,14 @@ We can also use send_queue_changes_brief to know if some queue information chang
 Done but probably not satisfactory yet. Maybe a completely unrelated way to show it would be better (sort order ?)
 * Display mode
 ** TODO Wait for events and show the next song if needed.
-** TODO Show all file information in this window
-All tags can be displayed.
+** DONE Show all file information in this window
+CLOSED: [2013-09-27 ven. 23:18]
+All tags must be displayed.
 We can also show the file URI and filename, the song lenqth, its priority…
+
+This information should be properly formatted so that it is easily readable.
+* General
+** TODO Close tmpc when the focus is lost
+This could or could not be a good idea. Since tmpc typically does not appear as a top level window, it can be tricky to remember if one instance is currently open if its behind something else.
+
+On the other hand, closing when focus is lost would make it annoying to have some focus-stealing app running.

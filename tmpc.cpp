@@ -55,11 +55,20 @@ int main(int argc, char **argv)
 			return 0;
 		}
 		std::ostringstream str;
-		str << *current;
+		str << "<center><h1>" << *current << "</h1></center>";
 
+		bool first = true;
 		for (const auto &pair : current->tags())
 		{
-			str << "<br />";
+			if (first)
+			{
+				first = false;
+				str << "<hr />";
+			}
+			else
+			{
+				str << "<br />";
+			}
 			str << "<b>" << tag_to_string(pair.first) << "</b>: ";
 			str << pair.second;
 		}
