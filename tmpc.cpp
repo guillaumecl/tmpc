@@ -57,6 +57,13 @@ int main(int argc, char **argv)
 		std::ostringstream str;
 		str << *current;
 
+		for (const auto &pair : current->tags())
+		{
+			str << "<br />";
+			str << "<b>" << tag_to_string(pair.first) << "</b>: ";
+			str << pair.second;
+		}
+
 		QLabel *label = new QLabel(QString::fromUtf8(str.str().c_str()));
 		tmpc::main_window *window = new tmpc::main_window(mpd, label);
 
