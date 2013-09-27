@@ -29,7 +29,8 @@ We can also use send_queue_changes_brief to know if some queue information chang
 Done but probably not satisfactory yet. Maybe a completely unrelated way to show it would be better (sort order ?)
 ** TODO Allow to use command lists to optimize bandwidth a little in some cases.
 * Display mode
-** TODO Wait for events and show the next song if needed.
+** DONE Wait for events and show the next song if needed.
+CLOSED: [2013-09-28 sam. 01:48]
 ** DONE Show all file information in this window
 CLOSED: [2013-09-27 ven. 23:18]
 All tags must be displayed.

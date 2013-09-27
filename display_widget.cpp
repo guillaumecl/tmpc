@@ -1,8 +1,27 @@
 #include "display_widget.h"
 #include <sstream>
 
+#include <QTimer>
+
+#include <mpd/client.h>
+
 
 using namespace tmpc;
+
+display_widget::display_widget(mpdpp::mpd& mpd) :
+	mpd_(mpd)
+{
+	display(mpd_.current_song());
+
+	mpd_.monitor(mpdpp::event::player);
+	QTimer *timer = new QTimer(this);
+
+	connect(timer, SIGNAL(timeout()),
+			this, SLOT(poll()));
+
+	timer->start(250);
+}
+
 
 void display_widget::display(mpdpp::song_ptr song)
 {
@@ -30,10 +49,15 @@ void display_widget::display(mpdpp::song_ptr song)
 	}
 
 	setText(QString::fromUtf8(str.str().c_str()));
+	emit needResize();
 }
 
-display_widget::display_widget(mpdpp::mpd& mpd) :
-	mpd_(mpd)
+
+void display_widget::poll()
 {
-	display(mpd_.current_song());
+	if (mpd_.stop_monitor())
+	{
+		display(mpd_.current_song());
+	}
+	mpd_.monitor(mpdpp::event::player);
 }

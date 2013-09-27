@@ -16,6 +16,10 @@ public:
 
 private slots:
 	void display(mpdpp::song_ptr song);
+	void poll();
+signals:
+	void needResize();
+	void quit();
 
 private:
 	mpdpp::mpd &mpd_;

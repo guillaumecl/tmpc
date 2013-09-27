@@ -47,22 +47,19 @@ int main(int argc, char **argv)
 	QStringList arguments = QApplication::arguments();
 	mpdpp::mpd mpd = connect();
 
-	tmpc::main_window *window;
+	QWidget *widget;
 	if (arguments.contains("--current"))
 	{
-		tmpc::display_widget *display = new tmpc::display_widget(mpd);
-		window = new tmpc::main_window(mpd, display);
+		widget = new tmpc::display_widget(mpd);
 	}
 	else
 	{
-		tmpc::search_queue_widget *song_widget = new tmpc::search_queue_widget(mpd);
-		window = new tmpc::main_window(mpd, song_widget);
-
-		window->connect(song_widget, SIGNAL(quit()), SLOT(close()));
-		window->connect(song_widget, SIGNAL(needResize()), SLOT(resizeToFit()));
+		widget = new tmpc::search_queue_widget(mpd);
 	}
 
-
+	tmpc::main_window *window = new tmpc::main_window(mpd, widget);
+	window->connect(widget, SIGNAL(quit()), SLOT(close()));
+	window->connect(widget, SIGNAL(needResize()), SLOT(resizeToFit()));
 
 	return app.exec();
 }
