@@ -6,6 +6,7 @@
 #include <ostream>
 
 #include "tag.h"
+#include "song_tag_iterator.h"
 
 struct mpd_song;
 
@@ -13,7 +14,6 @@ namespace mpdpp
 {
 
 class song;
-
 
 /**
  * Represents a song inside a playlist.
@@ -109,6 +109,11 @@ public:
 	 * Operator[] will return the corresponding tag.
 	 */
 	const char * operator[] (mpdpp::tag tag) const { return this->tag(tag); }
+
+	song_tags tags() const
+	{
+		return song_tags(this);
+	}
 
 private:
 	song(const song& s) = delete;

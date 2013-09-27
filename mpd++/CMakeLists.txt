@@ -5,6 +5,7 @@ add_library(mpd++ STATIC
   song.cpp
   exception.cpp
   song_iterator.cpp
+  song_tag_iterator.cpp
   search.cpp
   tag.cpp
 )
