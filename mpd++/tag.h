@@ -59,7 +59,7 @@ struct tag_iterator: public std::iterator<std::forward_iterator_tag, tag>
 	 */
 	tag_iterator& operator++()
 	{
-		if (tag_ >= tag::musicbrainz_track_id or tag_ == tag::unknown)
+		if (tag_ == tag::musicbrainz_track_id or not valid())
 		{
 			tag_ = tag::unknown;
 		}
@@ -94,6 +94,15 @@ struct tag_iterator: public std::iterator<std::forward_iterator_tag, tag>
 	{
 		return tag_;
 	}
+
+	/**
+	 * Returns if this tag is valid.
+	 */
+	bool valid() const
+	{
+		return tag_ != tag::unknown;
+	}
+
 private:
 	tag tag_;
 };
