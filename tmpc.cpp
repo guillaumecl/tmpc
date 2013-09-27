@@ -9,10 +9,10 @@
 #include <QApplication>
 #include <QLabel>
 
-#include <sstream>
 #include <QMessageBox>
 
 #include "search_queue_widget.h"
+#include "display_widget.h"
 #include "main_window.h"
 #include "application.h"
 
@@ -47,47 +47,19 @@ int main(int argc, char **argv)
 	QStringList arguments = QApplication::arguments();
 	mpdpp::mpd mpd = connect();
 
+	tmpc::main_window *window;
 	if (arguments.contains("--current"))
 	{
-		mpdpp::song_ptr current = mpd.current_song();
-		if(!current)
-		{
-			return 0;
-		}
-		std::ostringstream str;
-		str << "<center><h1>" << *current << "</h1></center>";
-
-		bool first = true;
-		for (const auto &pair : current->tags())
-		{
-			if (first)
-			{
-				first = false;
-				str << "<hr />";
-			}
-			else
-			{
-				str << "<br />";
-			}
-			str << "<b>" << tag_to_string(pair.first) << "</b>: ";
-			str << pair.second;
-		}
-
-		QLabel *label = new QLabel(QString::fromUtf8(str.str().c_str()));
-		tmpc::main_window *window = new tmpc::main_window(mpd, label);
-
-		window->show();
+		tmpc::display_widget *display = new tmpc::display_widget(mpd);
+		window = new tmpc::main_window(mpd, display);
 	}
 	else
 	{
 		tmpc::search_queue_widget *song_widget = new tmpc::search_queue_widget(mpd);
-		tmpc::main_window *window = new tmpc::main_window(mpd, song_widget);
+		window = new tmpc::main_window(mpd, song_widget);
 
 		window->connect(song_widget, SIGNAL(quit()), SLOT(close()));
 		window->connect(song_widget, SIGNAL(needResize()), SLOT(resizeToFit()));
-
-
-		window->show();
 	}
 
 

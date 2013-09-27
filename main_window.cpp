@@ -18,6 +18,8 @@ main_window::main_window(mpdpp::mpd& mpd, QWidget *centralWidget) :
 
 	setCentralWidget(centralWidget);
 	resizeToFit();
+
+	show();
 }
 
 void main_window::resizeToFit()
