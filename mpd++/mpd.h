@@ -7,6 +7,7 @@
 #include "exception.h"
 #include "song.h"
 #include "tag.h"
+#include "events.h"
 
 struct mpd_connection;
 
@@ -118,6 +119,24 @@ public:
 	 * Removes a song from the queue.
 	 */
 	void delete_song(song_ptr song);
+
+	/**
+	 * Monitors the selected events. This sets mpd in a waiting state.
+	 *
+	 * Call stop_monitor or wait_events later to retrieve events.
+	 */
+	void monitor(event events);
+
+	/**
+	 * Stop monitoring for events and return the currently received events.
+	 */
+	event stop_monitor();
+
+	/**
+	 * Wait for events to be received.
+	 */
+	event wait_events();
+
 private:
 	/**
 	 * Returns the errors that happened at the last call to mpd.

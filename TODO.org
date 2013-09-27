@@ -1,5 +1,6 @@
 * mpd++
-** TODO Add a way to wait for events
+** DONE Add a way to wait for events
+CLOSED: [2013-09-28 sam. 01:47]
 Basically we can send mpd_send_idle_mask and then poll the fd for data (using mpd_connection_get_fd)
 Once we got data we can run mpd_recv_idle.
 
@@ -19,13 +20,14 @@ We just need a way to save the result window to a playlist.
 ** TODO Allow to see in a db search if the songs are inside the current playlist
 This is complicated since we don't have this information in the search result.
 
-Maybe we could ask for the whole queue and remember its identifiers, but this could be wrong if the queue changes and we're not notified. We could then make an idle event to know when the queue changes, but this small feature would get somewhat complicated and add some unneeded overload…
+Maybe we could ask for the whole queue and remember its identifiers (this is whac ncmpcpp does, for instance), but this could be wrong if the queue changes and we're not notified. We could then make an idle event to know when the queue changes, but this small feature would get somewhat complicated and add some unneeded overload… But maybe we just don't need to always be up to date.
 
 We can also use send_queue_changes_brief to know if some queue information changed which would probably be quite efficient.
 ** DONE Remove a song from the queue
 ** DONE Allow to change the priority of a song to enable queue plays
 ** DONE Allow to visualize the priority of a song
 Done but probably not satisfactory yet. Maybe a completely unrelated way to show it would be better (sort order ?)
+** TODO Allow to use command lists to optimize bandwidth a little in some cases.
 * Display mode
 ** TODO Wait for events and show the next song if needed.
 ** DONE Show all file information in this window

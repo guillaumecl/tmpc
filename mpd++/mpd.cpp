@@ -158,3 +158,26 @@ void mpd::delete_song(song_ptr song)
 	mpd_run_delete_id(connection_, song->id());
 	throw_if_error();
 }
+
+
+void mpd::monitor(event flags)
+{
+	mpd_send_idle_mask(connection_, (mpd_idle)flags);
+	throw_if_error();
+}
+
+event mpd::stop_monitor()
+{
+	event result = (event) mpd_run_noidle(connection_);
+	throw_if_error();
+
+	return result;
+}
+
+event mpd::wait_events()
+{
+	event result = (event) mpd_recv_idle(connection_, true);
+	throw_if_error();
+
+	return result;
+}
