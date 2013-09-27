@@ -31,10 +31,10 @@ void main_window::resizeToFit()
 	int height = centralSize.height();
 
 	setGeometry(QRect(
-				(screen.width() - width) / 2,
-				(screen.height() - height) / 4,
-				width,
-				height));
+                    screen.left() + (screen.width() - width) / 2,
+                    screen.top() + (screen.height() - height) / 4,
+                    width,
+                    height));
 }
 
 
