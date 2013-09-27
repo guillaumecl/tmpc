@@ -28,3 +28,6 @@ We can also use send_queue_changes_brief to know if some queue information chang
 Done but probably not satisfactory yet. Maybe a completely unrelated way to show it would be better (sort order ?)
 * Display mode
 ** TODO Wait for events and show the next song if needed.
+** TODO Show all file information in this window
+All tags can be displayed.
+We can also show the file URI and filename, the song lenqth, its priority…
