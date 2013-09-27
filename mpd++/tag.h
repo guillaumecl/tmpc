@@ -1,6 +1,8 @@
 #ifndef MPDPP_TAG_H
 #define MPDPP_TAG_H
 
+#include <iterator>
+
 namespace mpdpp
 {
 
@@ -29,9 +31,98 @@ enum class tag
 	musicbrainz_track_id,
 };
 
+/**
+ * Returns a tag from the (case insensitive) name.
+ */
 tag tag_from_string(const char *string);
 
+/**
+ * Returns the human readable name of a tag.
+ */
 const char * tag_to_string(tag tag);
+
+/**
+ * Allows to iterate on tags.
+ */
+struct tag_iterator: public std::iterator<std::forward_iterator_tag, tag>
+{
+	/**
+	 * Constructs an iterator pointing to a specific tag.
+	 */
+	tag_iterator(tag t) :
+		tag_(t)
+	{
+	}
+
+	/**
+	 * Point to the next tag.
+	 */
+	tag_iterator& operator++()
+	{
+		if (tag_ >= tag::musicbrainz_track_id or tag_ == tag::unknown)
+		{
+			tag_ = tag::unknown;
+		}
+		else
+		{
+			int num = static_cast<int>(tag_);
+			tag_ = static_cast<tag>(num+1);
+		}
+		return *this;
+	}
+
+	/**
+	 * Compare two tag iterators.
+	 */
+	bool operator==(const tag_iterator& rhs) const
+	{
+		return tag_ == rhs.tag_;
+	}
+
+	/**
+	 * Compare two tag iterators.
+	 */
+	bool operator!=(const tag_iterator& rhs) const
+	{
+		return !(*this == rhs);
+	}
+
+	/**
+	 * Get the tag pointed by the iterator.
+	 */
+	tag operator*() const
+	{
+		return tag_;
+	}
+private:
+	tag tag_;
+};
+
+
+/**
+ * Use this to iterate on tags.
+ *
+ * for (tag t : tags()) { ... }
+ */
+struct tags
+{
+	/**
+	 * Iterator to the first tag.
+	 */
+	static tag_iterator begin()
+	{
+		return tag_iterator(tag::artist);
+	}
+
+	/**
+	 * Iterator after the last tag.
+	 */
+	static tag_iterator end()
+	{
+		return tag_iterator(tag::unknown);
+	}
+};
+
 
 /**
  * Pass this into a search to search a specific tag value.
