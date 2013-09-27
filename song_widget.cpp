@@ -58,6 +58,7 @@ void song_widget::add_song(mpdpp::song_ptr song)
 void song_widget::fill(mpdpp::search& search)
 {
 	clear();
+	setSortingEnabled(false);
 	if (search.queue_search())
 	{
 		setColumnCount(4);
@@ -70,7 +71,15 @@ void song_widget::fill(mpdpp::search& search)
 	{
 		add_song(it.steal_ptr());
 	}
-	sortItems(0, Qt::AscendingOrder);
+	if (search.queue_search())
+	{
+		sortItems(3, Qt::DescendingOrder);
+	}
+	else
+	{
+		sortItems(0, Qt::AscendingOrder);
+	}
+	setSortingEnabled(true);
 }
 
 void song_widget::fill(mpdpp::search&& search)
