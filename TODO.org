@@ -14,7 +14,6 @@ Maybe we could ask for the whole queue and remember its identifiers (this is wha
 We can also use send_queue_changes_brief to know if some queue information changed which would probably be quite efficient.
 ** TODO Allow to use command lists to optimize bandwidth a little in some cases.
 * General
-** TODO Support translations
 ** TODO Close tmpc when the focus is lost
 This could or could not be a good idea. Since tmpc typically does not appear as a top level window, it can be tricky to remember if one instance is currently open if its behind something else.
 

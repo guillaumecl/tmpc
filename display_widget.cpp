@@ -5,6 +5,8 @@
 
 #include <mpd/client.h>
 
+#include <QApplication>
+
 
 using namespace tmpc;
 
@@ -69,7 +71,7 @@ void display_widget::display(mpdpp::song_ptr song)
 		{
 			text.append("<br />");
 		}
-		text.append("<b>").append(tr(tag_to_string(pair.first))).append("</b>: ");
+		text.append("<b>").append(qApp->translate("tag", tag_to_string(pair.first))).append("</b>: ");
 		text.append(QString::fromUtf8(pair.second));
 	}
 
