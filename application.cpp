@@ -8,6 +8,8 @@
 #include <QTranslator>
 #include <QLocale>
 
+#include <QTextCodec>
+
 using namespace tmpc;
 
 application::application(int &argc, char **argv) :
@@ -16,6 +18,9 @@ application::application(int &argc, char **argv) :
 	QTranslator *translator = new QTranslator(this);
 	translator->load(QLocale::system(), "tmpc", "_");
 	installTranslator(translator);
+
+	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));
+	QTextCodec::setCodecForCStrings(QTextCodec::codecForName("UTF-8"));
 }
 
 bool application::notify(QObject *receiver, QEvent *event)

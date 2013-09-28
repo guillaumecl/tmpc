@@ -44,14 +44,14 @@ void song_widget::add_song(mpdpp::song_ptr song)
 	const char *title = song->tag(mpdpp::tag::title);
 	if (title)
 	{
-		item->setText(0, QString::fromUtf8(title));
+		item->setText(0, title);
 	}
 	else
 	{
-		item->setText(0, QString::fromUtf8(song->uri()));
+		item->setText(0, song->uri());
 	}
-	item->setText(1, QString::fromUtf8(song->tag(mpdpp::tag::artist)));
-	item->setText(2, QString::fromUtf8(song->tag(mpdpp::tag::album)));
+	item->setText(1, song->tag(mpdpp::tag::artist));
+	item->setText(2, song->tag(mpdpp::tag::album));
 	item->setData(Qt::UserRole, 0, QVariant::fromValue(song));
 }
 

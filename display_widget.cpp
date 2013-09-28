@@ -72,7 +72,7 @@ void display_widget::display(mpdpp::song_ptr song)
 			text.append("<br />");
 		}
 		text.append("<b>").append(qApp->translate("tag", tag_to_string(pair.first))).append("</b>: ");
-		text.append(QString::fromUtf8(pair.second));
+		text.append(pair.second);
 	}
 
 	setText(text);
