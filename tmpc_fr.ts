@@ -80,7 +80,7 @@
 <context>
     <name>tmpc::application</name>
     <message>
-        <location filename="application.cpp" line="30"/>
+        <location filename="application.cpp" line="35"/>
         <source>tmpc</source>
         <translation>tmpc</translation>
     </message>
@@ -88,17 +88,17 @@
 <context>
     <name>tmpc::display_widget</name>
     <message>
-        <location filename="display_widget.cpp" line="45"/>
+        <location filename="display_widget.cpp" line="46"/>
         <source>%1 by %2 (%3)</source>
         <translation>%1 de %2 (%3)</translation>
     </message>
     <message>
-        <location filename="display_widget.cpp" line="49"/>
+        <location filename="display_widget.cpp" line="50"/>
         <source>%1 by %2</source>
         <translation>%1 de %2</translation>
     </message>
     <message>
-        <location filename="display_widget.cpp" line="53"/>
+        <location filename="display_widget.cpp" line="54"/>
         <source>%1 (%2)</source>
         <translation>%1 (%2)</translation>
     </message>

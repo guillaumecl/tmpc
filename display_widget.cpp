@@ -13,6 +13,7 @@ using namespace tmpc;
 display_widget::display_widget(mpdpp::mpd& mpd) :
 	mpd_(mpd)
 {
+	setWordWrap(true);
 	display(mpd_.current_song());
 
 	mpd_.monitor(mpdpp::event::player);

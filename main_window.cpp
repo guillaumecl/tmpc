@@ -29,13 +29,13 @@ void main_window::resizeToFit()
 
 	QSize centralSize = centralWidget()->sizeHint();
 
-	int width = (4*screen.width()) / 5;
+	int width = qMax((4*screen.width()) / 5, centralSize.width());
 	int height = centralSize.height();
 
 	setGeometry(QRect(
-                    screen.left() + (screen.width() - width) / 2,
-                    screen.top() + (screen.height() - height) / 4,
-                    width,
+					screen.left() + (screen.width() - width) / 2,
+					screen.top() + (screen.height() - height) / 4,
+				    width,
                     height));
 }
 
