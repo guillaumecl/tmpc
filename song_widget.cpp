@@ -18,7 +18,7 @@ song_widget::song_widget(QWidget *parent)
 	setRootIsDecorated(false);
 	setColumnCount(3);
 
-	labels << "Title" << "Artist" << "Album" << "Priority";
+	labels << tr("Title") << tr("Artist") << tr("Album") << tr("Priority");
 	setHeaderLabels(labels);
 
 	setColumnWidth(0, 400);

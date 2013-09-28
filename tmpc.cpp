@@ -25,13 +25,13 @@ mpdpp::mpd connect()
 	}
 	catch(const std::exception & e)
 	{
-		message = QString::fromUtf8(e.what());
+		message = QObject::tr(e.what());
 	}
 	catch(...)
 	{
-		message = "Unknown exception while connecting to mpd";
+		message = QObject::tr("Unknown exception while connecting to mpd");
 	}
-	QMessageBox::critical(nullptr, "tmpc", message);
+	QMessageBox::critical(nullptr, QObject::tr("tmpc"), message);
 	std::terminate();
 	return mpdpp::mpd();
 }

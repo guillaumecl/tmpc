@@ -28,6 +28,14 @@ QT4_ADD_RESOURCES(TMPC_RESOURCES
   tmpc.qrc
 )
 
+SET(TMPC_TS
+  tmpc_fr.ts
+)
+
+QT4_ADD_TRANSLATION(TMPC_TRANSLATIONS
+  ${TMPC_TS}
+)
+
 add_executable(tmpc
   application.cpp
   tmpc.cpp
@@ -39,6 +47,7 @@ add_executable(tmpc
   ${TMPC_HEADERS_MOC}
   ${TMPC_FORMS_HEADERS}
   ${TMPC_RESOURCES}
+  ${TMPC_TRANSLATIONS}
 )
 
 target_link_libraries(tmpc mpd++ ${QT_LIBRARIES})
@@ -48,5 +57,12 @@ configure_file(${CMAKE_SOURCE_DIR}/Doxyfile.in ${CMAKE_BINARY_DIR}/Doxyfile @ONL
 
 add_custom_target(doc
   COMMAND doxygen ${CMAKE_BINARY_DIR}/Doxyfile
-  WORKING_DIR ${CMAKE_BINARY_DIR}
+  WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
 )
+
+add_custom_target(lupdate
+  COMMAND ${CMAKE_SOURCE_DIR}/update_translations.sh "${CMAKE_BINARY_DIR}/translations"
+  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+)
+
+add_dependencies(tmpc lupdate)
