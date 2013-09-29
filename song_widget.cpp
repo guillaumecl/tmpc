@@ -10,7 +10,8 @@ using namespace tmpc;
 song_widget::song_widget(QWidget *parent)
 	: QTreeWidget(parent),
 	  queue_icon_(":/icons/song"),
-	  db_icon_(":/icons/db")
+	  db_icon_(":/icons/db"),
+	  queue_fed_(false)
 {
 	QStringList labels;
 
@@ -32,12 +33,21 @@ song_widget::song_widget(QWidget *parent)
 
 void song_widget::add_song(mpdpp::song_ptr song)
 {
+	if (song->queued())
+	{
+		queue_.insert(song->uri());
+	}
+
 	item_type *item = new item_type(this);
 
 	if (song->queued())
 	{
 		item->setIcon(0, queue_icon_);
 		item->setData(3, Qt::DisplayRole, song->priority());
+	}
+	else if (queue_.contains(song->uri()))
+	{
+		item->setIcon(0, queue_icon_);
 	}
 	else
 	{
@@ -67,6 +77,7 @@ void song_widget::fill(mpdpp::search& search)
 	{
 		add_song(it.steal_ptr());
 	}
+
 	if (search.queue_search())
 	{
 		sortItems(3, Qt::DescendingOrder);
@@ -100,6 +111,11 @@ void song_widget::item_double_clicked()
 	mpdpp::song_ptr song = selection();
 	if (song)
 	{
+		if (not song->queued())
+		{
+			currentItem()->setData(0, Qt::DecorationRole, queue_icon_);
+			queue_.insert(song->uri());
+		}
 		emit song_selected(song);
 	}
 }
@@ -113,6 +129,11 @@ void song_widget::keyPressEvent(QKeyEvent *event)
 		if (song)
 		{
 			event->accept();
+			if (not song->queued())
+			{
+				currentItem()->setData(0, Qt::DecorationRole, queue_icon_);
+				queue_.insert(song->uri());
+			}
 			emit song_selected(song);
 			return;
 		}
@@ -145,6 +166,7 @@ void song_widget::keyPressEvent(QKeyEvent *event)
 		if (song and song->queued())
 		{
 			event->accept();
+			queue_.remove(song->uri());
 			emit song_removed(song);
 			QModelIndex selected = currentIndex();
 			model()->removeRow(selected.row(), selected.parent());
@@ -152,4 +174,33 @@ void song_widget::keyPressEvent(QKeyEvent *event)
 		}
 	}
 	QTreeWidget::keyPressEvent(event);
+}
+
+void song_widget::feed_queue(mpdpp::search&& search)
+{
+	feed_queue(search);
+}
+
+void song_widget::feed_queue(mpdpp::search& search)
+{
+	queue_.clear();
+	for (const mpdpp::song& song : search)
+	{
+		queue_.insert(song.uri());
+	}
+	queue_fed_ = true;
+
+	if (queue_.empty() and topLevelItemCount() > 0)
+	{
+		for (int i = 0; i < topLevelItemCount() ; ++i)
+		{
+			QTreeWidgetItem *item = topLevelItem(i);
+			item->setData(0, Qt::DecorationRole, db_icon_);
+		}
+	}
+}
+
+bool song_widget::queue_fed() const
+{
+	return queue_fed_;
 }

@@ -6,7 +6,8 @@
 Playlists and queues are similar. The search window probably can run mostly unmodified for playlist requests.
 ** TODO Allow to save playlists and modify playlists
 We just need a way to save the result window to a playlist.
-** TODO Allow to see in a db search if the songs are inside the current playlist
+** DONE Allow to see in a db search if the songs are inside the current playlist
+CLOSED: [2013-09-30 lun. 00:15]
 This is complicated since we don't have this information in the search result.
 
 Maybe we could ask for the whole queue and remember its identifiers (this is whac ncmpcpp does, for instance), but this could be wrong if the queue changes and we're not notified. We could then make an idle event to know when the queue changes, but this small feature would get somewhat complicated and add some unneeded overload… But maybe we just don't need to always be up to date.

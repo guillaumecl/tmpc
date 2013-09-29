@@ -74,6 +74,7 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 		{
 			list_->clear();
 		}
+		list_->feed_queue(mpd_.queue());
 	}
 	else
 	{
@@ -155,6 +156,11 @@ void search_queue_widget::search(const QString& str)
 {
 	list_->clear();
 	QString search_str = str;
+
+	if (not queue_search() and not list_->queue_fed())
+	{
+		list_->feed_queue(mpd_.queue());
+	}
 
 	mpdpp::search search = search_type();
 	build_search(search_str, search);

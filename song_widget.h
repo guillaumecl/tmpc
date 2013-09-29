@@ -45,6 +45,21 @@ public slots:
 	 */
 	void fill(mpdpp::search&& search);
 
+	/**
+	 * Fills the queue cache.
+	 */
+	void feed_queue(mpdpp::search& search);
+
+	/**
+	 * Fills the queue cache.
+	 */
+	void feed_queue(mpdpp::search&& search);
+
+	/**
+	 * True if the queue has been calculated.
+	 */
+	bool queue_fed() const;
+
 signals:
 	/**
 	 * Emitted when a song is selected.
@@ -80,6 +95,8 @@ private:
 	QIcon queue_icon_;
 	QIcon db_icon_;
 
+	QSet<QString> queue_;
+	bool queue_fed_;
 };
 
 }

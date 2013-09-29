@@ -111,22 +111,22 @@
 <context>
     <name>tmpc::song_widget</name>
     <message>
-        <location filename="song_widget.cpp" line="22"/>
+        <location filename="song_widget.cpp" line="23"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="song_widget.cpp" line="22"/>
+        <location filename="song_widget.cpp" line="23"/>
         <source>Artist</source>
         <translation>Artiste</translation>
     </message>
     <message>
-        <location filename="song_widget.cpp" line="22"/>
+        <location filename="song_widget.cpp" line="23"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="song_widget.cpp" line="22"/>
+        <location filename="song_widget.cpp" line="23"/>
         <source>Priority</source>
         <translation>Priorité</translation>
     </message>
