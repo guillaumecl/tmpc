@@ -1,7 +1,6 @@
 #ifndef MPDPP_SEARCH_H
 #define MPDPP_SEARCH_H
 
-#include "mpd.h"
 #include "song_iterator.h"
 
 namespace mpdpp
