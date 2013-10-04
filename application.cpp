@@ -31,13 +31,11 @@ bool application::notify(QObject *receiver, QEvent *event)
 	}
 	catch(const mpdpp::exception &e)
 	{
-		qDebug("%s", e.what());
 		QMessageBox::critical(nullptr, tr("tmpc"), e.what());
 	}
 	catch(const std::exception &e)
 	{
-		qDebug("%s", e.what());
-		QMessageBox::critical(nullptr, "tmpc", e.what());
+		QMessageBox::critical(nullptr, tr("tmpc"), e.what());
 	}
 	return false;
 }
