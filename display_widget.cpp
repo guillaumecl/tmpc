@@ -7,14 +7,27 @@
 
 #include <QApplication>
 
+#include <QVBoxLayout>
 
 using namespace tmpc;
 
 display_widget::display_widget(mpdpp::mpd& mpd) :
 	mpd_(mpd)
 {
-	setWordWrap(true);
+	QVBoxLayout *layout = new QVBoxLayout;
+	layout->setSpacing(0);
+	layout->setContentsMargins(0, 0, 0, 0);
+
+	label_ = new QLabel(this);
+
+	label_->setWordWrap(true);
 	display(mpd_.current_song());
+
+
+	layout->addWidget(label_);
+
+	setLayout(layout);
+
 
 	mpd_.monitor(mpdpp::event::player);
 	QTimer *timer = new QTimer(this);
@@ -76,7 +89,7 @@ void display_widget::display(mpdpp::song_ptr song)
 		text.append(pair.second);
 	}
 
-	setText(text);
+	label_->setText(text);
 	emit needResize();
 }
 

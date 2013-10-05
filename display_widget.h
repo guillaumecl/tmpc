@@ -5,10 +5,12 @@
 
 #include "mpd++/mpd.h"
 
+class QSlider;
+
 namespace tmpc
 {
 
-class display_widget: public QLabel
+class display_widget: public QWidget
 {
 	Q_OBJECT
 public:
@@ -22,6 +24,9 @@ signals:
 	void quit();
 
 private:
+	QLabel *label_;
+	QSlider *slider_;
+
 	mpdpp::mpd &mpd_;
 };
 
