@@ -1,6 +1,8 @@
 * tmpc - Tiny mpc client
 This is a little frontend to mpc that allows to quickly jump to songs.
 
+** Dependencies
+- libmpdclient
 ** Basic usage
 
 tmpc currently has two modes of operation :
@@ -14,7 +16,6 @@ The search mode is the default one. To launch tmpc with the display mode, the fo
 
 
 $ tmpc --current
-
 
 
 ** Search mode
