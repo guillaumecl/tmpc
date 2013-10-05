@@ -181,3 +181,24 @@ event mpd::wait_events()
 
 	return result;
 }
+
+void mpd::seek(int song_id, unsigned int position)
+{
+	mpd_run_seek_id(connection_, song_id, position);
+	throw_if_error();
+
+	mpd_response_finish(connection_);
+	throw_if_error();
+
+}
+
+status mpd::status()
+{
+	mpd_status *content = mpd_run_status(connection_);
+	throw_if_error();
+
+	mpd_response_finish(connection_);
+	throw_if_error();
+
+	return mpdpp::status(content);
+}

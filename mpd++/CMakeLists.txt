@@ -8,6 +8,7 @@ add_library(mpd++ STATIC
   song_tag_iterator.cpp
   search.cpp
   tag.cpp
+  status.cpp
 )
 
 target_link_libraries(mpd++ ${MPD_CLIENT})

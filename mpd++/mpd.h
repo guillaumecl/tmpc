@@ -8,6 +8,7 @@
 #include "song.h"
 #include "tag.h"
 #include "events.h"
+#include "status.h"
 
 struct mpd_connection;
 
@@ -128,6 +129,11 @@ public:
 	void monitor(event events);
 
 	/**
+	 * Seeks the position of the current song.
+	 */
+	void seek(int song_id, unsigned int position);
+
+	/**
 	 * Stop monitoring for events and return the currently received events.
 	 */
 	event stop_monitor();
@@ -136,6 +142,11 @@ public:
 	 * Wait for events to be received.
 	 */
 	event wait_events();
+
+	/**
+	 * Request the current mpd state.
+	 */
+	status status();
 
 private:
 	/**
