@@ -8,10 +8,12 @@
 #include <QApplication>
 #include <QVBoxLayout>
 #include <QSpacerItem>
+#include <QSlider>
 
 using namespace tmpc;
 
 display_widget::display_widget(mpdpp::mpd& mpd) :
+	id_(-1),
 	mpd_(mpd)
 {
 	QVBoxLayout *layout = new QVBoxLayout;
@@ -20,6 +22,7 @@ display_widget::display_widget(mpdpp::mpd& mpd) :
 
 	title_ = new QLabel(this);
 	tags_ = new QLabel(this);
+	slider_ = new QSlider(Qt::Horizontal, this);
 
 	title_->setWordWrap(true);
 	tags_->setWordWrap(true);
@@ -27,6 +30,7 @@ display_widget::display_widget(mpdpp::mpd& mpd) :
 
 
 	layout->addWidget(title_);
+	layout->addWidget(slider_);
 	layout->addWidget(tags_);
 	layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
@@ -40,6 +44,9 @@ display_widget::display_widget(mpdpp::mpd& mpd) :
 			this, SLOT(poll()));
 
 	timer->start(250);
+
+	connect(slider_, SIGNAL(sliderMoved(int)),
+			this, SLOT(seek(int)));
 }
 
 
@@ -49,6 +56,7 @@ void display_widget::display(mpdpp::song_ptr song)
 	{
 		return;
 	}
+	id_ = song->id();
 	const char *title = song->tag(mpdpp::tag::title);
 	const char *artist = song->tag(mpdpp::tag::artist);
 	const char *album = song->tag(mpdpp::tag::album);
@@ -77,6 +85,8 @@ void display_widget::display(mpdpp::song_ptr song)
 
 	title_->setText(QString("<center><h1>%1</h1></center>").arg(translated));
 
+	slider_->setMaximum(song->duration());
+
 	QString text;
 	bool first = true;
 	for (const auto &pair : song->tags())
@@ -101,9 +111,28 @@ void display_widget::display(mpdpp::song_ptr song)
 
 void display_widget::poll()
 {
-	if (mpd_.stop_monitor())
+	std::lock_guard<std::mutex> lock(mutex_);
+
+	bool ret = mpd_.stop_monitor();
+	mpdpp::status state = mpd_.status();
+
+	slider_->setMaximum(state.total_time());
+	slider_->setValue(state.elapsed_time());
+
+	if (ret or id_ != state.song_id())
 	{
 		display(mpd_.current_song());
 	}
 	mpd_.monitor(mpdpp::event::player);
+}
+
+void display_widget::seek(int position)
+{
+	std::unique_lock<std::mutex> lock(mutex_, std::try_to_lock_t());
+	if (lock)
+	{
+		mpd_.stop_monitor();
+		mpd_.seek(id_, position);
+		mpd_.monitor(mpdpp::event::player);
+	}
 }

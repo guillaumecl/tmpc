@@ -5,6 +5,8 @@
 
 #include "mpd++/mpd.h"
 
+#include <mutex>
+
 class QSlider;
 
 namespace tmpc
@@ -19,6 +21,8 @@ public:
 private slots:
 	void display(mpdpp::song_ptr song);
 	void poll();
+	void seek(int position);
+
 signals:
 	void needResize();
 	void quit();
@@ -27,6 +31,9 @@ private:
 	QLabel *tags_;
 	QLabel *title_;
 	QSlider *slider_;
+
+	int id_;
+	std::mutex mutex_;
 
 	mpdpp::mpd &mpd_;
 };
