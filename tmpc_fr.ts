@@ -4,12 +4,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="tmpc.cpp" line="32"/>
+        <location filename="tmpc.cpp" line="78"/>
         <source>Unknown exception while connecting to mpd</source>
         <translation>Une erreur inconnue est survenue pendant la connexion à mpd</translation>
     </message>
     <message>
-        <location filename="tmpc.cpp" line="34"/>
+        <location filename="tmpc.cpp" line="84"/>
         <source>tmpc</source>
         <translation>tmpc</translation>
     </message>
@@ -80,7 +80,8 @@
 <context>
     <name>tmpc::application</name>
     <message>
-        <location filename="application.cpp" line="35"/>
+        <location filename="application.cpp" line="34"/>
+        <location filename="application.cpp" line="38"/>
         <source>tmpc</source>
         <translation>tmpc</translation>
     </message>

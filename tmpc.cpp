@@ -15,13 +15,59 @@
 #include "display_widget.h"
 #include "main_window.h"
 #include "application.h"
+#include "optionparser.h"
 
-mpdpp::mpd connect()
+enum optionIndex { UNKNOWN, CURRENT, HOST, PORT };
+const option::Descriptor usage[] =
+{
+	{UNKNOWN, 0, "", "",option::Arg::None, "USAGE: tmpc [options]\n\nOptions:" },
+	{CURRENT, 0,"c", "current",option::Arg::None, "  --current, -c  \tPrint information about the current song." },
+	{HOST, 0,"h","host",option::Arg::Optional, "  --host, -h host \tHost to use." },
+	{PORT, 0,"p","port",option::Arg::Optional, "  --port, -p port \tPort to use." },
+	{0,0,0,0,0,0}
+};
+
+mpdpp::mpd connect(int argc, char **argv, bool& display)
 {
 	QString message;
+	--argc;
+	++argv;
+	option::Stats  stats(usage, argc, argv);
+	option::Option *options = new option::Option[stats.options_max];
+	option::Option *buffer = new option::Option[stats.buffer_max];
+	option::Parser parse(usage, argc, argv, options, buffer);
+
 	try
 	{
-		return mpdpp::mpd();
+		const char *host = nullptr;
+		int port = 0;
+
+		if (parse.error() || options[UNKNOWN])
+		{
+			for (option::Option* opt = options[UNKNOWN]; opt; opt = opt->next())
+				std::cout << "Unknown option: " << std::string(opt->name,opt->namelen) << "\n";
+
+			option::printUsage(std::cerr, usage);
+			delete[] options;
+			delete[] buffer;
+			exit(1);
+			return mpdpp::mpd();
+		}
+
+		if (options[HOST])
+		{
+			host = options[HOST].arg;
+		}
+		if (options[PORT] and options[PORT].arg)
+		{
+			port = std::atoi(options[PORT].arg);
+		}
+		display = options[CURRENT];
+
+		delete[] options;
+		delete[] buffer;
+
+		return mpdpp::mpd(host, port);
 	}
 	catch(const std::exception & e)
 	{
@@ -31,8 +77,12 @@ mpdpp::mpd connect()
 	{
 		message = QObject::tr("Unknown exception while connecting to mpd");
 	}
+
+	delete[] options;
+	delete[] buffer;
+
 	QMessageBox::critical(nullptr, QObject::tr("tmpc"), message);
-	std::terminate();
+	exit(2);
 	return mpdpp::mpd();
 }
 
@@ -43,12 +93,11 @@ int main(int argc, char **argv)
 
     QCoreApplication::setOrganizationName("baobob");
     QCoreApplication::setApplicationName("tmpc");
-
-	QStringList arguments = QApplication::arguments();
-	mpdpp::mpd mpd = connect();
-
 	QWidget *widget;
-	if (arguments.contains("--current"))
+	bool display;
+	mpdpp::mpd mpd = connect(argc, argv, display);
+
+	if (display)
 	{
 		widget = new tmpc::display_widget(mpd);
 	}
