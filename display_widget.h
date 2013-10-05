@@ -24,7 +24,8 @@ signals:
 	void quit();
 
 private:
-	QLabel *label_;
+	QLabel *tags_;
+	QLabel *title_;
 	QSlider *slider_;
 
 	mpdpp::mpd &mpd_;

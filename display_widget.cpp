@@ -6,8 +6,8 @@
 #include <mpd/client.h>
 
 #include <QApplication>
-
 #include <QVBoxLayout>
+#include <QSpacerItem>
 
 using namespace tmpc;
 
@@ -18,13 +18,17 @@ display_widget::display_widget(mpdpp::mpd& mpd) :
 	layout->setSpacing(0);
 	layout->setContentsMargins(0, 0, 0, 0);
 
-	label_ = new QLabel(this);
+	title_ = new QLabel(this);
+	tags_ = new QLabel(this);
 
-	label_->setWordWrap(true);
+	title_->setWordWrap(true);
+	tags_->setWordWrap(true);
 	display(mpd_.current_song());
 
 
-	layout->addWidget(label_);
+	layout->addWidget(title_);
+	layout->addWidget(tags_);
+	layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
 
 	setLayout(layout);
 
@@ -71,8 +75,9 @@ void display_widget::display(mpdpp::song_ptr song)
 		translated = title;
 	}
 
-	QString text = QString("<center><h1>%1</h1></center>").arg(translated);
+	title_->setText(QString("<center><h1>%1</h1></center>").arg(translated));
 
+	QString text;
 	bool first = true;
 	for (const auto &pair : song->tags())
 	{
@@ -89,7 +94,7 @@ void display_widget::display(mpdpp::song_ptr song)
 		text.append(pair.second);
 	}
 
-	label_->setText(text);
+	tags_->setText(text);
 	emit needResize();
 }
 
