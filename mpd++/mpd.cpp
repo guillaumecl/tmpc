@@ -4,9 +4,9 @@
 
 using namespace mpdpp;
 
-mpd::mpd()
+mpd::mpd(const char *host, int port)
 {
-	connection_ = mpd_connection_new(nullptr, 0, 0);
+	connection_ = mpd_connection_new(host, port, 0);
 	throw_if_error();
 }
 

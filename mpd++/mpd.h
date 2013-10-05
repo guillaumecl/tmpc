@@ -27,7 +27,7 @@ public:
 	 * Creates a connection to a MPD server, effectively connecting to it.
 	 * @throws mpdpp::exception if the connection fails.
 	 */
-	mpd();
+	mpd(const char *name = nullptr, int port = 0);
 
 	/**
 	 * Steal another mpd connection.
