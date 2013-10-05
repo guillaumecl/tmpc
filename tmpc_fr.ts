@@ -89,17 +89,17 @@
 <context>
     <name>tmpc::display_widget</name>
     <message>
-        <location filename="display_widget.cpp" line="71"/>
+        <location filename="display_widget.cpp" line="73"/>
         <source>%1 by %2 (%3)</source>
         <translation>%1 de %2 (%3)</translation>
     </message>
     <message>
-        <location filename="display_widget.cpp" line="75"/>
+        <location filename="display_widget.cpp" line="77"/>
         <source>%1 by %2</source>
         <translation>%1 de %2</translation>
     </message>
     <message>
-        <location filename="display_widget.cpp" line="79"/>
+        <location filename="display_widget.cpp" line="81"/>
         <source>%1 (%2)</source>
         <translation>%1 (%2)</translation>
     </message>

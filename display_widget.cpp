@@ -24,6 +24,9 @@ display_widget::display_widget(mpdpp::mpd& mpd) :
 	tags_ = new QLabel(this);
 	slider_ = new QSlider(Qt::Horizontal, this);
 
+	slider_->setTickInterval(60);
+	slider_->setTickPosition(QSlider::TicksBelow);
+
 	title_->setWordWrap(true);
 	tags_->setWordWrap(true);
 	display(mpd_.current_song());
@@ -37,7 +40,6 @@ display_widget::display_widget(mpdpp::mpd& mpd) :
 	setLayout(layout);
 
 
-	mpd_.monitor(mpdpp::event::player);
 	QTimer *timer = new QTimer(this);
 
 	connect(timer, SIGNAL(timeout()),
@@ -111,28 +113,25 @@ void display_widget::display(mpdpp::song_ptr song)
 
 void display_widget::poll()
 {
-	std::lock_guard<std::mutex> lock(mutex_);
-
-	bool ret = mpd_.stop_monitor();
 	mpdpp::status state = mpd_.status();
 
+	if (id_ != state.song_id())
+	{
+		id_ = -1;
+	}
 	slider_->setMaximum(state.total_time());
 	slider_->setValue(state.elapsed_time());
 
-	if (ret or id_ != state.song_id())
+	if (id_ != state.song_id())
 	{
 		display(mpd_.current_song());
 	}
-	mpd_.monitor(mpdpp::event::player);
 }
 
 void display_widget::seek(int position)
 {
-	std::unique_lock<std::mutex> lock(mutex_, std::try_to_lock_t());
-	if (lock)
+	if (id_ != -1)
 	{
-		mpd_.stop_monitor();
 		mpd_.seek(id_, position);
-		mpd_.monitor(mpdpp::event::player);
 	}
 }

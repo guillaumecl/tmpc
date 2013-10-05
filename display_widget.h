@@ -5,8 +5,6 @@
 
 #include "mpd++/mpd.h"
 
-#include <mutex>
-
 class QSlider;
 
 namespace tmpc
@@ -33,7 +31,6 @@ private:
 	QSlider *slider_;
 
 	int id_;
-	std::mutex mutex_;
 
 	mpdpp::mpd &mpd_;
 };
