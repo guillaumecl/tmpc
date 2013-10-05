@@ -146,7 +146,7 @@ public:
 	/**
 	 * Request the current mpd state.
 	 */
-	status status();
+	mpdpp::status status();
 
 private:
 	/**

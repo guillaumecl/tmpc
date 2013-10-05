@@ -73,7 +73,7 @@ public:
 	/**
 	 * Returns the state of the player: either stopped, playing or paused.
 	 */
-	state state() const;
+	mpdpp::state state() const;
 
 	/**
 	 * Returns crossfade setting in seconds. 0 means crossfading is disabled.
