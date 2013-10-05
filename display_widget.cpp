@@ -24,7 +24,7 @@ display_widget::display_widget(mpdpp::mpd& mpd) :
 	tags_ = new QLabel(this);
 	slider_ = new QSlider(Qt::Horizontal, this);
 
-	slider_->setTickInterval(60);
+	slider_->setTickInterval(60000);
 	slider_->setTickPosition(QSlider::TicksBelow);
 
 	title_->setWordWrap(true);
@@ -115,13 +115,15 @@ void display_widget::poll()
 {
 	mpdpp::status state = mpd_.status();
 
-	if (id_ != state.song_id())
-	{
-		id_ = -1;
-	}
-	slider_->setMaximum(state.total_time());
-	slider_->setValue(state.elapsed_time());
+	auto old_id = id_;
+	id_ = -1;
 
+	// Set the id to -1 so that slider values don't interfere with polling
+
+	slider_->setMaximum(state.total_time()*1000);
+	slider_->setValue(state.elapsed_ms());
+
+	id_ = old_id;
 	if (id_ != state.song_id())
 	{
 		display(mpd_.current_song());
@@ -132,6 +134,6 @@ void display_widget::seek(int position)
 {
 	if (id_ != -1)
 	{
-		mpd_.seek(id_, position);
+		mpd_.seek(id_, position/1000);
 	}
 }
