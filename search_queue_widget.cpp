@@ -51,6 +51,9 @@ search_queue_widget::search_queue_widget(mpdpp::mpd& mpd) :
 	connect(list_, SIGNAL(song_removed(mpdpp::song_ptr)),
 			this, SLOT(remove_song(mpdpp::song_ptr)));
 
+	connect(list_, SIGNAL(song_inserted(mpdpp::song_ptr)),
+			this, SLOT(insert_song(mpdpp::song_ptr)));
+
 	connect(display_, SIGNAL(needResize()),
 			this, SIGNAL(needResize()));
 }
@@ -208,6 +211,14 @@ void search_queue_widget::play(mpdpp::song_ptr song)
 		{
 			emit quit();
 		}
+	}
+}
+
+void search_queue_widget::insert_song(mpdpp::song_ptr song)
+{
+	if (song)
+	{
+		*song = std::move(*mpd_.add(song->uri()));
 	}
 }
 

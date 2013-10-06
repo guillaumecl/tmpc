@@ -81,6 +81,11 @@ signals:
 	 */
 	void song_removed(mpdpp::song_ptr song);
 
+	/**
+	 * Insert the specified song into the queue.
+	 */
+	void song_inserted(mpdpp::song_ptr song);
+
 private slots:
 	void item_double_clicked();
 	void add_song(mpdpp::song_ptr song);

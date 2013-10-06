@@ -73,6 +73,12 @@ private slots:
 	 */
 	void remove_song(mpdpp::song_ptr song);
 
+	/**
+	 * Inserts a song from the queue.
+	 * @param song a pointer to the song to insert. Change the contents to reflect the position in the queue.
+	 */
+	void insert_song(mpdpp::song_ptr song);
+
 signals:
 	/**
 	 * Emitted when this widget size has changed. The parent may respond to this by resizing itself accordingly.

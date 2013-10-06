@@ -138,14 +138,37 @@ void song_widget::keyPressEvent(QKeyEvent *event)
 			return;
 		}
 	}
+	else if (event->key() == Qt::Key_Space)
+	{
+		mpdpp::song_ptr song = selection();
+		if (song)
+		{
+			event->accept();
+			if (not song->queued())
+			{
+				currentItem()->setData(0, Qt::DecorationRole, queue_icon_);
+				queue_.insert(song->uri());
+				emit song_inserted(song);
+			}
+		}
+	}
 	else if (event->key() == Qt::Key_Plus)
 	{
 		mpdpp::song_ptr song = selection();
-		if (song and song->queued())
+		if (song)
 		{
 			event->accept();
-			emit priority_increased(song);
-			currentItem()->setData(3, Qt::DisplayRole, song->priority());
+			if (song->queued())
+			{
+				emit priority_increased(song);
+				currentItem()->setData(3, Qt::DisplayRole, song->priority());
+			}
+			else
+			{
+				currentItem()->setData(0, Qt::DecorationRole, queue_icon_);
+				queue_.insert(song->uri());
+				emit song_inserted(song);
+			}
 			return;
 		}
 	}
