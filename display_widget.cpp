@@ -21,6 +21,10 @@ display_widget::display_widget(mpdpp::mpd& mpd) :
 	layout->setContentsMargins(0, 0, 0, 0);
 
 	title_ = new QLabel(this);
+	title_->setFont(QFont("Times"));
+	title_->setAutoFillBackground(true);
+	title_->setBackgroundRole(QPalette::Highlight);
+	title_->setForegroundRole(QPalette::HighlightedText);
 	tags_ = new QLabel(this);
 	slider_ = new QSlider(Qt::Horizontal, this);
 
