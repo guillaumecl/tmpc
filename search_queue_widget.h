@@ -10,7 +10,7 @@ namespace tmpc
 
 class song_widget;
 class history_line_edit;
-
+class display_widget;
 
 /**
  * Widget that shows the result of a search.
@@ -115,6 +115,7 @@ private:
 	mpdpp::mpd &mpd_;
 	history_line_edit *text_;
 	song_widget *list_;
+	display_widget *display_;
 };
 
 }

@@ -1,5 +1,7 @@
 #include "search_queue_widget.h"
 #include "song_widget.h"
+#include "display_widget.h"
+
 #include "history_line_edit.h"
 
 #include <QLineEdit>
@@ -8,6 +10,7 @@
 #include <QKeyEvent>
 
 #include <sstream>
+
 
 namespace tmpc
 {
@@ -28,6 +31,11 @@ search_queue_widget::search_queue_widget(mpdpp::mpd& mpd) :
 	list_ = new song_widget(this);
 	layout->addWidget(list_);
 
+	display_ = new display_widget(mpd);
+	display_->hide();
+
+	layout->addWidget(display_);
+
 	connect(text_, SIGNAL(textChanged(const QString&)),
 			this, SLOT(search(const QString&)));
 
@@ -42,6 +50,9 @@ search_queue_widget::search_queue_widget(mpdpp::mpd& mpd) :
 
 	connect(list_, SIGNAL(song_removed(mpdpp::song_ptr)),
 			this, SLOT(remove_song(mpdpp::song_ptr)));
+
+	connect(display_, SIGNAL(needResize()),
+			this, SIGNAL(needResize()));
 }
 
 void search_queue_widget::keyPressEvent(QKeyEvent *event)
@@ -75,6 +86,11 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 			list_->clear();
 		}
 		list_->feed_queue(mpd_.queue());
+	}
+	else if (event->key() == Qt::Key_F10)
+	{
+		display_->setVisible(not display_->isVisible());
+		emit needResize();
 	}
 	else
 	{
