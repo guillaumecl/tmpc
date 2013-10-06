@@ -39,7 +39,7 @@ display_widget::display_widget(mpdpp::mpd& mpd) :
 	layout->addWidget(title_);
 	layout->addWidget(slider_);
 	layout->addWidget(tags_);
-	layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::Expanding));
+	layout->addSpacerItem(new QSpacerItem(0, 0, QSizePolicy::Minimum, QSizePolicy::MinimumExpanding));
 
 	setLayout(layout);
 
