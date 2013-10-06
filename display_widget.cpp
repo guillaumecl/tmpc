@@ -88,6 +88,7 @@ void display_widget::display(mpdpp::song_ptr song)
 	}
 
 	title_->setText(QString("<center><h1>%1</h1></center>").arg(translated));
+	window()->setWindowTitle(translated);
 
 	slider_->setMaximum(song->duration());
 
