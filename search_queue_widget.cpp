@@ -203,14 +203,10 @@ void search_queue_widget::play(mpdpp::song_ptr song)
 {
 	if (song)
 	{
-		if (queue_search())
+		mpd_.play(*song);
+		if (not display_->isVisible())
 		{
-			mpd_.play(*song);
 			emit quit();
-		}
-		else
-		{
-			mpd_.play(*mpd_.add(song->uri()));
 		}
 	}
 }
