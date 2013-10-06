@@ -17,6 +17,12 @@ The search mode is the default one. To launch tmpc with the display mode, the fo
 
 $ tmpc --current
 
+or :
+
+$ tmpc -c
+
+The host and port of the server to connect to can also be configured with --host=xxx and --port=yyy or -hxxx and -pyyy. If not specified, the MPD_HOST and MPD_PORT environment variables are honored.
+
 
 ** Search mode
 
@@ -73,6 +79,7 @@ When a song is selected, this is what you can do with it:
 **** Queue and play the song
 With the Return key, the song is played. If the search operates on the database, the song is queued first.
 
+With the Space key, the song is queued if it isn't already.
 **** Add all found songs to the queue
 With Ctrl + O, all found songs are appended to the queue.
 
@@ -83,8 +90,9 @@ With Ctrl + P, the current queue is cleared. This can be used before Ctrl + O to
 In random mode, songs with higher priorities will be read first.
 
 The priority can be increased with the + and - keys.
+*** Mini display mode
+The display mode can also be shown with the F10 key. While the display mode is on, playing songs won't close tmpc anymore.
 *** Exit
-
 Press escape at any moment to exit the application.
 
 ** Display mode
@@ -92,3 +100,5 @@ Press escape at any moment to exit the application.
 This simple mode allows to display the currently playing song.
 
 This can be useful if you don't recognize what song is being played.
+
+In this mode, the current song position can be changed by using the slider.
