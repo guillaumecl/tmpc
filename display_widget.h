@@ -6,6 +6,7 @@
 #include "mpd++/mpd.h"
 
 class QSlider;
+class QTimer;
 
 namespace tmpc
 {
@@ -25,10 +26,17 @@ signals:
 	void needResize();
 	void quit();
 
+protected:
+	virtual void showEvent(QShowEvent *event) override;
+
+	virtual void hideEvent(QHideEvent *event) override;
+
+
 private:
 	QLabel *tags_;
 	QLabel *title_;
 	QSlider *slider_;
+	QTimer *timer_;
 
 	int id_;
 

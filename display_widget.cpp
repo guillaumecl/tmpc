@@ -44,12 +44,10 @@ display_widget::display_widget(mpdpp::mpd& mpd) :
 	setLayout(layout);
 
 
-	QTimer *timer = new QTimer(this);
+	timer_ = new QTimer(this);
 
-	connect(timer, SIGNAL(timeout()),
+	connect(timer_, SIGNAL(timeout()),
 			this, SLOT(poll()));
-
-	timer->start(250);
 
 	connect(slider_, SIGNAL(sliderMoved(int)),
 			this, SLOT(seek(int)));
@@ -140,4 +138,14 @@ void display_widget::seek(int position)
 	{
 		mpd_.seek(id_, position/1000);
 	}
+}
+
+void display_widget::showEvent(QShowEvent *)
+{
+	timer_->start(250);
+}
+
+void display_widget::hideEvent(QHideEvent *)
+{
+	timer_->stop();
 }
