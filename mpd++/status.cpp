@@ -105,12 +105,20 @@ int status::song_id() const
 
 int status::next_song_pos() const
 {
+#if ((LIBMPDCLIENT_MAJOR_VERSION == 2 && LIBMPDCLIENT_MINOR_VERSION > 7) || LIBMPDCLIENT_MAJOR_VERSION > 2)
 	return mpd_status_get_next_song_pos(status_);
+#else
+    return 0;
+#endif
 }
 
 int status::next_song_id() const
 {
+#if ((LIBMPDCLIENT_MAJOR_VERSION == 2 && LIBMPDCLIENT_MINOR_VERSION > 7) || LIBMPDCLIENT_MAJOR_VERSION > 2)
 	return mpd_status_get_next_song_id(status_);
+#else
+    return 0;
+#endif
 }
 
 
