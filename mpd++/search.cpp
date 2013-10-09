@@ -42,6 +42,10 @@ search::iterator search::begin()
 		mpd_.throw_if_error();
 		++ret;
 	}
+	else if (allow_empty_search_ and not add_search_)
+	{
+		++ret;
+	}
 	return ret;
 }
 
