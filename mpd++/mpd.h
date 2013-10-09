@@ -117,6 +117,11 @@ public:
 	void set_song_priority(song_ptr song, unsigned int priority);
 
 	/**
+	 * Set the priority of all songs in the queue.
+	 */
+	void set_queue_priority(unsigned int priority);
+
+	/**
 	 * Removes a song from the queue.
 	 */
 	void delete_song(song_ptr song);

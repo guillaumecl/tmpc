@@ -157,6 +157,19 @@ void mpd::set_song_priority(song_ptr song, unsigned int priority)
 #endif
 }
 
+void mpd::set_queue_priority(unsigned int priority)
+{
+#if ((LIBMPDCLIENT_MAJOR_VERSION == 2 && LIBMPDCLIENT_MINOR_VERSION > 7) || LIBMPDCLIENT_MAJOR_VERSION > 2)
+	mpd_run_prio_range(connection_, priority, 0, -1);
+	throw_if_error();
+#else
+    if (priority)
+    {
+        return;
+    }
+#endif
+}
+
 void mpd::delete_song(song_ptr song)
 {
 	mpd_run_delete_id(connection_, song->id());
