@@ -34,19 +34,15 @@ search::~search()
 
 search::iterator search::begin()
 {
-	if (not allow_empty_search_)
+	iterator ret = end();
+
+	if (not allow_empty_search_ and not add_search_ and not empty_)
 	{
-		if(empty_)
-		{
-			return end();
-		}
-		else
-		{
-			mpd_search_commit(mpd_.connection_);
-			mpd_.throw_if_error();
-		}
+		mpd_search_commit(mpd_.connection_);
+		mpd_.throw_if_error();
+		++ret;
 	}
-	return ++iterator(mpd_, reuse_song_ptr_, queue_search_);
+	return ret;
 }
 
 
