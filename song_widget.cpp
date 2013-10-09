@@ -141,15 +141,13 @@ void song_widget::keyPressEvent(QKeyEvent *event)
 	else if (event->key() == Qt::Key_Space)
 	{
 		mpdpp::song_ptr song = selection();
-		if (song)
+		if (song and not song->queued())
 		{
 			event->accept();
-			if (not song->queued())
-			{
-				currentItem()->setData(0, Qt::DecorationRole, queue_icon_);
-				queue_.insert(song->uri());
-				emit song_inserted(song);
-			}
+			currentItem()->setData(0, Qt::DecorationRole, queue_icon_);
+			queue_.insert(song->uri());
+			emit song_inserted(song);
+			return;
 		}
 	}
 	else if (event->key() == Qt::Key_Plus)
@@ -191,6 +189,8 @@ void song_widget::keyPressEvent(QKeyEvent *event)
 			event->accept();
 			queue_.remove(song->uri());
 			emit song_removed(song);
+
+			// @todo don't delete this song if we're in db mode but change the icon instead.
 			QModelIndex selected = currentIndex();
 			model()->removeRow(selected.row(), selected.parent());
 			return;

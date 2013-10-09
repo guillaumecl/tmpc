@@ -37,6 +37,11 @@ public:
 	song& operator=(song &&s);
 
 	/**
+	 * Steal another song's data.
+	 */
+	void replace(song_ptr song);
+
+	/**
 	 * Destructor.
 	 */
 	~song();

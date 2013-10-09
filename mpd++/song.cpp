@@ -24,6 +24,11 @@ song& song::operator=(song && reused_song)
 	return *this;
 }
 
+void song::replace(song_ptr other)
+{
+	*this = std::move(*other);
+}
+
 song::~song()
 {
 	mpd_song_free(song_);

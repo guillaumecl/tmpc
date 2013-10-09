@@ -97,14 +97,14 @@ public:
 	 * Play the specified song inside the queue.
 	 * @param song the song to play
 	 */
-	void play(const song& song) const;
+	void play(song_ptr song) const;
 
 	/**
 	 * Adds the specified song to the queue.
 	 * @param uri the URI to add.
 	 * @returns the added song.
 	 */
-	song_ptr add(const char *uri);
+	song_ptr add(const char *uri) const;
 
 	/**
 	 * Removes all the songs from the queue.

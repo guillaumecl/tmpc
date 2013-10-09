@@ -44,22 +44,16 @@ void mpd::play(unsigned int song_id) const
 	throw_if_error();
 }
 
-void mpd::play(const song& song) const
+void mpd::play(song_ptr song) const
 {
-	if (song.queued())
+	if (not song->queued())
 	{
-		play(song.id());
+		song->replace(add(song->uri()));
 	}
-	else
-	{
-		unsigned int id = mpd_run_add_id(connection_, song.uri());
-		throw_if_error();
-
-		play(id);
-	}
+	play(song->id());
 }
 
-song_ptr mpd::add(const char *uri)
+song_ptr mpd::add(const char *uri) const
 {
 	unsigned int id = mpd_run_add_id(connection_, uri);
 	throw_if_error();

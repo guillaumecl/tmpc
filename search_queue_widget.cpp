@@ -206,7 +206,7 @@ void search_queue_widget::play(mpdpp::song_ptr song)
 {
 	if (song)
 	{
-		mpd_.play(*song);
+		mpd_.play(song);
 		if (not display_->isVisible())
 		{
 			emit quit();
@@ -218,7 +218,7 @@ void search_queue_widget::insert_song(mpdpp::song_ptr song)
 {
 	if (song)
 	{
-		*song = std::move(*mpd_.add(song->uri()));
+		song->replace(mpd_.add(song->uri()));
 	}
 }
 
