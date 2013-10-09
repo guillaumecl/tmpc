@@ -95,6 +95,17 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 		display_->setVisible(not display_->isVisible());
 		emit needResize();
 	}
+	else if (event->key() == Qt::Key_Return)
+	{
+		QString search_term = text_->text();
+		if (search_term.startsWith('+'))
+		{
+			build_search(search_term, mpd_.add_from_db());
+
+			text_->clear();
+			event->accept();
+		}
+	}
 	else
 	{
 		text_->setFocus();
@@ -110,7 +121,7 @@ mpdpp::search& search_queue_widget::build_search(const QString& search_terms, mp
 mpdpp::search& search_queue_widget::build_search(const QString& search_terms, mpdpp::search &search)
 {
 	QString terms = search_terms;
-	if (terms.startsWith('!'))
+	if (terms.startsWith('!') or terms.startsWith('+'))
 	{
 		terms = terms.remove(0, 1);
 	}
@@ -173,6 +184,14 @@ mpdpp::search search_queue_widget::search_type()
 
 void search_queue_widget::search(const QString& str)
 {
+	if (str.startsWith('+'))
+	{
+		/**
+		 * Add searches are validated using the Return key.
+		 */
+		return;
+	}
+
 	list_->clear();
 	QString search_str = str;
 
@@ -224,7 +243,7 @@ void search_queue_widget::insert_song(mpdpp::song_ptr song)
 
 bool search_queue_widget::queue_search() const
 {
-	return not text_->text().startsWith('!');
+	return not text_->text().startsWith('!') and not text_->text().startsWith('+');
 }
 
 void search_queue_widget::increase_priority(mpdpp::song_ptr song)
