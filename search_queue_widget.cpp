@@ -24,17 +24,17 @@ search_queue_widget::search_queue_widget(mpdpp::mpd& mpd) :
 	layout->setContentsMargins(0, 0, 0, 0);
 	layout->setSpacing(0);
 
+	display_ = new display_widget(mpd);
+	display_->hide();
+
+	layout->addWidget(display_);
+
 	text_ = new history_line_edit("search_queue_widget", this);
 	text_->setFrame(false);
 	layout->addWidget(text_);
 
 	list_ = new song_widget(this);
-	layout->addWidget(list_);
-
-	display_ = new display_widget(mpd);
-	display_->hide();
-
-	layout->addWidget(display_);
+	layout->addWidget(list_, 1);
 
 	connect(text_, SIGNAL(textChanged(const QString&)),
 			this, SLOT(search(const QString&)));
