@@ -76,6 +76,8 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 
 		build_search(search_term, mpd_.add_from_db());
 
+        list_->set_queue_fed(false);
+
 		// Remove the ! to make the list match with the content
 		search_term.remove(0, 1);
 		text_->setText(search_term);
@@ -88,7 +90,8 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 		{
 			list_->clear();
 		}
-		list_->feed_queue(mpd_.queue());
+		list_->clear_queue();
+        list_->set_queue_fed(true);
 	}
 	else if (event->key() == Qt::Key_F10)
 	{
@@ -104,6 +107,7 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 
 			text_->clear();
 			event->accept();
+            list_->set_queue_fed(false);
 		}
 	}
 	else

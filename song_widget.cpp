@@ -227,3 +227,14 @@ bool song_widget::queue_fed() const
 {
 	return queue_fed_;
 }
+
+void song_widget::set_queue_fed(bool fed)
+{
+    queue_fed_ = fed;
+}
+
+void song_widget::clear_queue()
+{
+    queue_.clear();
+    queue_fed_ = true;
+}

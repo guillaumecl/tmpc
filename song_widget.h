@@ -60,6 +60,16 @@ public slots:
 	 */
 	bool queue_fed() const;
 
+    /**
+     * Clear the cached queue.
+     */
+    void clear_queue();
+
+    /**
+     * Modify the fed queue status.
+     */
+    void set_queue_fed(bool fed);
+
 signals:
 	/**
 	 * Emitted when a song is selected.
