@@ -82,7 +82,10 @@ public:
 	/**
 	 * Returns the next song in the search.
 	 * Fills the song if specified, instantiate a new song otherwise.
+	 *
 	 * @param song to fill if specified and not nullptr
+	 * @param queue pass true to specify the song should be a queue song
+	 *
 	 * @returns song if not nullptr, the allocated song otherwise.
 	 */
 	song_ptr next_song(song_ptr song, bool queue);

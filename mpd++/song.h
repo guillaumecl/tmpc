@@ -115,6 +115,9 @@ public:
 	 */
 	const char * operator[] (mpdpp::tag tag) const { return this->tag(tag); }
 
+	/**
+	 * Returns an iterable object that gives tags.
+	 */
 	song_tags tags() const
 	{
 		return song_tags(this);
