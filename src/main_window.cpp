@@ -5,7 +5,7 @@
 
 #include <QKeyEvent>
 
-#include "mpd++/mpd.h"
+#include <mpd++/mpd.h>
 
 using namespace tmpc;
 

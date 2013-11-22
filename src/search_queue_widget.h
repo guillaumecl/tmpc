@@ -3,7 +3,8 @@
 
 #include <QMainWindow>
 #include <QListWidget>
-#include "mpd++/mpd.h"
+
+#include <mpd++/mpd.h>
 
 namespace tmpc
 {

@@ -1,5 +1,5 @@
 #include "song_widget.h"
-#include "mpd++/mpd.h"
+#include <mpd++/mpd.h>
 
 
 #include <QKeyEvent>

@@ -1,0 +1,11 @@
+<RCC>
+  <qresource prefix="/icons">
+    <file alias="song">../icons/playsound.png</file>
+    <file alias="agt_song">../icons/agt_mp3.png</file>
+    <file alias="agt_run">../icons/agt_runit.png</file>
+    <file alias="db_add">../icons/db_add.png</file>
+    <file alias="db">../icons/db.png</file>
+    <file alias="filter">../icons/filter.png</file>
+    <file alias="find">../icons/find.png</file>
+  </qresource>
+</RCC>

@@ -2,7 +2,7 @@
 
 #include <exception>
 
-#include "mpd++/exception.h"
+#include <mpd++/exception.h>
 #include <QMessageBox>
 
 #include <QTranslator>

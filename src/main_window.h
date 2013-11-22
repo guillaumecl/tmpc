@@ -3,7 +3,7 @@
 
 #include <QMainWindow>
 
-#include "mpd++/forward.h"
+#include <mpd++/mpd.h>
 
 namespace tmpc
 {

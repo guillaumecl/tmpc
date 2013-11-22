@@ -3,7 +3,7 @@
 
 #include <QLabel>
 
-#include "mpd++/mpd.h"
+#include <mpd++/mpd.h>
 
 class QSlider;
 class QTimer;

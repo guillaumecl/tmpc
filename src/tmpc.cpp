@@ -4,7 +4,7 @@
 
 #include <iostream>
 
-#include "mpd++/mpd.h"
+#include <mpd++/mpd.h>
 
 #include <QApplication>
 #include <QLabel>

@@ -6,7 +6,7 @@
 #include <QMetaType>
 #include <QIcon>
 
-#include "mpd++/forward.h"
+#include <mpd++/forward.h>
 
 namespace tmpc
 {
