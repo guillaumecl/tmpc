@@ -4,12 +4,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="tmpc.cpp" line="78"/>
+        <location filename="tmpc.cpp" line="98"/>
         <source>Unknown exception while connecting to mpd</source>
         <translation>Une erreur inconnue est survenue pendant la connexion à mpd</translation>
     </message>
     <message>
-        <location filename="tmpc.cpp" line="84"/>
+        <location filename="tmpc.cpp" line="104"/>
         <source>tmpc</source>
         <translation>tmpc</translation>
     </message>
@@ -17,62 +17,62 @@
 <context>
     <name>tag</name>
     <message>
-        <location filename="mpdpp_translations.cpp" line="7"/>
+        <location filename="mpdpp_translations.cpp" line="27"/>
         <source>Artist</source>
         <translation>Artiste</translation>
     </message>
     <message>
-        <location filename="mpdpp_translations.cpp" line="8"/>
+        <location filename="mpdpp_translations.cpp" line="28"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="mpdpp_translations.cpp" line="9"/>
+        <location filename="mpdpp_translations.cpp" line="29"/>
         <source>Album artist</source>
         <translation>Artiste de l&apos;album</translation>
     </message>
     <message>
-        <location filename="mpdpp_translations.cpp" line="10"/>
+        <location filename="mpdpp_translations.cpp" line="30"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="mpdpp_translations.cpp" line="11"/>
+        <location filename="mpdpp_translations.cpp" line="31"/>
         <source>Track</source>
         <translation>Piste</translation>
     </message>
     <message>
-        <location filename="mpdpp_translations.cpp" line="12"/>
+        <location filename="mpdpp_translations.cpp" line="32"/>
         <source>Name</source>
         <translation>Nom</translation>
     </message>
     <message>
-        <location filename="mpdpp_translations.cpp" line="13"/>
+        <location filename="mpdpp_translations.cpp" line="33"/>
         <source>Genre</source>
         <translation>Genre</translation>
     </message>
     <message>
-        <location filename="mpdpp_translations.cpp" line="14"/>
+        <location filename="mpdpp_translations.cpp" line="34"/>
         <source>Date</source>
         <translation>Date</translation>
     </message>
     <message>
-        <location filename="mpdpp_translations.cpp" line="15"/>
+        <location filename="mpdpp_translations.cpp" line="35"/>
         <source>Composer</source>
         <translation>Compositeur</translation>
     </message>
     <message>
-        <location filename="mpdpp_translations.cpp" line="16"/>
+        <location filename="mpdpp_translations.cpp" line="36"/>
         <source>Performer</source>
         <translation>Interprète</translation>
     </message>
     <message>
-        <location filename="mpdpp_translations.cpp" line="17"/>
+        <location filename="mpdpp_translations.cpp" line="37"/>
         <source>Comment</source>
         <translation>Commentaire</translation>
     </message>
     <message>
-        <location filename="mpdpp_translations.cpp" line="18"/>
+        <location filename="mpdpp_translations.cpp" line="38"/>
         <source>Disc</source>
         <translation>Disque</translation>
     </message>
@@ -80,8 +80,8 @@
 <context>
     <name>tmpc::application</name>
     <message>
-        <location filename="application.cpp" line="34"/>
-        <location filename="application.cpp" line="38"/>
+        <location filename="application.cpp" line="54"/>
+        <location filename="application.cpp" line="58"/>
         <source>tmpc</source>
         <translation>tmpc</translation>
     </message>
@@ -89,17 +89,17 @@
 <context>
     <name>tmpc::display_widget</name>
     <message>
-        <location filename="display_widget.cpp" line="75"/>
+        <location filename="display_widget.cpp" line="95"/>
         <source>%1 by %2 (%3)</source>
         <translation>%1 de %2 (%3)</translation>
     </message>
     <message>
-        <location filename="display_widget.cpp" line="79"/>
+        <location filename="display_widget.cpp" line="99"/>
         <source>%1 by %2</source>
         <translation>%1 de %2</translation>
     </message>
     <message>
-        <location filename="display_widget.cpp" line="83"/>
+        <location filename="display_widget.cpp" line="103"/>
         <source>%1 (%2)</source>
         <translation>%1 (%2)</translation>
     </message>
@@ -112,22 +112,22 @@
 <context>
     <name>tmpc::song_widget</name>
     <message>
-        <location filename="song_widget.cpp" line="23"/>
+        <location filename="song_widget.cpp" line="43"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="song_widget.cpp" line="23"/>
+        <location filename="song_widget.cpp" line="43"/>
         <source>Artist</source>
         <translation>Artiste</translation>
     </message>
     <message>
-        <location filename="song_widget.cpp" line="23"/>
+        <location filename="song_widget.cpp" line="43"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="song_widget.cpp" line="23"/>
+        <location filename="song_widget.cpp" line="43"/>
         <source>Priority</source>
         <translation>Priorité</translation>
     </message>
