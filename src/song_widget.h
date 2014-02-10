@@ -16,7 +16,7 @@ namespace tmpc
  */
 class song_widget: public QTreeWidget
 {
-Q_OBJECT
+	Q_OBJECT
 public:
 	/**
 	 * the item type. Use this instead of QTreeWidgetItem in case the class changes later.
