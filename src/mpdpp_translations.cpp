@@ -36,5 +36,6 @@ void dummy()
 	QT_TRANSLATE_NOOP("tag", "Performer");
 	QT_TRANSLATE_NOOP("tag", "Comment");
 	QT_TRANSLATE_NOOP("tag", "Disc");
+	QT_TRANSLATE_NOOP("tag", "File");
 
 }

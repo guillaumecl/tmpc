@@ -76,6 +76,12 @@
         <source>Disc</source>
         <translation>Disque</translation>
     </message>
+    <message>
+        <location filename="display_widget.cpp" line="124"/>
+        <location filename="mpdpp_translations.cpp" line="39"/>
+        <source>File</source>
+        <translation>Fichier</translation>
+    </message>
 </context>
 <context>
     <name>tmpc::application</name>

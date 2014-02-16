@@ -113,21 +113,16 @@ void display_widget::display(mpdpp::song_ptr song)
 	slider_->setMaximum(song->duration());
 
 	QString text;
-	bool first = true;
+	text.append("<hr />");
+
 	for (const auto &pair : song->tags())
 	{
-		if (first)
-		{
-			first = false;
-			text.append("<hr />");
-		}
-		else
-		{
-			text.append("<br />");
-		}
 		text.append("<b>").append(qApp->translate("tag", tag_to_string(pair.first))).append("</b>: ");
 		text.append(pair.second);
+		text.append("<br />");
 	}
+	text.append("<b>").append(qApp->translate("tag", "File")).append("</b>: ");
+	text.append(song->uri());
 
 	tags_->setText(text);
 	emit needResize();
