@@ -55,11 +55,18 @@ protected:
 	/**
 	 * Respond to a keyPressEvent.
 	 */
-	void keyPressEvent(QKeyEvent *event);
+	virtual void keyPressEvent(QKeyEvent *event) override;
+
+	/**
+	 * Respond to a resize event.
+	 */
+	virtual void resizeEvent(QResizeEvent *event) override;
 
 private:
 	QWidget *main_widget_;
 	mpdpp::mpd& mpd_;
+
+	bool user_resized_;
 };
 
 

@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <QDesktopWidget>
 
 #include <QKeyEvent>
+#include <QResizeEvent>
 
 #include <mpd++/mpd.h>
 
@@ -31,7 +32,8 @@ using namespace tmpc;
 
 main_window::main_window(mpdpp::mpd& mpd, QWidget *centralWidget) :
 	QMainWindow(nullptr, Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint),
-	mpd_(mpd)
+	mpd_(mpd),
+	user_resized_(false)
 {
 	setAttribute(Qt::WA_QuitOnClose);
 	setAttribute(Qt::WA_DeleteOnClose);
@@ -44,6 +46,9 @@ main_window::main_window(mpdpp::mpd& mpd, QWidget *centralWidget) :
 
 void main_window::resizeToFit()
 {
+	if (user_resized_)
+		return;
+
     QDesktopWidget *desktop = QApplication::desktop();
     QRect screen = desktop->screenGeometry(desktop->screenNumber(QCursor::pos()));
 
@@ -74,4 +79,15 @@ void main_window::keyPressEvent(QKeyEvent *event)
 	{
 		QMainWindow::keyPressEvent(event);
 	}
+}
+
+void main_window::resizeEvent(QResizeEvent *event)
+{
+	qDebug("resize");
+	if (event->spontaneous())
+	{
+		qDebug("spontaneous");
+		user_resized_ = true;
+	}
+	QMainWindow::resizeEvent(event);
 }
