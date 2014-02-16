@@ -83,10 +83,8 @@ void main_window::keyPressEvent(QKeyEvent *event)
 
 void main_window::resizeEvent(QResizeEvent *event)
 {
-	qDebug("resize");
 	if (event->spontaneous())
 	{
-		qDebug("spontaneous");
 		user_resized_ = true;
 	}
 	QMainWindow::resizeEvent(event);
