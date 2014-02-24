@@ -41,9 +41,9 @@ enum optionIndex { UNKNOWN, CURRENT, HOST, PORT };
 const option::Descriptor usage[] =
 {
 	{UNKNOWN, 0, "", "",option::Arg::None, "USAGE: tmpc [options]\n\nOptions:" },
-	{CURRENT, 0,"c", "current",option::Arg::None, "  --current, -c  \tPrint information about the current song." },
-	{HOST, 0,"h","host",option::Arg::Optional, "  --host, -h host \tHost to use." },
-	{PORT, 0,"p","port",option::Arg::Optional, "  --port, -p port \tPort to use." },
+	{CURRENT, 0,"c", "current",option::Arg::None, "  --current, -c    Print information about the current song." },
+	{HOST, 0,"h","host",option::Arg::Optional,    "  --host, -h host  Host to use." },
+	{PORT, 0,"p","port",option::Arg::Optional,    "  --port, -p port  Port to use." },
 	{0,0,0,0,0,0}
 };
 
