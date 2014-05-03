@@ -94,11 +94,6 @@ std::string mpd::error_message() const
 	return std::string(mpd_connection_get_error_message(connection_));
 }
 
-mpd_connection * mpd::internal_connection() const
-{
-	return connection_;
-}
-
 search mpd::queue(bool reuse_song_ptr)
 {
 	mpd_send_list_queue_meta(connection_);

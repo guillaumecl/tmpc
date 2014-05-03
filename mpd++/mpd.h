@@ -66,12 +66,6 @@ public:
 	void play() const;
 
 	/**
-	 * This is const because we can't know if it's const or not, and some uses are legally const.
-	 * This should not be abused to do non-const actions as this could potentially lead to undefined behaviour.
-	 */
-	mpd_connection * internal_connection() const;
-
-	/**
 	 * The current queue of songs.
 	 * @param reuse_song_ptr if true, don't allocate a new song at each iteration.
 	 */
