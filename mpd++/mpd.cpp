@@ -155,20 +155,16 @@ song_ptr mpd::next_song(song_ptr existing_song, bool queue)
 	return std::make_shared<song>(s, queue);
 }
 
-void mpd::set_song_priority(song_ptr song, unsigned int priority)
+void mpd::set_song_priority(unsigned int song_id, unsigned int priority)
 {
 #if ((LIBMPDCLIENT_MAJOR_VERSION == 2 && LIBMPDCLIENT_MINOR_VERSION > 7) || LIBMPDCLIENT_MAJOR_VERSION > 2)
-	mpd_run_prio_id(connection_, priority, song->id());
-	throw_if_error();
-
-	auto ptr = mpd_run_get_queue_song_id(connection_, song->id());
-	*song = mpdpp::song(ptr, song->queued());
+	mpd_run_prio_id(connection_, priority, song_id);
 	throw_if_error();
 #else
-    if (priority)
-    {
-        song = 0;
-    }
+	if (priority)
+	{
+		return;
+	}
 #endif
 }
 
@@ -185,9 +181,9 @@ void mpd::set_queue_priority(unsigned int priority)
 #endif
 }
 
-void mpd::delete_song(song_ptr song)
+void mpd::delete_song(unsigned int song_id)
 {
-	mpd_run_delete_id(connection_, song->id());
+	mpd_run_delete_id(connection_, song_id);
 	throw_if_error();
 }
 

@@ -29,6 +29,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 namespace tmpc
 {
 
+class song_model;
 class song_widget;
 class history_line_edit;
 class display_widget;
@@ -74,31 +75,37 @@ private slots:
 	 * Plays the specified song.
 	 * @param song a pointer to the song to play.
 	 */
-	void play(mpdpp::song_ptr song);
+	void play(unsigned int id);
+
+	/**
+	 * Plays the specified song.
+	 * @param song a pointer to the song to play.
+	 */
+	void play(QString uri);
 
 	/**
 	 * Increase the priority of the specified song.
 	 * @param song a pointer to the song to modify.
 	 */
-	void increase_priority(mpdpp::song_ptr song);
+	void increase_priority(unsigned int song_id, int priority);
 
 	/**
 	 * Decrease the priority of the specified song.
 	 * @param song a pointer to the song to modify.
 	 */
-	void decrease_priority(mpdpp::song_ptr song);
+	void decrease_priority(unsigned int song_id, int priority);
 
 	/**
 	 * Removes a song from the queue.
 	 * @param song a pointer to the song to delete.
 	 */
-	void remove_song(mpdpp::song_ptr song);
+	void remove_song(unsigned int id);
 
 	/**
 	 * Inserts a song from the queue.
 	 * @param song a pointer to the song to insert. Change the contents to reflect the position in the queue.
 	 */
-	void insert_song(mpdpp::song_ptr song);
+	void insert_song(QString uri);
 
 signals:
 	/**
@@ -141,6 +148,7 @@ private:
 
 	mpdpp::mpd &mpd_;
 	history_line_edit *text_;
+	song_model *model_;
 	song_widget *list_;
 	display_widget *display_;
 };

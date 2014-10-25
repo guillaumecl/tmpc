@@ -21,7 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #ifndef TMPC_SONG_WIDGET_H
 #define TMPC_SONG_WIDGET_H
 
-#include <QTreeWidget>
+#include <QTreeView>
 #include <QTreeWidgetItem>
 #include <QMetaType>
 #include <QIcon>
@@ -31,10 +31,13 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 namespace tmpc
 {
 
+class song_model;
+struct song_storage;
+
 /**
  * A list widget that shows songs and can respond to play events.
  */
-class song_widget: public QTreeWidget
+class song_widget: public QTreeView
 {
 	Q_OBJECT
 public:
@@ -47,78 +50,42 @@ public:
 	 * Creates a song widget.
 	 * @param parent the parent widget.
 	 */
-	song_widget(QWidget *parent = 0);
-
-	/**
-	 * The current selection of the widget.
-	 */
-	mpdpp::song_ptr selection() const;
+	song_widget(song_model *model, QWidget *parent = 0);
 
 public slots:
-	/**
-	 * Fills the list from a search.
-	 */
-	void fill(mpdpp::search& search);
-
-	/**
-	 * Fills the list from a search.
-	 */
-	void fill(mpdpp::search&& search);
-
-	/**
-	 * Fills the queue cache.
-	 */
-	void feed_queue(mpdpp::search& search);
-
-	/**
-	 * Fills the queue cache.
-	 */
-	void feed_queue(mpdpp::search&& search);
-
-	/**
-	 * True if the queue has been calculated.
-	 */
-	bool queue_fed() const;
-
-    /**
-     * Clear the cached queue.
-     */
-    void clear_queue();
-
-    /**
-     * Modify the fed queue status.
-     */
-    void set_queue_fed(bool fed);
-
 signals:
 	/**
 	 * Emitted when a song is selected.
 	 */
-	void song_selected(mpdpp::song_ptr song);
+	void play_song(unsigned int song_id);
+
+	/**
+	 * Emitted when a song is selected.
+	 */
+	void play_song(QString song_uri);
+
+	/**
+	 * Emitted when a song is selected.
+	 */
+	void queue_song(QString song_uri);
 
 	/**
 	 * Increase the priority of the specified song.
 	 */
-	void priority_increased(mpdpp::song_ptr song);
+	void priority_increased(unsigned int song_id, int priority);
 
 	/**
 	 * Decrease the priority of the specified song.
 	 */
-	void priority_decreased(mpdpp::song_ptr song);
+	void priority_decreased(unsigned int song_id, int priority);
 
 	/**
 	 * Remove the specified song from the queue.
 	 */
-	void song_removed(mpdpp::song_ptr song);
-
-	/**
-	 * Insert the specified song into the queue.
-	 */
-	void song_inserted(mpdpp::song_ptr song);
+	void remove_song(unsigned int song_id);
 
 private slots:
 	void item_double_clicked();
-	void add_song(mpdpp::song_ptr song);
 
 protected:
 	/**
@@ -127,11 +94,10 @@ protected:
 	virtual void keyPressEvent(QKeyEvent *event);
 
 private:
-	QIcon queue_icon_;
-	QIcon db_icon_;
+	const song_storage& selection() const;
+	song_storage& selection();
 
-	QSet<QString> queue_;
-	bool queue_fed_;
+	song_model *model_;
 };
 
 }

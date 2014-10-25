@@ -15,6 +15,25 @@
     </message>
 </context>
 <context>
+    <name>song_model</name>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Titre</translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="obsolete">Artiste</translation>
+    </message>
+    <message>
+        <source>Album</source>
+        <translation type="obsolete">Album</translation>
+    </message>
+    <message>
+        <source>Priority</source>
+        <translation type="obsolete">Priorité</translation>
+    </message>
+</context>
+<context>
     <name>tag</name>
     <message>
         <location filename="mpdpp_translations.cpp" line="27"/>
@@ -116,26 +135,45 @@
     </message>
 </context>
 <context>
+    <name>tmpc::song_model</name>
+    <message>
+        <location filename="song_model.cpp" line="60"/>
+        <source>Title</source>
+        <translation type="unfinished">Titre</translation>
+    </message>
+    <message>
+        <location filename="song_model.cpp" line="62"/>
+        <source>Artist</source>
+        <translation type="unfinished">Artiste</translation>
+    </message>
+    <message>
+        <location filename="song_model.cpp" line="64"/>
+        <source>Album</source>
+        <translation type="unfinished">Album</translation>
+    </message>
+    <message>
+        <location filename="song_model.cpp" line="66"/>
+        <source>Priority</source>
+        <translation type="unfinished">Priorité</translation>
+    </message>
+</context>
+<context>
     <name>tmpc::song_widget</name>
     <message>
-        <location filename="song_widget.cpp" line="43"/>
         <source>Title</source>
-        <translation>Titre</translation>
+        <translation type="obsolete">Titre</translation>
     </message>
     <message>
-        <location filename="song_widget.cpp" line="43"/>
         <source>Artist</source>
-        <translation>Artiste</translation>
+        <translation type="obsolete">Artiste</translation>
     </message>
     <message>
-        <location filename="song_widget.cpp" line="43"/>
         <source>Album</source>
-        <translation>Album</translation>
+        <translation type="obsolete">Album</translation>
     </message>
     <message>
-        <location filename="song_widget.cpp" line="43"/>
         <source>Priority</source>
-        <translation>Priorité</translation>
+        <translation type="obsolete">Priorité</translation>
     </message>
 </context>
 </TS>
