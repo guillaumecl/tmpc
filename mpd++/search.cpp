@@ -89,8 +89,8 @@ search& search::operator<<(const tag_contains & tag)
 {
 	empty_ = false;
 	mpd_search_add_tag_constraint(mpd_.connection_,
-								  MPD_OPERATOR_DEFAULT,
-								  static_cast<mpd_tag_type>(tag.tag_), tag.value_);
+		MPD_OPERATOR_DEFAULT,
+		static_cast<mpd_tag_type>(tag.tag_), tag.value_);
 	mpd_.throw_if_error();
 	return *this;
 }
@@ -99,8 +99,8 @@ search& search::operator<<(const any_tag_contains & tag)
 {
 	empty_ = false;
 	mpd_search_add_any_tag_constraint(mpd_.connection_,
-									  MPD_OPERATOR_DEFAULT,
-									  tag.value_);
+		MPD_OPERATOR_DEFAULT,
+		tag.value_);
 	mpd_.throw_if_error();
 	return *this;
 }
@@ -109,8 +109,8 @@ search& search::operator<<(const uri_contains & tag)
 {
 	empty_ = false;
 	mpd_search_add_uri_constraint(mpd_.connection_,
-								  MPD_OPERATOR_DEFAULT,
-								  tag.value_);
+		MPD_OPERATOR_DEFAULT,
+		tag.value_);
 	mpd_.throw_if_error();
 	return *this;
 }
