@@ -22,7 +22,6 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #define TMPC_SONG_WIDGET_H
 
 #include <QTreeView>
-#include <QTreeWidgetItem>
 #include <QIcon>
 
 namespace tmpc
@@ -38,11 +37,6 @@ class song_widget: public QTreeView
 {
 	Q_OBJECT
 public:
-	/**
-	 * the item type. Use this instead of QTreeWidgetItem in case the class changes later.
-	 */
-	typedef QTreeWidgetItem item_type;
-
 	/**
 	 * Creates a song widget.
 	 * @param parent the parent widget.
