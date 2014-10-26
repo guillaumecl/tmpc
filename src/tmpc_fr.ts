@@ -137,24 +137,24 @@
 <context>
     <name>tmpc::song_model</name>
     <message>
-        <location filename="song_model.cpp" line="60"/>
+        <location filename="song_model.cpp" line="61"/>
         <source>Title</source>
-        <translation type="unfinished">Titre</translation>
+        <translation>Titre</translation>
     </message>
     <message>
-        <location filename="song_model.cpp" line="62"/>
+        <location filename="song_model.cpp" line="63"/>
         <source>Artist</source>
-        <translation type="unfinished">Artiste</translation>
+        <translation>Artiste</translation>
     </message>
     <message>
-        <location filename="song_model.cpp" line="64"/>
+        <location filename="song_model.cpp" line="65"/>
         <source>Album</source>
-        <translation type="unfinished">Album</translation>
+        <translation>Album</translation>
     </message>
     <message>
-        <location filename="song_model.cpp" line="66"/>
+        <location filename="song_model.cpp" line="67"/>
         <source>Priority</source>
-        <translation type="unfinished">Priorité</translation>
+        <translation>Priorité</translation>
     </message>
 </context>
 <context>
