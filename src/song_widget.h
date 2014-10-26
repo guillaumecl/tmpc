@@ -23,10 +23,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 #include <QTreeView>
 #include <QTreeWidgetItem>
-#include <QMetaType>
 #include <QIcon>
-
-#include <mpd++/forward.h>
 
 namespace tmpc
 {
@@ -84,14 +81,16 @@ signals:
 	 */
 	void remove_song(unsigned int song_id);
 
-private slots:
-	void item_double_clicked();
-
 protected:
 	/**
 	 * Respond to a key event.
 	 */
 	virtual void keyPressEvent(QKeyEvent *event);
+
+	/**
+	 * Respond to a mouse double click event.
+	 */
+	virtual void mouseDoubleClickEvent(QMouseEvent * event);
 
 private:
 	const song_storage& selection() const;
@@ -101,8 +100,5 @@ private:
 };
 
 }
-
-Q_DECLARE_METATYPE(std::shared_ptr<mpdpp::song>)
-
 
 #endif

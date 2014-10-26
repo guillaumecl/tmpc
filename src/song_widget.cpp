@@ -32,83 +32,60 @@ song_widget::song_widget(song_model *model, QWidget *parent)
 	: QTreeView(parent),
 	  model_(model)
 {
-	qRegisterMetaType<mpdpp::song_ptr>("mpdpp::song_ptr");
-
 	setModel(model);
 	setRootIsDecorated(false);
 
 	setColumnWidth(0, 400);
 }
 
-void song_widget::item_double_clicked()
+void song_widget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-	// mpdpp::song_ptr song = selection();
-	// if (song)
-	// {
-	// 	if (not song->queued())
-	// 	{
-	// 		currentItem()->setData(0, Qt::DecorationRole, queue_icon_);
-	// 		queue_.insert(song->uri());
-	// 	}
-	// 	emit song_selected(song);
-	// }
-}
+	const song_storage& song = selection();
+	if (not song.valid())
+		return QTreeView::mouseDoubleClickEvent(event);
 
+	if (not song.queued)
+		emit play_song(song.uri);
+	else
+		emit play_song(song.id);
+}
 
 void song_widget::keyPressEvent(QKeyEvent *event)
 {
-	song_storage& song = selection();
-	if (event->key() == Qt::Key_Return)
+	const song_storage& song = selection();
+	if (not song.valid())
+		return QTreeView::keyPressEvent(event);
+
+	switch(event->key())
 	{
-		event->accept();
+	case Qt::Key_Return:
 		if (not song.queued)
 			emit play_song(song.uri);
 		else
 			emit play_song(song.id);
-		return;
-	}
-	else if (event->key() == Qt::Key_Space)
-	{
+		break;
+	case Qt::Key_Space:
 		if (not song.queued)
-		{
-			event->accept();
 			emit queue_song(song.uri);
-			return;
-		}
-	}
-	else if (event->key() == Qt::Key_Plus)
-	{
-		event->accept();
+		break;
+	case Qt::Key_Plus:
 		if (song.queued)
-		{
 			emit priority_increased(song.id, song.priority);
-			++song.priority;
-		}
 		else
-		{
 			emit queue_song(song.uri);
-		}
-		return;
-	}
-	else if (event->key() == Qt::Key_Minus)
-	{
+		break;
+	case Qt::Key_Minus:
 		if (song.queued)
-		{
-			event->accept();
 			emit priority_decreased(song.id, song.priority);
-			--song.priority;
-			return;
-		}
-	}
-	else if (event->key() == Qt::Key_Delete)
-	{
+		break;
+	case Qt::Key_Delete:
 		if (song.queued)
-		{
 			emit remove_song(song.id);
-			return;
-		}
+		break;
+	default:
+		return QTreeView::keyPressEvent(event);
 	}
-	QTreeView::keyPressEvent(event);
+	event->accept();
 }
 
 song_storage& song_widget::selection()

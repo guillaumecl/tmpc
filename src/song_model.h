@@ -34,6 +34,8 @@ namespace tmpc
 
 struct song_storage
 {
+	int index;
+
 	unsigned int id;
 	unsigned int priority;
 
@@ -43,6 +45,8 @@ struct song_storage
 	QString uri;
 
 	bool queued;
+
+	bool valid() const { return index >= 0; }
 };
 
 class song_model: public QAbstractTableModel

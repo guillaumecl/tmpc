@@ -17,6 +17,7 @@ song_model::song_model(QObject *parent) :
 	queue_icon_(":/icons/song"),
 	db_icon_(":/icons/db")
 {
+	invalid_song_.index = -1;
 }
 
 QVariant song_model::data(const QModelIndex &index, int role) const
@@ -27,8 +28,8 @@ QVariant song_model::data(const QModelIndex &index, int role) const
 	const song_storage& song = songs_[index.row()];
 	if (role == Qt::DecorationRole)
 	{
-		if (index.column() == Title and song.queued)
-			return queue_icon_;
+		if (index.column() == Title)
+			return song.queued ? queue_icon_ : db_icon_;
 		return QVariant();
 	}
 	else if (role != Qt::DisplayRole)
@@ -85,13 +86,14 @@ void song_model::add_song(const mpdpp::song& song)
 		title = song.uri();
 	bool queued = song.queued();
 	songs_.append({
+			songs_.size(),
 			song.id(),
-				song.priority(),
-				title,
-				song.tag(mpdpp::tag::album),
-				song.tag(mpdpp::tag::artist),
-				song.uri(),
-				queued});
+			song.priority(),
+			title,
+			song.tag(mpdpp::tag::album),
+			song.tag(mpdpp::tag::artist),
+			song.uri(),
+			queued});
 }
 
 
