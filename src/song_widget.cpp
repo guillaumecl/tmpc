@@ -46,7 +46,7 @@ void song_widget::mouseDoubleClickEvent(QMouseEvent *event)
 		return QTreeView::mouseDoubleClickEvent(event);
 
 	if (not song.queued)
-		emit play_song(song.uri);
+		emit play_song(song.index, song.uri);
 	else
 		emit play_song(song.id);
 }
@@ -61,27 +61,27 @@ void song_widget::keyPressEvent(QKeyEvent *event)
 	{
 	case Qt::Key_Return:
 		if (not song.queued)
-			emit play_song(song.uri);
+			emit play_song(song.index, song.uri);
 		else
 			emit play_song(song.id);
 		break;
 	case Qt::Key_Space:
 		if (not song.queued)
-			emit queue_song(song.uri);
+			emit queue_song(song.index, song.uri);
 		break;
 	case Qt::Key_Plus:
 		if (song.queued)
-			emit priority_increased(song.id, song.priority);
+			emit priority_increased(song.index, song.id, song.priority);
 		else
-			emit queue_song(song.uri);
+			emit queue_song(song.index, song.uri);
 		break;
 	case Qt::Key_Minus:
 		if (song.queued)
-			emit priority_decreased(song.id, song.priority);
+			emit priority_decreased(song.index, song.id, song.priority);
 		break;
 	case Qt::Key_Delete:
 		if (song.queued)
-			emit remove_song(song.id);
+			emit remove_song(song.index, song.id);
 		break;
 	default:
 		return QTreeView::keyPressEvent(event);

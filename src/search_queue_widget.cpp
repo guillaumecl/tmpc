@@ -59,28 +59,28 @@ search_queue_widget::search_queue_widget(mpdpp::mpd& mpd) :
 	layout->addWidget(list_, 1);
 
 	connect(text_, SIGNAL(textChanged(const QString&)),
-			this, SLOT(search(const QString&)));
+		this, SLOT(search(const QString&)));
 
 	connect(list_, SIGNAL(play_song(unsigned int)),
-			this, SLOT(play(unsigned int)));
+		this, SLOT(play(unsigned int)));
 
-	connect(list_, SIGNAL(play_song(QString)),
-			this, SLOT(play(QString)));
+	connect(list_, SIGNAL(play_song(int, QString)),
+		this, SLOT(play(int, QString)));
 
-	connect(list_, SIGNAL(priority_increased(unsigned int, int)),
-			this, SLOT(increase_priority(unsigned int, int)));
+	connect(list_, SIGNAL(priority_increased(int, unsigned int, int)),
+		this, SLOT(increase_priority(int, unsigned int, int)));
 
-	connect(list_, SIGNAL(priority_decreased(unsigned int, int)),
-			this, SLOT(decrease_priority(unsigned int, int)));
+	connect(list_, SIGNAL(priority_decreased(int, unsigned int, int)),
+		this, SLOT(decrease_priority(int, unsigned int, int)));
 
-	connect(list_, SIGNAL(remove_song(unsigned int)),
-			this, SLOT(remove_song(unsigned int)));
+	connect(list_, SIGNAL(remove_song(int, unsigned int)),
+		this, SLOT(remove_song(int, unsigned int)));
 
-	connect(list_, SIGNAL(queue_song(QString)),
-			this, SLOT(insert_song(QString)));
+	connect(list_, SIGNAL(queue_song(int, QString)),
+		this, SLOT(insert_song(int, QString)));
 
 	connect(display_, SIGNAL(needResize()),
-			this, SIGNAL(needResize()));
+		this, SIGNAL(needResize()));
 }
 
 void search_queue_widget::keyPressEvent(QKeyEvent *event)
@@ -110,9 +110,7 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 	{
 		mpd_.clear_queue();
 		if (queue_search())
-		{
 			model_->clear();
-		}
 	}
 	else if (event->key() == Qt::Key_F10)
 	{
@@ -248,20 +246,20 @@ void search_queue_widget::play(unsigned int song_id)
 	}
 }
 
-void search_queue_widget::play(QString song_uri)
+void search_queue_widget::play(int position, QString song_uri)
 {
-	mpdpp::song_ptr song = mpd_.add(song_uri.toAscii());
+	mpdpp::song_ptr song = mpd_.add(song_uri.toUtf8());
 	mpd_.play(song);
 	if (not display_->isVisible())
-	{
 		emit quit();
-	}
+	else
+		model_->update_song(position, *song);
 }
 
-void search_queue_widget::insert_song(QString uri)
+void search_queue_widget::insert_song(int position, QString uri)
 {
-	mpdpp::song_ptr created = mpd_.add(uri.toAscii());
-	//@ TODO update model
+	mpdpp::song_ptr created = mpd_.add(uri.toUtf8());
+	model_->update_song(position, *created);
 }
 
 bool search_queue_widget::queue_search() const
@@ -269,25 +267,31 @@ bool search_queue_widget::queue_search() const
 	return not text_->text().startsWith('!') and not text_->text().startsWith('+');
 }
 
-void search_queue_widget::increase_priority(unsigned int song_id, int priority)
+void search_queue_widget::increase_priority(int position, unsigned int song_id, int priority)
 {
 	if (priority < 255)
 	{
 		mpd_.set_song_priority(song_id, priority + 1);
+		(void)position;
+		// TODO update song priority
 	}
 }
 
-void search_queue_widget::decrease_priority(unsigned int song_id, int priority)
+void search_queue_widget::decrease_priority(int position, unsigned int song_id, int priority)
 {
 	if (priority > 0)
 	{
 		mpd_.set_song_priority(song_id, priority - 1);
+		(void)position;
+		// TODO update song priority
 	}
 }
 
-void search_queue_widget::remove_song(unsigned int id)
+void search_queue_widget::remove_song(int position, unsigned int id)
 {
 	mpd_.delete_song(id);
+	(void)position;
+	// TODO delete song from the model.
 }
 
 }

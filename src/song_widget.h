@@ -53,27 +53,27 @@ signals:
 	/**
 	 * Emitted when a song is selected.
 	 */
-	void play_song(QString song_uri);
+	void play_song(int position, QString song_uri);
 
 	/**
 	 * Emitted when a song is selected.
 	 */
-	void queue_song(QString song_uri);
+	void queue_song(int position, QString song_uri);
 
 	/**
 	 * Increase the priority of the specified song.
 	 */
-	void priority_increased(unsigned int song_id, int priority);
+	void priority_increased(int position, unsigned int song_id, int priority);
 
 	/**
 	 * Decrease the priority of the specified song.
 	 */
-	void priority_decreased(unsigned int song_id, int priority);
+	void priority_decreased(int position, unsigned int song_id, int priority);
 
 	/**
 	 * Remove the specified song from the queue.
 	 */
-	void remove_song(unsigned int song_id);
+	void remove_song(int position, unsigned int song_id);
 
 protected:
 	/**

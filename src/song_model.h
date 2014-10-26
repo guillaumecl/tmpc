@@ -64,6 +64,8 @@ public:
 	const song_storage& item_at(int position) const;
 	song_storage& item_at(int position);
 
+	void update_song(int position, const mpdpp::song& song);
+
 public slots:
 	/**
 	 * Fills the list from a search.

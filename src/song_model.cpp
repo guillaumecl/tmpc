@@ -96,6 +96,19 @@ void song_model::add_song(const mpdpp::song& song)
 			queued});
 }
 
+void song_model::update_song(int position, const mpdpp::song& song)
+{
+	song_storage& s = item_at(position);
+	if (not s.valid())
+		return;
+
+	s.id = song.id();
+	s.priority = song.priority();
+	s.queued = song.queued();
+
+	emit dataChanged(index(position, 0), index(position, columns::Priority));
+}
+
 
 void song_model::fill(mpdpp::search& search)
 {
@@ -105,11 +118,6 @@ void song_model::fill(mpdpp::search& search)
 	for (const mpdpp::song& s:search)
 		add_song(s);
 
-	// if (search.queue_search())
-	// 	sortItems(3, Qt::DescendingOrder);
-	// else
-	// 	sortItems(0, Qt::AscendingOrder);
-	// setSortingEnabled(true);
 	endResetModel();
 }
 

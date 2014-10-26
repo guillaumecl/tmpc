@@ -81,31 +81,31 @@ private slots:
 	 * Plays the specified song.
 	 * @param song a pointer to the song to play.
 	 */
-	void play(QString uri);
+	void play(int position, QString uri);
 
 	/**
 	 * Increase the priority of the specified song.
 	 * @param song a pointer to the song to modify.
 	 */
-	void increase_priority(unsigned int song_id, int priority);
+	void increase_priority(int position, unsigned int song_id, int priority);
 
 	/**
 	 * Decrease the priority of the specified song.
 	 * @param song a pointer to the song to modify.
 	 */
-	void decrease_priority(unsigned int song_id, int priority);
+	void decrease_priority(int position, unsigned int song_id, int priority);
 
 	/**
 	 * Removes a song from the queue.
 	 * @param song a pointer to the song to delete.
 	 */
-	void remove_song(unsigned int id);
+	void remove_song(int position, unsigned int id);
 
 	/**
 	 * Inserts a song from the queue.
 	 * @param song a pointer to the song to insert. Change the contents to reflect the position in the queue.
 	 */
-	void insert_song(QString uri);
+	void insert_song(int position, QString uri);
 
 signals:
 	/**
