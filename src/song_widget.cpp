@@ -35,6 +35,7 @@ song_widget::song_widget(song_model *model, QWidget *parent)
 	setModel(model);
 	setRootIsDecorated(false);
 
+	setUniformRowHeights(true);
 	setColumnWidth(0, 400);
 }
 
