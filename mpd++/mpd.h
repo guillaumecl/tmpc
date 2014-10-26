@@ -131,7 +131,7 @@ public:
 	/**
 	 * Changes the priority of a song.
 	 */
-	void set_song_priority(song_ptr song, unsigned int priority);
+	void set_song_priority(unsigned int song_id, unsigned int priority);
 
 	/**
 	 * Set the priority of all songs in the queue.
@@ -141,7 +141,7 @@ public:
 	/**
 	 * Removes a song from the queue.
 	 */
-	void delete_song(song_ptr song);
+	void delete_song(unsigned int song_id);
 
 	/**
 	 * Monitors the selected events. This sets mpd in a waiting state.

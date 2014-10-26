@@ -15,6 +15,25 @@
     </message>
 </context>
 <context>
+    <name>song_model</name>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Titre</translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="obsolete">Artiste</translation>
+    </message>
+    <message>
+        <source>Album</source>
+        <translation type="obsolete">Album</translation>
+    </message>
+    <message>
+        <source>Priority</source>
+        <translation type="obsolete">Priorité</translation>
+    </message>
+</context>
+<context>
     <name>tag</name>
     <message>
         <location filename="mpdpp_translations.cpp" line="27"/>
@@ -116,26 +135,45 @@
     </message>
 </context>
 <context>
-    <name>tmpc::song_widget</name>
+    <name>tmpc::song_model</name>
     <message>
-        <location filename="song_widget.cpp" line="43"/>
+        <location filename="song_model.cpp" line="61"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="song_widget.cpp" line="43"/>
+        <location filename="song_model.cpp" line="63"/>
         <source>Artist</source>
         <translation>Artiste</translation>
     </message>
     <message>
-        <location filename="song_widget.cpp" line="43"/>
+        <location filename="song_model.cpp" line="65"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="song_widget.cpp" line="43"/>
+        <location filename="song_model.cpp" line="67"/>
         <source>Priority</source>
         <translation>Priorité</translation>
+    </message>
+</context>
+<context>
+    <name>tmpc::song_widget</name>
+    <message>
+        <source>Title</source>
+        <translation type="obsolete">Titre</translation>
+    </message>
+    <message>
+        <source>Artist</source>
+        <translation type="obsolete">Artiste</translation>
+    </message>
+    <message>
+        <source>Album</source>
+        <translation type="obsolete">Album</translation>
+    </message>
+    <message>
+        <source>Priority</source>
+        <translation type="obsolete">Priorité</translation>
     </message>
 </context>
 </TS>

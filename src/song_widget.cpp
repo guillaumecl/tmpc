@@ -21,240 +21,80 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "song_widget.h"
 #include <mpd++/mpd.h>
 
+#include "song_model.h"
 
 #include <QKeyEvent>
 #include <sstream>
 
 using namespace tmpc;
 
-song_widget::song_widget(QWidget *parent)
-	: QTreeWidget(parent),
-	  queue_icon_(":/icons/song"),
-	  db_icon_(":/icons/db"),
-	  queue_fed_(false)
+song_widget::song_widget(song_model *model, QWidget *parent)
+	: QTreeView(parent),
+	  model_(model)
 {
-	QStringList labels;
-
-	qRegisterMetaType<mpdpp::song_ptr>("mpdpp::song_ptr");
+	setModel(model);
 	setRootIsDecorated(false);
 
-	setColumnCount(4);
-
-	labels << tr("Title") << tr("Artist") << tr("Album") << tr("Priority");
-	setHeaderLabels(labels);
-
+	setUniformRowHeights(true);
 	setColumnWidth(0, 400);
-
-	hideColumn(3);
-
-	connect(this, SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
-			this, SLOT(item_double_clicked()));
 }
 
-void song_widget::add_song(mpdpp::song_ptr song)
+void song_widget::mouseDoubleClickEvent(QMouseEvent *event)
 {
-	if (song->queued())
-	{
-		queue_.insert(song->uri());
-	}
+	const song_storage& song = selection();
+	if (not song.valid())
+		return QTreeView::mouseDoubleClickEvent(event);
 
-	item_type *item = new item_type(this);
-
-	if (song->queued())
-	{
-		item->setIcon(0, queue_icon_);
-		item->setData(3, Qt::DisplayRole, song->priority());
-	}
-	else if (queue_.contains(song->uri()))
-	{
-		item->setIcon(0, queue_icon_);
-	}
+	if (not song.queued)
+		emit play_song(song.index, song.uri);
 	else
-	{
-		item->setIcon(0, db_icon_);
-	}
-
-	const char *title = song->tag(mpdpp::tag::title);
-	if (title)
-	{
-		item->setText(0, title);
-	}
-	else
-	{
-		item->setText(0, song->uri());
-	}
-	item->setText(1, song->tag(mpdpp::tag::artist));
-	item->setText(2, song->tag(mpdpp::tag::album));
-	item->setData(Qt::UserRole, 0, QVariant::fromValue(song));
+		emit play_song(song.id);
 }
-
-void song_widget::fill(mpdpp::search& search)
-{
-	clear();
-	setSortingEnabled(false);
-
-	for (auto it = search.begin(); it != search.end(); ++it)
-	{
-		add_song(it.steal_ptr());
-	}
-
-	if (search.queue_search())
-	{
-		sortItems(3, Qt::DescendingOrder);
-	}
-	else
-	{
-		sortItems(0, Qt::AscendingOrder);
-	}
-	setSortingEnabled(true);
-}
-
-void song_widget::fill(mpdpp::search&& search)
-{
-	// this is not an infinite loop, search is a lvalue so the above will be called.
-	fill(search);
-}
-
-mpdpp::song_ptr song_widget::selection() const
-{
-	item_type* current_item = static_cast<item_type*>(currentItem());
-
-	if (current_item)
-	{
-		return qvariant_cast<mpdpp::song_ptr>(current_item->data(Qt::UserRole, 0));
-	}
-	return nullptr;
-}
-
-void song_widget::item_double_clicked()
-{
-	mpdpp::song_ptr song = selection();
-	if (song)
-	{
-		if (not song->queued())
-		{
-			currentItem()->setData(0, Qt::DecorationRole, queue_icon_);
-			queue_.insert(song->uri());
-		}
-		emit song_selected(song);
-	}
-}
-
 
 void song_widget::keyPressEvent(QKeyEvent *event)
 {
-	if (event->key() == Qt::Key_Return)
-	{
-		mpdpp::song_ptr song = selection();
-		if (song)
-		{
-			event->accept();
-			if (not song->queued())
-			{
-				currentItem()->setData(0, Qt::DecorationRole, queue_icon_);
-				queue_.insert(song->uri());
-			}
-			emit song_selected(song);
-			return;
-		}
-	}
-	else if (event->key() == Qt::Key_Space)
-	{
-		mpdpp::song_ptr song = selection();
-		if (song and not song->queued())
-		{
-			event->accept();
-			currentItem()->setData(0, Qt::DecorationRole, queue_icon_);
-			queue_.insert(song->uri());
-			emit song_inserted(song);
-			return;
-		}
-	}
-	else if (event->key() == Qt::Key_Plus)
-	{
-		mpdpp::song_ptr song = selection();
-		if (song)
-		{
-			event->accept();
-			if (song->queued())
-			{
-				emit priority_increased(song);
-				currentItem()->setData(3, Qt::DisplayRole, song->priority());
-			}
-			else
-			{
-				currentItem()->setData(0, Qt::DecorationRole, queue_icon_);
-				queue_.insert(song->uri());
-				emit song_inserted(song);
-			}
-			return;
-		}
-	}
-	else if (event->key() == Qt::Key_Minus)
-	{
-		mpdpp::song_ptr song = selection();
-		if (song and song->queued())
-		{
-			event->accept();
-			emit priority_decreased(song);
-			currentItem()->setData(3, Qt::DisplayRole, song->priority());
-			return;
-		}
-	}
-	else if (event->key() == Qt::Key_Delete)
-	{
-		mpdpp::song_ptr song = selection();
-		if (song and song->queued())
-		{
-			event->accept();
-			queue_.remove(song->uri());
-			emit song_removed(song);
+	const song_storage& song = selection();
+	if (not song.valid())
+		return QTreeView::keyPressEvent(event);
 
-			// @todo don't delete this song if we're in db mode but change the icon instead.
-			QModelIndex selected = currentIndex();
-			model()->removeRow(selected.row(), selected.parent());
-			return;
-		}
+	switch(event->key())
+	{
+	case Qt::Key_Return:
+		if (not song.queued)
+			emit play_song(song.index, song.uri);
+		else
+			emit play_song(song.id);
+		break;
+	case Qt::Key_Space:
+		if (not song.queued)
+			emit queue_song(song.index, song.uri);
+		break;
+	case Qt::Key_Plus:
+		if (song.queued)
+			emit priority_increased(song.index, song.id, song.priority);
+		else
+			emit queue_song(song.index, song.uri);
+		break;
+	case Qt::Key_Minus:
+		if (song.queued)
+			emit priority_decreased(song.index, song.id, song.priority);
+		break;
+	case Qt::Key_Delete:
+		if (song.queued)
+			emit remove_song(song.index, song.id);
+		break;
+	default:
+		return QTreeView::keyPressEvent(event);
 	}
-	QTreeWidget::keyPressEvent(event);
+	event->accept();
 }
 
-void song_widget::feed_queue(mpdpp::search&& search)
+song_storage& song_widget::selection()
 {
-	feed_queue(search);
+	return model_->item_at(currentIndex().row());
 }
 
-void song_widget::feed_queue(mpdpp::search& search)
+const song_storage& song_widget::selection() const
 {
-	queue_.clear();
-	for (const mpdpp::song& song : search)
-	{
-		queue_.insert(song.uri());
-	}
-	queue_fed_ = true;
-
-	if (queue_.empty() and topLevelItemCount() > 0)
-	{
-		for (int i = 0; i < topLevelItemCount() ; ++i)
-		{
-			QTreeWidgetItem *item = topLevelItem(i);
-			item->setData(0, Qt::DecorationRole, db_icon_);
-		}
-	}
-}
-
-bool song_widget::queue_fed() const
-{
-	return queue_fed_;
-}
-
-void song_widget::set_queue_fed(bool fed)
-{
-    queue_fed_ = fed;
-}
-
-void song_widget::clear_queue()
-{
-    queue_.clear();
-    queue_fed_ = true;
+	return model_->item_at(currentIndex().row());
 }

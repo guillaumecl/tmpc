@@ -40,6 +40,7 @@ song::song(song && reused_song)
 song& song::operator=(song && reused_song)
 {
 	std::swap(song_, reused_song.song_);
+
 	queue_ = reused_song.queue_;
 	return *this;
 }
@@ -105,7 +106,7 @@ unsigned int song::priority() const
 #if ((LIBMPDCLIENT_MAJOR_VERSION == 2 && LIBMPDCLIENT_MINOR_VERSION > 7) || LIBMPDCLIENT_MAJOR_VERSION > 2)
 	return mpd_song_get_prio(song_);
 #else
-return 0;
+	return 0;
 #endif
 }
 

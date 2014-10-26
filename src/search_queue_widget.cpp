@@ -21,6 +21,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "search_queue_widget.h"
 #include "song_widget.h"
 #include "display_widget.h"
+#include "song_model.h"
 
 #include "history_line_edit.h"
 
@@ -36,7 +37,8 @@ namespace tmpc
 {
 
 search_queue_widget::search_queue_widget(mpdpp::mpd& mpd) :
-	mpd_(mpd)
+	mpd_(mpd),
+	model_(new song_model(this))
 {
 	setAttribute(Qt::WA_QuitOnClose);
 
@@ -53,29 +55,32 @@ search_queue_widget::search_queue_widget(mpdpp::mpd& mpd) :
 	text_->setFrame(false);
 	layout->addWidget(text_);
 
-	list_ = new song_widget(this);
+	list_ = new song_widget(model_, this);
 	layout->addWidget(list_, 1);
 
 	connect(text_, SIGNAL(textChanged(const QString&)),
-			this, SLOT(search(const QString&)));
+		this, SLOT(search(const QString&)));
 
-	connect(list_, SIGNAL(song_selected(mpdpp::song_ptr)),
-			this, SLOT(play(mpdpp::song_ptr)));
+	connect(list_, SIGNAL(play_song(unsigned int)),
+		this, SLOT(play(unsigned int)));
 
-	connect(list_, SIGNAL(priority_increased(mpdpp::song_ptr)),
-			this, SLOT(increase_priority(mpdpp::song_ptr)));
+	connect(list_, SIGNAL(play_song(int, QString)),
+		this, SLOT(play(int, QString)));
 
-	connect(list_, SIGNAL(priority_decreased(mpdpp::song_ptr)),
-			this, SLOT(decrease_priority(mpdpp::song_ptr)));
+	connect(list_, SIGNAL(priority_increased(int, unsigned int, int)),
+		this, SLOT(increase_priority(int, unsigned int, int)));
 
-	connect(list_, SIGNAL(song_removed(mpdpp::song_ptr)),
-			this, SLOT(remove_song(mpdpp::song_ptr)));
+	connect(list_, SIGNAL(priority_decreased(int, unsigned int, int)),
+		this, SLOT(decrease_priority(int, unsigned int, int)));
 
-	connect(list_, SIGNAL(song_inserted(mpdpp::song_ptr)),
-			this, SLOT(insert_song(mpdpp::song_ptr)));
+	connect(list_, SIGNAL(remove_song(int, unsigned int)),
+		this, SLOT(remove_song(int, unsigned int)));
+
+	connect(list_, SIGNAL(queue_song(int, QString)),
+		this, SLOT(insert_song(int, QString)));
 
 	connect(display_, SIGNAL(needResize()),
-			this, SIGNAL(needResize()));
+		this, SIGNAL(needResize()));
 }
 
 void search_queue_widget::keyPressEvent(QKeyEvent *event)
@@ -96,8 +101,6 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 
 		build_search(search_term, mpd_.add_from_db());
 
-        list_->set_queue_fed(false);
-
 		// Remove the ! to make the list match with the content
 		search_term.remove(0, 1);
 		text_->setText(search_term);
@@ -107,11 +110,7 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 	{
 		mpd_.clear_queue();
 		if (queue_search())
-		{
-			list_->clear();
-		}
-		list_->clear_queue();
-        list_->set_queue_fed(true);
+			model_->clear();
 	}
 	else if (event->key() == Qt::Key_F10)
 	{
@@ -127,7 +126,6 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 
 			text_->clear();
 			event->accept();
-            list_->set_queue_fed(false);
 		}
 	}
 	else
@@ -216,18 +214,12 @@ void search_queue_widget::search(const QString& str)
 		return;
 	}
 
-	list_->clear();
 	QString search_str = str;
-
-	if (not queue_search() and not list_->queue_fed())
-	{
-		list_->feed_queue(mpd_.queue());
-	}
 
 	mpdpp::search search = search_type();
 	build_search(search_str, search);
 
-	list_->fill(search);
+	model_->fill(search);
 
 	emit needResize();
 }
@@ -245,24 +237,29 @@ QSize search_queue_widget::sizeHint() const
 	return size;
 }
 
-void search_queue_widget::play(mpdpp::song_ptr song)
+void search_queue_widget::play(unsigned int song_id)
 {
-	if (song)
+	mpd_.play(song_id);
+	if (not display_->isVisible())
 	{
-		mpd_.play(song);
-		if (not display_->isVisible())
-		{
-			emit quit();
-		}
+		emit quit();
 	}
 }
 
-void search_queue_widget::insert_song(mpdpp::song_ptr song)
+void search_queue_widget::play(int position, QString song_uri)
 {
-	if (song)
-	{
-		song->replace(mpd_.add(song->uri()));
-	}
+	mpdpp::song_ptr song = mpd_.add(song_uri.toUtf8());
+	mpd_.play(song);
+	if (not display_->isVisible())
+		emit quit();
+	else
+		model_->update_song(position, *song);
+}
+
+void search_queue_widget::insert_song(int position, QString uri)
+{
+	mpdpp::song_ptr created = mpd_.add(uri.toUtf8());
+	model_->update_song(position, *created);
 }
 
 bool search_queue_widget::queue_search() const
@@ -270,25 +267,31 @@ bool search_queue_widget::queue_search() const
 	return not text_->text().startsWith('!') and not text_->text().startsWith('+');
 }
 
-void search_queue_widget::increase_priority(mpdpp::song_ptr song)
+void search_queue_widget::increase_priority(int position, unsigned int song_id, int priority)
 {
-	if (song->priority() < 255)
+	if (priority < 255)
 	{
-		mpd_.set_song_priority(song, song->priority() + 1);
+		mpd_.set_song_priority(song_id, priority + 1);
+		(void)position;
+		// TODO update song priority
 	}
 }
 
-void search_queue_widget::decrease_priority(mpdpp::song_ptr song)
+void search_queue_widget::decrease_priority(int position, unsigned int song_id, int priority)
 {
-	if (song->priority() > 0)
+	if (priority > 0)
 	{
-		mpd_.set_song_priority(song, song->priority() - 1);
+		mpd_.set_song_priority(song_id, priority - 1);
+		(void)position;
+		// TODO update song priority
 	}
 }
 
-void search_queue_widget::remove_song(mpdpp::song_ptr song)
+void search_queue_widget::remove_song(int position, unsigned int id)
 {
-	mpd_.delete_song(song);
+	mpd_.delete_song(id);
+	(void)position;
+	// TODO delete song from the model.
 }
 
 }
