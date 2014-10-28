@@ -111,8 +111,8 @@ int main(int argc, char **argv)
 	tmpc::application app(argc, argv);
 	Q_INIT_RESOURCE(tmpc);
 
-    QCoreApplication::setOrganizationName("baobob");
-    QCoreApplication::setApplicationName("tmpc");
+	QCoreApplication::setOrganizationName("baobob");
+	QCoreApplication::setApplicationName("tmpc");
 	QWidget *widget;
 	bool display;
 	mpdpp::mpd mpd = connect(argc, argv, display);
