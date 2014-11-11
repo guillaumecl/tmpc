@@ -45,16 +45,11 @@ application::application(int &argc, char **argv) :
 
 bool application::notify(QObject *receiver, QEvent *event)
 {
-	try
-	{
+	try {
 		return QApplication::notify(receiver, event);
-	}
-	catch(const mpdpp::exception &e)
-	{
+	} catch(const mpdpp::exception &e) {
 		QMessageBox::critical(nullptr, tr("tmpc"), e.what());
-	}
-	catch(const std::exception &e)
-	{
+	} catch(const std::exception &e) {
 		QMessageBox::critical(nullptr, tr("tmpc"), e.what());
 	}
 	return false;

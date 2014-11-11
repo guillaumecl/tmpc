@@ -38,8 +38,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include "optionparser.h"
 
 enum optionIndex { UNKNOWN, CURRENT, HOST, PORT };
-const option::Descriptor usage[] =
-{
+const option::Descriptor usage[] = {
 	{UNKNOWN, 0, "", "",option::Arg::None, "USAGE: tmpc [options]\n\nOptions:" },
 	{CURRENT, 0,"c", "current",option::Arg::None, "  --current, -c    Print information about the current song." },
 	{HOST, 0,"h","host",option::Arg::Optional,    "  --host, -h host  Host to use." },
@@ -57,13 +56,11 @@ mpdpp::mpd connect(int argc, char **argv, bool& display)
 	option::Option buffer[stats.buffer_max];
 	option::Parser parse(usage, argc, argv, options, buffer);
 
-	try
-	{
+	try {
 		const char *host = nullptr;
 		int port = 0;
 
-		if (parse.error() || options[UNKNOWN])
-		{
+		if (parse.error() || options[UNKNOWN]) {
 			for (option::Option* opt = options[UNKNOWN]; opt; opt = opt->next())
 				std::cout << "Unknown option: " << std::string(opt->name,opt->namelen) << "\n";
 
@@ -73,23 +70,17 @@ mpdpp::mpd connect(int argc, char **argv, bool& display)
 		}
 
 		if (options[HOST])
-		{
 			host = options[HOST].arg;
-		}
+
 		if (options[PORT] and options[PORT].arg)
-		{
 			port = std::atoi(options[PORT].arg);
-		}
+
 		display = options[CURRENT];
 
 		return mpdpp::mpd(host, port);
-	}
-	catch(const std::exception & e)
-	{
+	} catch(const std::exception & e) {
 		message = QObject::tr(e.what());
-	}
-	catch(...)
-	{
+	} catch(...) {
 		message = QObject::tr("Unknown exception while connecting to mpd");
 	}
 
@@ -110,13 +101,9 @@ int main(int argc, char **argv)
 	mpdpp::mpd mpd = connect(argc, argv, display);
 
 	if (display)
-	{
 		widget = new tmpc::display_widget(mpd);
-	}
 	else
-	{
 		widget = new tmpc::search_queue_widget(mpd);
-	}
 
 	tmpc::main_window *window = new tmpc::main_window(mpd, widget);
 	window->connect(widget, SIGNAL(quit()), SLOT(close()));

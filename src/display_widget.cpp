@@ -77,35 +77,24 @@ display_widget::display_widget(mpdpp::mpd& mpd) :
 void display_widget::display(mpdpp::song_ptr song)
 {
 	if(!song)
-	{
 		return;
-	}
+
 	id_ = song->id();
 	const char *title = song->tag(mpdpp::tag::title);
 	const char *artist = song->tag(mpdpp::tag::artist);
 	const char *album = song->tag(mpdpp::tag::album);
 	if (not title)
-	{
 		title =  song->uri();
-	}
 
 	QString translated;
 	if (artist and album)
-	{
 		translated = tr("%1 by %2 (%3)").arg(title, artist, album);
-	}
 	else if (artist)
-	{
 		translated = tr("%1 by %2").arg(title, artist);
-	}
 	else if (album)
-	{
 		translated = tr("%1 (%2)").arg(title, album);
-	}
 	else
-	{
 		translated = title;
-	}
 
 	title_->setText(QString("<center><h1>%1</h1></center>").arg(translated));
 	window()->setWindowTitle(translated);
@@ -115,8 +104,7 @@ void display_widget::display(mpdpp::song_ptr song)
 	QString text;
 	text.append("<hr />");
 
-	for (const auto &pair : song->tags())
-	{
+	for (const auto &pair : song->tags()) {
 		text.append("<b>").append(qApp->translate("tag", tag_to_string(pair.first))).append("</b>: ");
 		text.append(pair.second);
 		text.append("<br />");
@@ -143,17 +131,13 @@ void display_widget::poll()
 
 	id_ = old_id;
 	if (id_ != state.song_id())
-	{
 		display(mpd_.current_song());
-	}
 }
 
 void display_widget::seek(int position)
 {
 	if (id_ != -1)
-	{
 		mpd_.seek(id_, position/1000);
-	}
 }
 
 void display_widget::showEvent(QShowEvent *)

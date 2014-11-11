@@ -26,19 +26,15 @@ QVariant song_model::data(const QModelIndex &index, int role) const
 		return QVariant();
 
 	const song_storage& song = songs_[index.row()];
-	if (role == Qt::DecorationRole)
-	{
+	if (role == Qt::DecorationRole) {
 		if (index.column() == Title)
 			return song.queued ? queue_icon_ : db_icon_;
 		return QVariant();
-	}
-	else if (role != Qt::DisplayRole)
-	{
+	} else if (role != Qt::DisplayRole) {
 		return QVariant();
 	}
 
-	switch(index.column())
-	{
+	switch(index.column()) {
 	case columns::Title:
 		return song.title;
 	case columns::Album:
@@ -55,8 +51,8 @@ QVariant song_model::headerData (int section, Qt::Orientation orientation, int r
 {
 	if (orientation == Qt::Vertical or role != Qt::DisplayRole)
 		return QVariant();
-	switch(section)
-	{
+
+	switch(section) {
 	case columns::Title:
 		return tr("Title");
 	case columns::Artist:
@@ -82,9 +78,11 @@ int song_model::rowCount(const QModelIndex &/*parent*/) const
 void song_model::add_song(const mpdpp::song& song)
 {
 	const char *title = song.tag(mpdpp::tag::title);
+	bool queued = song.queued();
+
 	if (!title)
 		title = song.uri();
-	bool queued = song.queued();
+
 	songs_.append({
 			songs_.size(),
 			song.id(),

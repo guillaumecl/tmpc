@@ -57,8 +57,7 @@ void song_widget::keyPressEvent(QKeyEvent *event)
 	if (not song.valid())
 		return QTreeView::keyPressEvent(event);
 
-	switch(event->key())
-	{
+	switch(event->key()) {
 	case Qt::Key_Return:
 		if (not song.queued)
 			emit play_song(song.index, song.uri);

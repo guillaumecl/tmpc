@@ -4,12 +4,12 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="tmpc.cpp" line="98"/>
+        <location filename="tmpc.cpp" line="89"/>
         <source>Unknown exception while connecting to mpd</source>
         <translation>Une erreur inconnue est survenue pendant la connexion à mpd</translation>
     </message>
     <message>
-        <location filename="tmpc.cpp" line="104"/>
+        <location filename="tmpc.cpp" line="95"/>
         <source>tmpc</source>
         <translation>tmpc</translation>
     </message>
@@ -96,7 +96,7 @@
         <translation>Disque</translation>
     </message>
     <message>
-        <location filename="display_widget.cpp" line="124"/>
+        <location filename="display_widget.cpp" line="112"/>
         <location filename="mpdpp_translations.cpp" line="39"/>
         <source>File</source>
         <translation>Fichier</translation>
@@ -105,8 +105,8 @@
 <context>
     <name>tmpc::application</name>
     <message>
-        <location filename="application.cpp" line="54"/>
-        <location filename="application.cpp" line="58"/>
+        <location filename="application.cpp" line="51"/>
+        <location filename="application.cpp" line="53"/>
         <source>tmpc</source>
         <translation>tmpc</translation>
     </message>
@@ -114,17 +114,17 @@
 <context>
     <name>tmpc::display_widget</name>
     <message>
-        <location filename="display_widget.cpp" line="95"/>
+        <location filename="display_widget.cpp" line="91"/>
         <source>%1 by %2 (%3)</source>
         <translation>%1 de %2 (%3)</translation>
     </message>
     <message>
-        <location filename="display_widget.cpp" line="99"/>
+        <location filename="display_widget.cpp" line="93"/>
         <source>%1 by %2</source>
         <translation>%1 de %2</translation>
     </message>
     <message>
-        <location filename="display_widget.cpp" line="103"/>
+        <location filename="display_widget.cpp" line="95"/>
         <source>%1 (%2)</source>
         <translation>%1 (%2)</translation>
     </message>
@@ -137,22 +137,22 @@
 <context>
     <name>tmpc::song_model</name>
     <message>
-        <location filename="song_model.cpp" line="61"/>
+        <location filename="song_model.cpp" line="57"/>
         <source>Title</source>
         <translation>Titre</translation>
     </message>
     <message>
-        <location filename="song_model.cpp" line="63"/>
+        <location filename="song_model.cpp" line="59"/>
         <source>Artist</source>
         <translation>Artiste</translation>
     </message>
     <message>
-        <location filename="song_model.cpp" line="65"/>
+        <location filename="song_model.cpp" line="61"/>
         <source>Album</source>
         <translation>Album</translation>
     </message>
     <message>
-        <location filename="song_model.cpp" line="67"/>
+        <location filename="song_model.cpp" line="63"/>
         <source>Priority</source>
         <translation>Priorité</translation>
     </message>

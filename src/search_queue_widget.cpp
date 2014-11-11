@@ -88,15 +88,12 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 	if (event->key() == Qt::Key_Up
 		or event->key() == Qt::Key_Down
 		or event->key() == Qt::Key_PageUp
-		or event->key() == Qt::Key_PageDown)
-	{
+		or event->key() == Qt::Key_PageDown) {
 		list_->setFocus();
 		QWidget::keyPressEvent(event);
-	}
-	else if (event->key() == Qt::Key_O
+	} else if (event->key() == Qt::Key_O
 			 and event->modifiers() & Qt::ControlModifier
-			 and not queue_search())
-	{
+			 and not queue_search()) {
 		QString search_term = text_->text();
 
 		build_search(search_term, mpd_.add_from_db());
@@ -104,32 +101,23 @@ void search_queue_widget::keyPressEvent(QKeyEvent *event)
 		// Remove the ! to make the list match with the content
 		search_term.remove(0, 1);
 		text_->setText(search_term);
-	}
-	else if (event->key() == Qt::Key_P
-			 and event->modifiers() & Qt::ControlModifier)
-	{
+	} else if (event->key() == Qt::Key_P
+		and event->modifiers() & Qt::ControlModifier) {
 		mpd_.clear_queue();
 		if (queue_search())
 			model_->clear();
-	}
-	else if (event->key() == Qt::Key_F10)
-	{
+	} else if (event->key() == Qt::Key_F10) {
 		display_->setVisible(not display_->isVisible());
 		emit needResize();
-	}
-	else if (event->key() == Qt::Key_Return)
-	{
+	} else if (event->key() == Qt::Key_Return) {
 		QString search_term = text_->text();
-		if (search_term.startsWith('+'))
-		{
+		if (search_term.startsWith('+')) {
 			build_search(search_term, mpd_.add_from_db());
 
 			text_->clear();
 			event->accept();
 		}
-	}
-	else
-	{
+	} else {
 		text_->setFocus();
 		QWidget::keyPressEvent(event);
 	}
@@ -143,45 +131,30 @@ mpdpp::search& search_queue_widget::build_search(const QString& search_terms, mp
 mpdpp::search& search_queue_widget::build_search(const QString& search_terms, mpdpp::search &search)
 {
 	QString terms = search_terms;
-	if (terms.startsWith('!') or terms.startsWith('+'))
-	{
+	if (terms.startsWith('!') or terms.startsWith('+')) {
 		terms = terms.remove(0, 1);
 	}
-	for(QString const& it : terms.split(',', QString::SkipEmptyParts))
-	{
-		if (it.size() > 0 and it[0] == ':')
-		{
+	for(QString const& it : terms.split(',', QString::SkipEmptyParts)) {
+		if (it.size() > 0 and it[0] == ':') {
 			QStringList tag_value = it.split(':');
-			if (tag_value.count() == 3)
-			{
+			if (tag_value.count() == 3) {
 				const QString& tag_name = tag_value[1];
 				const QString& value = tag_value[2];
 
-				if (tag_name == "uri")
-				{
+				if (tag_name == "uri") {
 					search << mpdpp::uri_contains(value.toUtf8());
-				}
-				else
-				{
+				} else {
 					mpdpp::tag tag;
 					if (tag_name.size() == 0)
-					{
 						tag = mpdpp::tag::comment;
-					}
 					else
-					{
 						tag = mpdpp::tag_from_string(tag_name.toUtf8());
-					}
 
 					if (tag != mpdpp::tag::unknown and value.size() >= 2)
-					{
 						search << mpdpp::tag_contains(tag, value.toUtf8());
-					}
 				}
 			}
-		}
-		else if (it.size() >= 2)
-		{
+		} else if (it.size() >= 2) {
 			search << mpdpp::any_tag_contains(it.toUtf8());
 		}
 	}
@@ -191,28 +164,20 @@ mpdpp::search& search_queue_widget::build_search(const QString& search_terms, mp
 mpdpp::search search_queue_widget::search_type()
 {
 	if (text_->text() == "@")
-	{
 		return mpd_.queue();
-	}
+
 	if (queue_search())
-	{
 		return mpd_.search_queue();
-	}
-	else
-	{
-		return mpd_.search_db();
-	}
+	return mpd_.search_db();
 }
 
 void search_queue_widget::search(const QString& str)
 {
+	/**
+	 * Add searches are validated using the Return key.
+	 */
 	if (str.startsWith('+'))
-	{
-		/**
-		 * Add searches are validated using the Return key.
-		 */
 		return;
-	}
 
 	QString search_str = str;
 
@@ -230,9 +195,8 @@ QSize search_queue_widget::sizeHint() const
 	QSize listHint(0,0);
 
 	if (list_->model()->rowCount() > 0)
-	{
 		listHint = list_->sizeHint();
-	}
+
 	QSize size = QSize(qMax(textHint.width(), listHint.width()), textHint.height() + listHint.height());
 	return size;
 }
@@ -241,9 +205,7 @@ void search_queue_widget::play(unsigned int song_id)
 {
 	mpd_.play(song_id);
 	if (not display_->isVisible())
-	{
 		emit quit();
-	}
 }
 
 void search_queue_widget::play(int position, QString song_uri)
@@ -269,8 +231,7 @@ bool search_queue_widget::queue_search() const
 
 void search_queue_widget::increase_priority(int position, unsigned int song_id, int priority)
 {
-	if (priority < 255)
-	{
+	if (priority < 255) {
 		mpd_.set_song_priority(song_id, priority + 1);
 		(void)position;
 		// TODO update song priority
@@ -279,8 +240,7 @@ void search_queue_widget::increase_priority(int position, unsigned int song_id, 
 
 void search_queue_widget::decrease_priority(int position, unsigned int song_id, int priority)
 {
-	if (priority > 0)
-	{
+	if (priority > 0) {
 		mpd_.set_song_priority(song_id, priority - 1);
 		(void)position;
 		// TODO update song priority

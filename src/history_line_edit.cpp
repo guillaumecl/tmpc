@@ -45,40 +45,27 @@ history_line_edit::~history_line_edit()
 void history_line_edit::keyPressEvent(QKeyEvent *event)
 {
     bool handled = false;
-    if (event->key() == Qt::Key_Up)
-    {
-        if (position_ != 0)
-        {
+    if (event->key() == Qt::Key_Up) {
+        if (position_ != 0) {
             event->accept();
             --position_;
             setText(history_[position_]);
             handled = true;
         }
-    }
-    else if (event->key() == Qt::Key_Down)
-    {
-        if (position_ < history_.size())
-        {
+    } else if (event->key() == Qt::Key_Down) {
+        if (position_ < history_.size()) {
             event->accept();
             ++position_;
             if (position_ < history_.size())
-            {
                 setText(history_[position_]);
-            }
             else
-            {
                 clear();
-            }
             handled = true;
         }
-    }
-    else if (event->key() == Qt::Key_Return)
-    {
+    } else if (event->key() == Qt::Key_Return) {
         history_ << text();
     }
 
     if (not handled)
-    {
         QLineEdit::keyPressEvent(event);
-    }
 }
