@@ -38,13 +38,10 @@ search::search(mpd& mpd, bool allow_empty_search, bool queue_search, bool reuse_
 
 search::~search()
 {
-	if (not allow_empty_search_ and empty_)
-	{
+	if (not allow_empty_search_ and empty_) {
 		mpd_search_cancel(mpd_.connection_);
 		mpd_.throw_if_error();
-	}
-	else if (add_search_ and not empty_)
-	{
+	} else if (add_search_ and not empty_) {
 		mpd_search_commit(mpd_.connection_);
 		mpd_.throw_if_error();
 	}
@@ -56,14 +53,11 @@ search::iterator search::begin()
 {
 	iterator ret = end();
 
-	if (not allow_empty_search_ and not add_search_ and not empty_)
-	{
+	if (not allow_empty_search_ and not add_search_ and not empty_) {
 		mpd_search_commit(mpd_.connection_);
 		mpd_.throw_if_error();
 		++ret;
-	}
-	else if (allow_empty_search_ and not add_search_)
-	{
+	} else if (allow_empty_search_ and not add_search_) {
 		++ret;
 	}
 	return ret;

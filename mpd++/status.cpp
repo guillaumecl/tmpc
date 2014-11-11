@@ -41,9 +41,7 @@ status::status(status&& status) :
 status::~status()
 {
 	if (status_)
-	{
 		mpd_status_free(status_);
-	}
 }
 
 int status::volume() const

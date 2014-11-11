@@ -79,12 +79,9 @@ struct tag_iterator: public std::iterator<std::forward_iterator_tag, tag>
 	 */
 	tag_iterator& operator++()
 	{
-		if (tag_ == tag::musicbrainz_track_id or not valid())
-		{
+		if (tag_ == tag::musicbrainz_track_id or not valid()) {
 			tag_ = tag::unknown;
-		}
-		else
-		{
+		} else {
 			int num = static_cast<int>(tag_);
 			tag_ = static_cast<tag>(num+1);
 		}

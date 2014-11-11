@@ -33,17 +33,13 @@ mpd::mpd(const char *host, int port)
 mpd::~mpd()
 {
 	if(connection_)
-	{
 		mpd_connection_free(connection_);
-	}
 }
 
 void mpd::throw_if_error() const
 {
 	if (error())
-	{
 		throw exception(mpd_connection_get_error_message(connection_));
-	}
 }
 
 void mpd::play() const
@@ -67,9 +63,8 @@ void mpd::play(unsigned int song_id) const
 void mpd::play(song_ptr song) const
 {
 	if (not song->queued())
-	{
 		song->replace(add(song->uri()));
-	}
+
 	play(song->id());
 }
 
@@ -133,9 +128,8 @@ song_ptr mpd::current_song() const
 	mpd_song *s = mpd_run_current_song(connection_);
 	throw_if_error();
 	if (s)
-	{
 		return std::make_shared<song>(s, true);
-	}
+
 	return nullptr;
 }
 
@@ -144,11 +138,9 @@ song_ptr mpd::next_song(song_ptr existing_song, bool queue)
 	mpd_song *s = mpd_recv_song(connection_);
 	throw_if_error();
 	if (!s)
-	{
 		return nullptr;
-	}
-	if (existing_song)
-	{
+
+	if (existing_song) {
 		*existing_song = song(s, queue);
 		return existing_song;
 	}
@@ -162,9 +154,7 @@ void mpd::set_song_priority(unsigned int song_id, unsigned int priority)
 	throw_if_error();
 #else
 	if (priority)
-	{
 		return;
-	}
 #endif
 }
 
@@ -175,9 +165,7 @@ void mpd::set_queue_priority(unsigned int priority)
 	throw_if_error();
 #else
     if (priority)
-    {
         return;
-    }
 #endif
 }
 

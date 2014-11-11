@@ -35,13 +35,9 @@ song_iterator::song_iterator(mpd& mpd, bool reuse_song_ptr, bool queue) :
 song_iterator& song_iterator::operator++()
 {
 	if (reuse_song_ptr_)
-	{
 		current_song_ = mpd_.next_song(current_song_, queue_);
-	}
 	else
-	{
 		current_song_ = mpd_.next_song(nullptr, queue_);
-	}
 	return *this;
 }
 
