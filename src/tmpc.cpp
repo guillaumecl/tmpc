@@ -52,8 +52,8 @@ mpdpp::mpd connect(int argc, char **argv, bool& display)
 	--argc;
 	++argv;
 	option::Stats  stats(usage, argc, argv);
-	option::Option options[stats.options_max];
-	option::Option buffer[stats.buffer_max];
+	option::Option *options = new option::Option[stats.options_max];
+	option::Option *buffer = new option::Option[stats.buffer_max];
 	option::Parser parse(usage, argc, argv, options, buffer);
 
 	try {
@@ -65,6 +65,8 @@ mpdpp::mpd connect(int argc, char **argv, bool& display)
 				std::cout << "Unknown option: " << std::string(opt->name,opt->namelen) << "\n";
 
 			option::printUsage(std::cerr, usage);
+			delete[] options;
+			delete[] buffer;
 			exit(1);
 			return mpdpp::mpd();
 		}
@@ -77,12 +79,18 @@ mpdpp::mpd connect(int argc, char **argv, bool& display)
 
 		display = options[CURRENT];
 
+		delete[] options;
+		delete[] buffer;
+
 		return mpdpp::mpd(host, port);
 	} catch(const std::exception & e) {
 		message = QObject::tr(e.what());
 	} catch(...) {
 		message = QObject::tr("Unknown exception while connecting to mpd");
 	}
+
+	delete[] options;
+	delete[] buffer;
 
 	QMessageBox::critical(nullptr, QObject::tr("tmpc"), message);
 	exit(2);
