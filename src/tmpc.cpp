@@ -89,10 +89,10 @@ mpdpp::mpd connect(int argc, char **argv, bool& display)
 		message = QObject::tr("Unknown exception while connecting to mpd");
 	}
 
+	QMessageBox::critical(nullptr, QObject::tr("tmpc"), message);
 	delete[] options;
 	delete[] buffer;
 
-	QMessageBox::critical(nullptr, QObject::tr("tmpc"), message);
 	exit(2);
 	return mpdpp::mpd();
 }

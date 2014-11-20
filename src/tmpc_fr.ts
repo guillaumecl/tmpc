@@ -9,7 +9,7 @@
         <translation>Une erreur inconnue est survenue pendant la connexion à mpd</translation>
     </message>
     <message>
-        <location filename="tmpc.cpp" line="95"/>
+        <location filename="tmpc.cpp" line="92"/>
         <source>tmpc</source>
         <translation>tmpc</translation>
     </message>
