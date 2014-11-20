@@ -65,6 +65,7 @@ public:
 	song_storage& item_at(int position);
 
 	void update_song(int position, const mpdpp::song& song);
+	void delete_song(int position);
 
 public slots:
 	/**

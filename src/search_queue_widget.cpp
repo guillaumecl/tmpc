@@ -250,8 +250,7 @@ void search_queue_widget::decrease_priority(int position, unsigned int song_id, 
 void search_queue_widget::remove_song(int position, unsigned int id)
 {
 	mpd_.delete_song(id);
-	(void)position;
-	// TODO delete song from the model.
+	model_->delete_song(position);
 }
 
 }

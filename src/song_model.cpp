@@ -107,6 +107,23 @@ void song_model::update_song(int position, const mpdpp::song& song)
 	emit dataChanged(index(position, 0), index(position, columns::Priority));
 }
 
+void song_model::delete_song(int position)
+{
+	if (position < 0 or position >= songs_.size()) {
+		qDebug("Not deleting song");
+		return;
+	}
+	beginRemoveRows(QModelIndex(), position, position);
+
+	songs_.removeAt(position);
+
+	while (position < songs_.size()) {
+		songs_[position].index = position;
+		++position;
+	}
+
+	endRemoveRows();
+}
 
 void song_model::fill(mpdpp::search& search)
 {
