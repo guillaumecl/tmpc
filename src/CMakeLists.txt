@@ -51,8 +51,7 @@ add_executable(tmpc
 )
 
 target_link_libraries(tmpc mpd++ ${QT_LIBRARIES})
-
-
+add_custom_target (translations DEPENDS ${TMPC_TRANSLATIONS})
 
 add_custom_target(lupdate
   COMMAND ${CMAKE_SOURCE_DIR}/scripts/update_translations.sh "${CMAKE_BINARY_DIR}/translations"
@@ -61,7 +60,5 @@ add_custom_target(lupdate
 
 add_dependencies(tmpc lupdate)
 
-file(GLOB TRANSLATIONS "${CMAKE_CURRENT_BINARY_DIR}/*.qm")
-
 install(TARGETS tmpc DESTINATION bin)
-install(FILES "${TRANSLATIONS}" DESTINATION share/tmpc)
+install(FILES ${TMPC_TRANSLATIONS} DESTINATION share/tmpc)
