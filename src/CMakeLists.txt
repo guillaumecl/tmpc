@@ -8,6 +8,8 @@ file(GLOB SRC_TRANSLATIONS "${CMAKE_CURRENT_SOURCE_DIR}/*.ts")
 include(${QT_USE_FILE})
 add_definitions(${QT_DEFINITIONS})
 
+set (TMPC_TRANSLATION_DIR "" CACHE PATH "Translation directory on the installed path")
+add_definitions(-DTMPC_TRANSLATION_DIR="${TMPC_TRANSLATION_DIR}")
 
 QT4_WRAP_CPP(TMPC_HEADERS_MOC
   application.h

@@ -36,7 +36,16 @@ application::application(int &argc, char **argv) :
 	QApplication(argc, argv)
 {
 	QTranslator *translator = new QTranslator(this);
-	translator->load(QLocale::system(), "tmpc", "_");
+	QString translation_dir;
+	const char *dir = getenv("TMPC_TRANSLATION_DIR");
+
+	if (!dir)
+		dir = TMPC_TRANSLATION_DIR;
+
+	if (dir)
+		translation_dir = QString(dir);
+
+	translator->load(QLocale::system(), "tmpc", "_", translation_dir);
 	installTranslator(translator);
 
 	QTextCodec::setCodecForTr(QTextCodec::codecForName("UTF-8"));

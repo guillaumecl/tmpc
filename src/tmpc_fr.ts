@@ -105,8 +105,8 @@
 <context>
     <name>tmpc::application</name>
     <message>
-        <location filename="application.cpp" line="51"/>
-        <location filename="application.cpp" line="53"/>
+        <location filename="application.cpp" line="60"/>
+        <location filename="application.cpp" line="62"/>
         <source>tmpc</source>
         <translation>tmpc</translation>
     </message>
