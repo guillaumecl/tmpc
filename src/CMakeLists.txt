@@ -64,3 +64,4 @@ add_dependencies(tmpc lupdate)
 
 install(TARGETS tmpc DESTINATION bin)
 install(FILES ${TMPC_TRANSLATIONS} DESTINATION share/tmpc)
+install(FILES tmpc.man DESTINATION share/man/man1 RENAME tmpc.1)
