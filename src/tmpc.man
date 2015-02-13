@@ -1,6 +1,6 @@
 .\" Manpage for tmpc.
 .\" Contact gclement@baobob.org.in to correct errors or typos.
-.TH man 1 "12 Feb 2015" "1.0" "tmpc man page"
+.TH man 1 "12 Feb 2015" "1.0.1" "tmpc man page"
 .SH NAME
 tmpc \- Little mpd frontend
 .SH SYNOPSIS
