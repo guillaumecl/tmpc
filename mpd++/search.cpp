@@ -26,22 +26,19 @@ using namespace mpdpp;
 
 
 
-search::search(mpd& mpd, bool allow_empty_search, bool queue_search, bool reuse_song_ptr, bool add_search) :
+search::search(mpd& mpd, search_flags flag, search_flags flag2, search_flags flag3) :
 	mpd_(mpd),
 	empty_(true),
-	reuse_song_ptr_(reuse_song_ptr),
-	allow_empty_search_(allow_empty_search),
-	queue_search_(queue_search),
-	add_search_(add_search)
+	flags_(static_cast<search_flags>(flag | flag2 | flag3))
 {
 }
 
 search::~search()
 {
-	if (not allow_empty_search_ and empty_) {
+	if (not allow_empty_search() and empty_) {
 		mpd_search_cancel(mpd_.connection_);
 		mpd_.throw_if_error();
-	} else if (add_search_ and not empty_) {
+	} else if (add_search() and not empty_) {
 		mpd_search_commit(mpd_.connection_);
 		mpd_.throw_if_error();
 	}
@@ -53,11 +50,11 @@ search::iterator search::begin()
 {
 	iterator ret = end();
 
-	if (not allow_empty_search_ and not add_search_ and not empty_) {
+	if (not allow_empty_search() and not add_search() and not empty_) {
 		mpd_search_commit(mpd_.connection_);
 		mpd_.throw_if_error();
 		++ret;
-	} else if (allow_empty_search_ and not add_search_) {
+	} else if (allow_empty_search() and not add_search()) {
 		++ret;
 	}
 	return ret;
@@ -66,17 +63,12 @@ search::iterator search::begin()
 
 bool search::valid() const
 {
-	return allow_empty_search_ or not empty_;
+	return allow_empty_search() or not empty_;
 }
 
 search::iterator search::end()
 {
-	return iterator(mpd_, reuse_song_ptr_, queue_search_);
-}
-
-bool search::queue_search() const
-{
-	return queue_search_;
+	return iterator(mpd_, reuse_song_ptr(), queue_search());
 }
 
 search& search::operator<<(const tag_contains & tag)

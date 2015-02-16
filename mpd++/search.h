@@ -26,6 +26,20 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 namespace mpdpp
 {
 
+enum search_flags
+{
+	none = 0,
+	/* allow to search with no parameter.*/
+	allow_empty_search = 0x1,
+	/* search is a pointer to the queue. */
+	queue_search = 0x2,
+	/* reuse memory for all iterators. */
+	reuse_song_ptr = 0x4,
+	/* add results into the queue instead of returning them */
+	add_search = 0x8
+};
+
+
 /**
  * A search in the database or queue.
  */
@@ -80,18 +94,35 @@ public:
 	search& operator<<(const uri_contains& tag);
 
 	/**
-	 * Returns true if this search references the queue.
+	 * If true, there will be only one pointer to a song for all iterators.
 	 */
-	bool queue_search() const;
+	bool reuse_song_ptr() const { return flags_ & search_flags::reuse_song_ptr;}
+
+	/**
+	 * If true, allow to search with no parameter.
+	 */
+	bool allow_empty_search() const { return flags_ & search_flags::allow_empty_search;}
+
+	/**
+	 * If true, the search is actually a pointer to the queue.
+	 */
+	bool queue_search() const { return flags_ & search_flags::queue_search;}
+
+	/**
+	 * If true, this is a non iterable search that adds its results into the queue.
+	 */
+	bool add_search() const { return flags_ & search_flags::add_search;}
+
 private:
 	/**
 	 * Creates a search.
 	 * @param mpd the connection to the mpd server.
-	 * @param allow_empty_search if true, allow to search with no parameter.
-	 * @param queue_search if true, the search is actually a pointer to the queue.
-	 * @param reuse_song_ptr if true, there will be only one pointer to a song for all iterators.
+	 * @param flags search_flags
+	 * @see search_flags
 	 */
-	search(mpd& mpd, bool allow_empty_search, bool queue_search, bool reuse_song_ptr, bool add_search);
+	search(mpd& mpd, search_flags flag1,
+		search_flags flag2 = search_flags::none,
+		search_flags flag3 = search_flags::none);
 
 	/**
 	 * Connection to the mpd server.
@@ -104,25 +135,7 @@ private:
 	 */
 	bool empty_;
 
-	/**
-	 * If true, there will be only one pointer to a song for all iterators.
-	 */
-	bool reuse_song_ptr_;
-
-	/**
-	 * If true, allow to search with no parameter.
-	 */
-	bool allow_empty_search_;
-
-	/**
-	 * If true, the search is actually a pointer to the queue.
-	 */
-	bool queue_search_;
-
-	/**
-	 * If true, this is a non iterable search that adds its results into the queue.
-	 */
-	bool add_search_;
+	search_flags flags_;
 
 	friend class mpd;
 };
